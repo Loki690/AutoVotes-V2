@@ -11,4 +11,4 @@
   <title>AutoVote2</title>
 </head>
 
-<body>
+<body onload="countdown()">
