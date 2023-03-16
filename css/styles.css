@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+body{
+    font-family: 'Poppins', sans-serif;
+ 
+}
+#navbar{
+    background-color: #13005a;
+}
+.dcc {
+    width: 70%;
+    height: auto;
+    
+}
+.ite-logo {
+    width: 9%;
+    height: auto;
+    margin-left: 300px;
+}
+.title-app{
+    color: #13005a;
+}
+
+
+#loginbutton{
+    background-color: #13005a;
+}
+
