@@ -14,7 +14,7 @@
         <a href="#" class="nav-link px-2 text-muted">FAQs</a>
       </li>
       <li class="nav-item">
-        <a href="#" class="nav-link px-2 text-muted">About</a>
+        <a href="#" class="nav-link px-2 text-muted">About me</a>
       </li>
     </ul>
     <p class="text-center text-muted"> &copy; <strong> 2023 TEAM DROPBOX,  Master Inc </strong></p>
