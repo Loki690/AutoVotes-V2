@@ -44,17 +44,7 @@
 
     }
 
-    public function getUserData(){
-      
-      if(!isset($_SESSION)){
-        session_start();
-      }
-      if(isset($_SESSION['userdata'])){
-        return $_SESSION['userdata'];
-      }else{
-        header("Location: index.php");
-      }
-    }
+    
     public function setUserData($array){
     
       if(!isset($_SESSION)){
@@ -78,6 +68,19 @@
       return $_SESSION['userdata'];
   }
 
+  public function getUserData(){
+      
+    if(!isset($_SESSION)){
+      session_start();
+    }
+    if(isset($_SESSION['userdata'])){
+      return $_SESSION['userdata'];
+    }else{
+      header("Location: index.php");
+    }
+  }
+
+
   public function Login(){
 
     if (isset($_POST['login-voter'])){
@@ -86,7 +89,7 @@
       $password = $_POST['password'];
 
       $connection = $this->openConnection();
-      $stmt = $connection->prepare("SELECT * FROM `student` WHERE student_id = ? AND password = ? ");
+      $stmt = $connection->prepare("SELECT * FROM `student` WHERE school_id = ? AND password = ? ");
       $stmt->execute([$school_id, $password]);
 
       $voter= $stmt->fetch();
@@ -102,7 +105,7 @@
 
       }else{
         
-        header("Location: login.php");
+        header("Location: index.php");
 
       }
 

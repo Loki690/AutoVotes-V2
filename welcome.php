@@ -1,9 +1,7 @@
 <?php
   include('header.php');
-  
   require_once('class.php');
-
-  $voterDetails = $store->getUserData();
+  $voterDetails = $vote->getUserData();
 ?>
 
 <main>
@@ -13,16 +11,14 @@
         <div class="px-4 pt-5 my-5 text-center border-bottom">
           <h1 class="display-4 fw-bold text-primary">Welcome <?= $voterDetails['first_name'] ?></h1>
           <div class="col-lg-6 mx-auto">
-            <p class="lead mb-4"><?= $voterDetails['first_name'] ?> Lorem ipsum dolor sit amet consectetur adipisicing
-              elit. Odit velit fugit unde quas animi ex adipisci fugiat distinctio praesentium nulla. Natus repellat
-              odit nemo itaque! Blanditiis nisi aperiam eos totam.</p>
+            <p class="lead mb-4">CSSG ELECTION</p>
             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
               <a href="store-myproducts.php?id=<?= $voterDetails['studentID']; ?>"><button type="button"
-                  class="btn btn-primary btn-lg px-4 me-sm-3 text-white">Go to Dashboard</button>
+                  class="btn btn-primary btn-lg px-4 me-sm-3 text-white">Start VOTING</button>
               </a>
-              <a data-bs-toggle="modal" data-bs-target="#store_logout"><button type="button"
+              <!-- <a data-bs-toggle="modal" data-bs-target="#store_logout"><button type="button"
                   class="btn btn-danger btn-lg px-4 me-sm-3 text-white">Logout</button>
-              </a>
+              </a> -->
             </div>
 
           </div>
