@@ -108,14 +108,56 @@
         header("Location: index.php");
 
       }
-
   }
-
   }
   public function show_404(){
 
     http_response_code(404);
     echo "Page Not Found";
+
+  }
+
+  public function logout(){
+
+    if(isset($_POST['logout'])){
+
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      $_SESSION['userdata'] = null;
+      unset($_SESSION['userdata']);
+  
+      header("Location: index.php");
+
+    }
+  }
+
+  public function voterRegister(){
+
+    if(isset($_POST['voter-register'])){
+
+      $school_id = $_POST['school_id'];
+      $last_name = $_POST['last_name'];
+      $first_name = $_POST['first_name'];
+      $gender = $_POST['gender'];
+      $course = $_POST['course'];
+      $year = $_POST['year_level'];
+      $password = $_POST['password'];
+      $x = "active";
+     
+        $connection = $this->openConnection();
+        $stmt = $connection->prepare("INSERT INTO `student`(`school_id`, `last_name`, `first_name`, `gender`, `course`, `year_level`, `password`, `x`) VALUES (?,?,?,?,?,?,?,?)");
+        $stmt->execute([$school_id, $last_name, $first_name, $gender, $course, $year, $password, $x]);
+
+        ?>
+        <script>
+          alert('Register Successful, Please Login');
+          window.location.href="index.php";
+        </script>
+        <?php 
+     
+    }
+ 
   }
 
   }

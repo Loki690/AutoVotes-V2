@@ -2,6 +2,9 @@
   include('header.php');
   require_once('class.php');
   $voterDetails = $vote->getUserData();
+
+  $vote->logout();
+
 ?>
 
 <main>
@@ -16,9 +19,9 @@
               <a href="store-myproducts.php?id=<?= $voterDetails['studentID']; ?>"><button type="button"
                   class="btn btn-primary btn-lg px-4 me-sm-3 text-white">Start VOTING</button>
               </a>
-              <!-- <a data-bs-toggle="modal" data-bs-target="#store_logout"><button type="button"
+              <a data-bs-toggle="modal" data-bs-target="#store_logout"><button type="button"
                   class="btn btn-danger btn-lg px-4 me-sm-3 text-white">Logout</button>
-              </a> -->
+              </a>
             </div>
 
           </div>
@@ -48,8 +51,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <form action="store-logout.php" method="POST">
-          <button type="submit" class="btn btn-danger text-white">Logout</button>
+        <form action="" method="POST">
+          <button type="submit" class="btn btn-danger text-white" name="logout">Logout</button>
         </form>
       </div>
     </div>
