@@ -1,28 +1,29 @@
-// Set the target date and time
-const targetDate = new Date("2023-03-17T00:00:00").getTime();
+function countdown() {
 
-// Update the countdown every second
-const countdown = setInterval(function() {
 
-  // Get the current date and time
-  const currentDate = new Date().getTime();
+  var now = new Date();
+  var eventDate = new Date("<?php echo date('M d, Y H:i:s', strtotime('March 30, 2030 00:00:00')); ?>");
 
-  // Calculate the remaining time in milliseconds
-  const remainingTime = targetDate - currentDate;
+  var currentTime = now.getTime();
+  var eventTime = eventDate.getTime();
 
-  // Calculate the remaining time in days, hours, minutes, and seconds
-  const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+  var remainingTime = eventTime - currentTime;
 
-  // Display the countdown timer
-  const countdownElement = document.getElementById("countdown");
-  countdownElement.innerHTML = `${days} days ${hours} hours ${minutes} minutes ${seconds} seconds remaining`;
+  var seconds = Math.floor(remainingTime / 1000);
+  var minutes = Math.floor(seconds / 60);
+  var hours = Math.floor(minutes / 60);
+  var days = Math.floor(hours / 24);
 
-  // If the countdown is over, stop the timer and display a message
-  if (remainingTime < 0) {
-    clearInterval(countdown);
-    countdownElement.innerHTML = "Countdown is over!";
-  }
-}, 1000);
+  hours %= 24;
+  minutes %= 60;
+  seconds %= 60;
+
+  document.getElementById("days").innerHTML = days;
+  document.getElementById("hours").innerHTML = hours;
+  document.getElementById("minutes").innerHTML = minutes;
+  document.getElementById("seconds").innerHTML = seconds;
+
+  setTimeout(countdown, 1000);
+
+
+}

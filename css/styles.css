@@ -1,10 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
 body{
     font-family: 'Poppins', sans-serif;
+    
  
 }
 #navbar{
-    background-color: #13005a;
+    background-color: #00095a;
 }
 .dcc {
     width: 70%;
@@ -17,11 +18,29 @@ body{
     margin-left: 300px;
 }
 .title-app{
-    color: #13005a;
+    color: #00095a;
 }
 
 
 #loginbutton{
-    background-color: #13005a;
+    background-color:#00095a;
+    -webkit-box-shadow: -1px 2px 5.5px 5.5px #a39e9e;
+    -moz-box-shadow: -1px 2px 5.5px 5.5px #a39e9e;
+    box-shadow: -1px 2px 5.5px 5.5px #a39e9e;
+}
+.cover{
+    -webkit-box-shadow: -1px 2px 5.5px 5.5px #a39e9e;
+    -moz-box-shadow: -1px 2px 5.5px 5.5px #a39e9e;
+    box-shadow: -1px 2px 5.5px 5.5px #a39e9e;
+}
+.modal-header{
+    background-color:#00095a;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+#shadow{
+    -webkit-box-shadow: 3px 3px 16px 5px #7d7d7d;
+    -moz-box-shadow: 3px 3px 16px 5px #7d7d7d;
+    box-shadow: 3px 3px 16px 5px #7d7d7d;
 }
 

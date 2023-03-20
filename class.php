@@ -1,89 +1,105 @@
 <?php
 
-  class Voting {
+class Voting
+{
 
-    private $server = "mysql:host=localhost;dbname=vote3";
-    private $user = "root";
-    private $pass = "";
-    private $options = array(PDO:: ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC);
+  private $server = "mysql:host=localhost;dbname=vote3";
+  private $user = "root";
+  private $pass = "";
+  private $options = array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC);
 
-    protected $con;
+  protected $con;
 
-    public function openConnection(){
+  public function openConnection()
+  {
 
-      try{
-  
-        $this->con = new PDO($this->server, $this->user, $this->pass, $this->options);
-        return $this->con;
-  
-      }catch(PDOException $e){
-        echo "There is some problem in the connection". $e->getMessage();
-      }
+    try {
+
+      $this->con = new PDO($this->server, $this->user, $this->pass, $this->options);
+      return $this->con;
+    } catch (PDOException $e) {
+      echo "There is some problem in the connection" . $e->getMessage();
     }
-
-    public function closeConnection()
-    {
-      $this->con = null;
-    }
-
-
-    public function getUsers()
-    {
-
-      $connection = $this->openConnection();
-      $stmt = $connection->prepare("SELECT * FROM `student` ");
-      $stmt->execute();
-      $users = $stmt->fetchAll();
-      $userCount = $stmt->rowCount();
-
-      if($userCount > 0 ){
-        return $users;
-      }else{
-        return 0;
-      }
-
-    }
-
-    
-    public function setUserData($array){
-    
-      if(!isset($_SESSION)){
-        session_start();
-      }
-
-      $_SESSION['userdata'] = array (
-
-        "studentID" => $array ['student_id'],
-        "school_id" => $array['school_id'],
-        "last_name" => $array['last_name'],
-        "first_name" => $array['first_name'],
-        "middle_name" => $array['middle_name'],
-        "gender" => $array['gender'],
-        "course" => $array['course'],
-        "year_level" => $array['year_level'],
-        "password" => $array['password']
-
-      );
-
-      return $_SESSION['userdata'];
   }
 
-  public function getUserData(){
-      
-    if(!isset($_SESSION)){
+  public function closeConnection()
+  {
+    $this->con = null;
+  }
+
+
+  public function getUsers()
+  {
+
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT * FROM `student` ");
+    $stmt->execute();
+    $users = $stmt->fetchAll();
+    $userCount = $stmt->rowCount();
+
+    if ($userCount > 0) {
+      return $users;
+    } else {
+      return 0;
+    }
+  }
+
+
+  public function setUserData($array)
+  {
+
+    if (!isset($_SESSION)) {
       session_start();
     }
-    if(isset($_SESSION['userdata'])){
+
+    $_SESSION['userdata'] = array(
+
+      "studentID" => $array['student_id'],
+      "school_id" => $array['school_id'],
+      "last_name" => $array['last_name'],
+      "first_name" => $array['first_name'],
+      "middle_name" => $array['middle_name'],
+      "gender" => $array['gender'],
+      "course" => $array['course'],
+      "year_level" => $array['year_level'],
+      "password" => $array['password']
+
+    );
+
+    return $_SESSION['userdata'];
+  }
+
+  public function getUserData()
+  {
+
+    if (!isset($_SESSION)) {
+      session_start();
+    }
+    if (isset($_SESSION['userdata'])) {
+      
       return $_SESSION['userdata'];
+
+    } else {
+      // header("Location: index.php");
+      
+    }
+  }
+
+  public function session(){
+
+    if($this->getUserData()){
+      return $this->getUserData();
+
     }else{
-      header("Location: index.php");
+      return header("Location: welcome.php");
     }
   }
 
 
-  public function Login(){
+  public function Login()
+  {
 
-    if (isset($_POST['login-voter'])){
+    if (isset($_POST['login-voter'])) {
 
       $school_id = $_POST['school_id'];
       $password = $_POST['password'];
@@ -92,51 +108,89 @@
       $stmt = $connection->prepare("SELECT * FROM `student` WHERE school_id = ? AND password = ? ");
       $stmt->execute([$school_id, $password]);
 
-      $voter= $stmt->fetch();
+      $voter = $stmt->fetch();
 
       $total = $stmt->rowCount();
 
-      if($total > 0 ){
-        
-        echo "Welcome ".$voter['first_name'];
+      if ($total > 0) {
+
+        echo "Welcome " . $voter['first_name'];
         $this->setUserData($voter);
 
         header("Location: welcome.php");
+      } else {
 
-      }else{
-        
         header("Location: index.php");
-
       }
+    }
   }
-  }
-  public function show_404(){
+  public function show_404()
+  {
 
     http_response_code(404);
     echo "Page Not Found";
-
   }
+  public function logout()
+  {
 
-  public function logout(){
+    if (isset($_POST['logout'])) {
 
-    if(isset($_POST['logout'])){
-
-      if(!isset($_SESSION)){
+      if (!isset($_SESSION)) {
         session_start();
       }
       $_SESSION['userdata'] = null;
       unset($_SESSION['userdata']);
-  
-      header("Location: index.php");
 
+      header("Location: index.php");
+    }
+  }
+  public function studentID($student_id)
+  {
+
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT COUNT(*) FROM `student_id` WHERE `student_id` = ?");
+
+    $stmt->execute([$student_id]);
+
+    $count = $stmt->fetchColumn();
+
+    // $userCount = $stmt->rowCount();
+
+    if ($count == 0) {
+      // If student ID doesn't exist, show error message and exit
+      echo "Student ID not found. Please check and try again.";
+      exit;
+    } else {
+      return $this->voterRegister();
     }
   }
 
-  public function voterRegister(){
+  public function voterRegister()
+  {
+    $connection = $this->openConnection();
 
-    if(isset($_POST['voter-register'])){
+    if (isset($_POST['voter-register'])) {
 
       $school_id = $_POST['school_id'];
+      $stmt = $connection->prepare("SELECT COUNT(*) FROM `student_id` WHERE `student_id` = ?");
+
+      $stmt->execute([$school_id]);
+
+      $count = $stmt->fetchColumn();
+
+      if ($count == 0) {
+
+        // If student ID doesn't exist, show error message and exit
+        ?>
+        <script>
+          alert('Invalid Student ID  <?= " ".$school_id ?>');
+          window.location.href = "index.php";
+        </script>
+    <?php
+        exit;
+
+      } else {
+        
       $last_name = $_POST['last_name'];
       $first_name = $_POST['first_name'];
       $gender = $_POST['gender'];
@@ -144,27 +198,25 @@
       $year = $_POST['year_level'];
       $password = $_POST['password'];
       $x = "active";
-     
-        $connection = $this->openConnection();
-        $stmt = $connection->prepare("INSERT INTO `student`(`school_id`, `last_name`, `first_name`, `gender`, `course`, `year_level`, `password`, `x`) VALUES (?,?,?,?,?,?,?,?)");
-        $stmt->execute([$school_id, $last_name, $first_name, $gender, $course, $year, $password, $x]);
 
-        ?>
-        <script>
-          alert('Register Successful, Please Login');
-          window.location.href="index.php";
-        </script>
-        <?php 
-     
+      $stmt = $connection->prepare("INSERT INTO `student`(`school_id`, `last_name`, `first_name`, `gender`, `course`, `year_level`, `password`, `x`) VALUES (?,?,?,?,?,?,?,?)");
+      $stmt->execute([$school_id, $last_name, $first_name, $gender, $course, $year, $password, $x]);
+
+?>
+      <script>
+        alert('Register Successful, Please Login');
+        window.location.href = "index.php";
+      </script>
+
+<?php
+        
+      }
     }
- 
-  }
-
-  }
-
   
+  }
+  }
 
-  $vote = new Voting();
+$vote = new Voting();
 
 
 ?>
