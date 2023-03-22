@@ -539,6 +539,61 @@ class Voting
     }
   }
 
+  public function getParty($party_id){
+
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT * FROM `party` WHERE `party_id` = '$party_id' ");
+    $stmt->execute();
+    $partys = $stmt->fetch();
+    $total = $stmt->rowCount();
+
+    if($total > 0){
+      if(isset($partys)){
+
+        return $partys;
+      }
+    }else{
+
+      return $connection->errorInfo();
+    }
+  }
+
+  public function getPosition($position_id){
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT * FROM `position` WHERE `position_id` = '$position_id' ");
+    $stmt->execute();
+    $positions = $stmt->fetch();
+    $total = $stmt->rowCount();
+
+    if($total > 0){
+      if(isset($positions)){
+
+        return $positions;
+      }
+    }else{
+
+      return $connection->errorInfo();
+    }
+  }
+
+  public function getElection($election_id){
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT * FROM `election` WHERE `election_id` = '$election_id' ");
+    $stmt->execute();
+    $elections = $stmt->fetch();
+    $total = $stmt->rowCount();
+
+    if($total > 0){
+      if(isset($elections)){
+
+        return $elections;
+      }
+    }else{
+
+      return $connection->errorInfo();
+    }
+  }
+
 }
 
 $vote = new Voting();
