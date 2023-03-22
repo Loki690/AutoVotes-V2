@@ -1,10 +1,17 @@
 <?php
-  include('header.php');
+  include('includes/header.php');
+  
   require_once('class.php');
+  
   $voterDetails = $vote->getUserData();
 
-  $vote->logout();
+  // $vote->logout();
+  
 
+?>
+
+<?php
+ include 'includes/usernav.php'
 ?>
 
 <main>
@@ -12,16 +19,14 @@
     <div class="row">
       <div class="col-md-12">
         <div class="px-4 pt-5 my-5 text-center border-bottom">
-          <h1 class="display-4 fw-bold text-primary">Welcome <?= $voterDetails['first_name'] ?></h1>
+          <h1 class="display-4 fw-bold title-app">Welcome <?= $voterDetails['first_name'] ?></h1>
           <div class="col-lg-6 mx-auto">
             <p class="lead mb-4">CSSG ELECTION</p>
             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
               <a href="store-myproducts.php?id=<?= $voterDetails['studentID']; ?>"><button type="button"
-                  class="btn btn-primary btn-lg px-4 me-sm-3 text-white">Start VOTING</button>
+                  class="btn btn-primary btn-lg px-4 me-sm-3 text-white" id="loginbutton">VOTE</button>
               </a>
-              <a data-bs-toggle="modal" data-bs-target="#store_logout"><button type="button"
-                  class="btn btn-danger btn-lg px-4 me-sm-3 text-white">Logout</button>
-              </a>
+             
             </div>
 
           </div>
@@ -59,5 +64,5 @@
   </div>
 </div>
 <?php
- include('footer.php');
+ include('includes/footer.php');
 ?>
