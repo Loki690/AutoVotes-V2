@@ -78,10 +78,9 @@ class Voting
       session_start();
     }
     if (isset($_SESSION['userdata'])) {
-
       return $_SESSION['userdata'];
     } else {
-      // header("Location: index.php");
+      // return header("Location: index.php");
 
     }
   }
@@ -124,6 +123,10 @@ class Voting
         header("Location: index.php");
       }
     }
+  }
+
+  public function loginAdmin(){
+
   }
 
   public function show_404()
@@ -193,6 +196,8 @@ class Voting
         exit;
       } else {
 
+
+
         $last_name = $_POST['last_name'];
         $first_name = $_POST['first_name'];
         $gender = $_POST['gender'];
@@ -247,6 +252,7 @@ class Voting
         exit;
       } else {
 
+
         $applicant_status = "initial";
         $requirements = "0";
         $x = "active";
@@ -286,19 +292,32 @@ class Voting
         $achievements = $_POST['achievements'];
         $organization = $_POST['organization'];
         $url = $_POST['url'];
+
         // $applicant_status = $_POST['application_status'];
 
-        $stmt = $connection->prepare("INSERT INTO `applicants`(`student_id`, `election_id`, `date_filed`, `position_id`, `party_id`, `last_name`, `first_name`, `middle_name`, `gender`, `age`, `date_birth`, `place_birth`, `height`, `weight`, `home_add`, `status`, `religion`, `language`, `citizenship`, `contact_num`, `email`, `spouse_name`, `spouse_add`, `num_child`, `tertiary_lev`, `course`, `year_lev`, `major`, `second_lev`, `secondary_grad`, `elementary`, `elementary_grad`, `achievements`, `organization`, `requirements`, `url`, `application_status`, `x`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $image = rand(1000, 1000000)."-".$_FILES['photo']['name'];
+        $image_loc = $_FILES['photo']['tmp_name'];
+        $folder = "uploads/";
+  
+        $new_file_name = strtolower($image);
+        $final_file = str_replace(' ','-',$new_file_name);
 
-        $stmt->execute([$student_id, $election_id, $data_filed, $position, $party_id, $last_name, $first_name, $middle_name, $gender, $age, $date_birth, $place_birth, $height, $weight, $home_add, $status, $religion, $language, $citizenship, $contact_num, $email, $spouse_name, $spouse_add, $num_child, $tertiary_lev, $course, $year_lev, $major, $second_lev, $secondary_grad, $achievements, $elementary, $elementary_grad, $organization, $requirements, $url, $applicant_status, $x]);
+        if(move_uploaded_file($image_loc, $folder.$final_file)){
 
-      ?>
-        <script>
-          alert('Register Successful, Please Login');
-          window.location.href = "index.php";
-        </script>
+          $stmt = $connection->prepare("INSERT INTO `applicants`(`student_id`, `election_id`, `date_filed`, `position_id`, `party_id`, `last_name`, `first_name`, `middle_name`, `gender`, `age`, `date_birth`, `place_birth`, `height`, `weight`, `home_add`, `status`, `religion`, `language`, `citizenship`, `contact_num`, `email`, `spouse_name`, `spouse_add`, `num_child`, `tertiary_lev`, `course`, `year_lev`, `major`, `second_lev`, `secondary_grad`, `elementary`, `elementary_grad`, `achievements`, `organization`, `requirements`, `url`, `application_status`, `x`, `photo`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-      <?php
+          $stmt->execute([$student_id, $election_id, $data_filed, $position, $party_id, $last_name, $first_name, $middle_name, $gender, $age, $date_birth, $place_birth, $height, $weight, $home_add, $status, $religion, $language, $citizenship, $contact_num, $email, $spouse_name, $spouse_add, $num_child, $tertiary_lev, $course, $year_lev, $major, $second_lev, $secondary_grad, $achievements, $elementary, $elementary_grad, $organization, $requirements, $url, $applicant_status, $x, $final_file]);
+  
+        ?>
+          <script>
+            alert('Register Successfull');
+            window.location.href = "index.php";
+          </script>
+  
+        <?php
+        }
+
+    
       }
     }
   }
@@ -424,6 +443,102 @@ class Voting
     }
 
   }
+
+  public function getComelec(){
+    $connection = $this->openConnection();
+
+    $stmt = $connection->prepare("SELECT * FROM `admin` WHERE `type` = 'comelec' ");
+    $stmt->execute();
+    $comelecs = $stmt->fetchAll();
+
+    $total = $stmt->rowCount();
+
+    if ($total > 0) {
+
+      if (isset($comelecs)) {
+
+        return $comelecs;
+      }
+    } else {
+      return $this->show_404();
+      echo $connection->errorInfo();
+    }
+  
+  }
+
+
+  public function getApplicants(){
+    $connection = $this->openConnection();
+
+    $stmt = $connection->prepare("SELECT * FROM `applicants`");
+    $stmt->execute();
+    $applicants = $stmt->fetchAll();
+
+    $total = $stmt->rowCount();
+
+    if($total > 0){
+      if(isset($applicants)){
+        return $applicants;
+      }
+    }else{
+      return $this->show_404();
+      echo $connection->errorInfo();
+    }
+
+  }
+
+  public function getElectionId(){
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT * FROM `election` where `x` != 'deleted' ");
+    $stmt->execute();
+    $elections = $stmt->fetchAll();
+
+    $total = $stmt->rowCount();
+
+    if($total > 0){
+      if(isset($elections)){
+        return $elections;
+      }
+    }else{
+      return $this->show_404();
+      echo $connection->errorInfo();
+    }
+  }
+  public function getPositionId(){
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT * FROM `position` where `x` != 'deleted' ");
+    $stmt->execute();
+    $positions = $stmt->fetchAll();
+
+    $total = $stmt->rowCount();
+
+    if($total > 0){
+      if(isset($positions)){
+        return $positions;
+      }
+    }else{
+      return $this->show_404();
+      echo $connection->errorInfo();
+    }
+  }
+
+  public function getPartyId(){
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT * FROM `party` where `x` != 'deleted' ");
+    $stmt->execute();
+    $partys = $stmt->fetchAll();
+    $total = $stmt->rowCount();
+
+    if($total > 0){
+      if(isset($partys)){
+        return $partys;
+      }
+    }else{
+      return $this->show_404();
+      echo $connection->errorInfo();
+    }
+  }
+
 }
 
 $vote = new Voting();

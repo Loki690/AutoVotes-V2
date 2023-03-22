@@ -15,8 +15,9 @@ $vote->deleteAdmin();
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <br>
-      <div class="modal-body p-5 pt-0">
-        <form action="" method="POST" enctype="multipart/form-data">
+      <form action="" method="POST" enctype="multipart/form-data">
+        <div class="modal-body p-5 pt-0">
+
           <div class="mb-3 row">
             <label for="inputPassword" class="col-sm-4 col-form-label">First Name</label>
             <div class="col-sm-8">
@@ -44,19 +45,15 @@ $vote->deleteAdmin();
               <input type="text" name="access_code" class="form-control" placeholder="Access Code" id="" required>
             </div>
           </div>
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary" name="add-admin">Add as Admin</button>
-          </div>
-        </form>
-      </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" name="add-admin">Add as Admin</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
-
-
-
 <!-- edit admin info -->
 <div class="modal fade modal-signin" id="edit-admin<?= $item['admin_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
@@ -67,12 +64,12 @@ $vote->deleteAdmin();
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <br>
-      <div class="modal-body p-5 pt-0">
-        <form action="" method="POST" enctype="multipart/form-data">
+      <form action="" method="POST" enctype="multipart/form-data">
+        <div class="modal-body p-5 pt-0">
           <div class="mb-3 row">
             <label for="inputPassword" class="col-sm-4 col-form-label">First Name</label>
             <div class="col-sm-8">
-              <input type="text" name="first_name" class="form-control" value="<?= $item['first_name'] ?>" >
+              <input type="text" name="first_name" class="form-control" value="<?= $item['first_name'] ?>">
             </div>
           </div>
 
@@ -94,16 +91,15 @@ $vote->deleteAdmin();
             <label for="Access Code" class="col-sm-4 col-form-label">Access Code</label>
             <div class="col-sm-8">
               <input type="text" name="access_code" class="form-control" value="<?= $item['accesscode'] ?>">
-              <input type="text" name="admin_id" value="<?= $item['admin_id']?>">
+              <input type="hidden" name="admin_id" value="<?= $item['admin_id'] ?>">
             </div>
           </div>
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary" name="edit-admin">Save</button>
-          </div>
-        </form>
-      </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" name="edit-admin">Save</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
@@ -119,12 +115,12 @@ $vote->deleteAdmin();
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <br>
-      <div class="modal-body p-5 pt-0">
-        <form action="" method="POST" enctype="multipart/form-data">
+      <form action="" method="POST" enctype="multipart/form-data">
+        <div class="modal-body p-5 pt-0">
           <div class="mb-3 row">
             <label for="inputPassword" class="col-sm-4 col-form-label">First Name</label>
             <div class="col-sm-8">
-              <input type="text" name="first_name" class="form-control" value="<?= $item['first_name'] ?>" >
+              <input type="text" name="first_name" class="form-control" value="<?= $item['first_name'] ?>">
             </div>
           </div>
 
@@ -146,20 +142,69 @@ $vote->deleteAdmin();
             <label for="Access Code" class="col-sm-4 col-form-label">Access Code</label>
             <div class="col-sm-8">
               <input type="text" name="access_code" class="form-control" value="<?= $item['accesscode'] ?>">
-              <input type="text" name="admin_id" value="<?= $item['admin_id']?>">
+              <input type="hidden" name="admin_id" value="<?= $item['admin_id'] ?>">
             </div>
           </div>
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-danger" name="delete-admin">Delete</button>
-          </div>
-        </form>
-      </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger" name="delete-admin">Delete</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
 
+<!-- modal for adding comelec -->
+<div class="modal fade modal-signin" id="add-comelec" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
+      <div class="modal-header p-3 pb-3">
+        <h5 class="modal-title" id="staticBackdropLabel">Adding Admin</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <br>
+      <form action="" method="POST" enctype="multipart/form-data">
+        <div class="modal-body p-5 pt-0">
+
+          <div class="mb-3 row">
+            <label for="inputPassword" class="col-sm-3 col-form-label">First Name: </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="First Name" id="">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="MiddleName" class="col-sm-3 col-form-label">Middle Name: </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Middle Name" id="">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="LastName" class="col-sm-3 col-form-label">Last Name: </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Last Name" id="">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="Access Code" class="col-sm-3 col-form-label">Access Code: </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Access Code" id="">
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Add as Comelec</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
 <!--Login and Register Modal-->
 <div class="modal fade modal-signin" id="login" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-md modal-dialog-centered" role="document">
@@ -177,12 +222,12 @@ $vote->deleteAdmin();
         <form action="" method="POST" enctype="multipart/form-data">
           <div class="form-group">
             <label for="exampleInputEmail1">Student ID</label>
-            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="school_id" placeholder="Student ID" />
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="school_id" placeholder="Student ID" required/>
             <small id="emailHelp" class="form-text text-muted">We'll never share your student id with anyone else.</small>
           </div>
           <div class="form-group">
             <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password" />
+            <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password" required/>
             <a href="#" class="mt-2"><small>Forgot Password? </small> </a>
           </div>
           <div class="d-flex pt-1">

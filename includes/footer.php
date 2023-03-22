@@ -14,6 +14,9 @@
       <li class="nav-item">
         <a href="#" class="nav-link px-2 text-muted">About</a>
       </li>
+      <li class="nav-item">
+        <a href="admin-login.php" class="nav-link px-2 text-muted" tabindex="-1" data-bs-toggle="modal" data-bs-target="#login-admin">Admin</a>
+      </li>
     </ul>
     <p class="text-center text-muted">&copy; 2023 TEAM DROPBOX, Inc</p>
   </footer>

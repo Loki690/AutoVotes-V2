@@ -9,11 +9,8 @@ $vote->voterRegister();
 include('includes/header.php');
 
 if($vote->getUserData() == true){
-
   include('includes/usernav.php');
-
 }else{
-
   include('includes/nav.php');
 }
 
@@ -43,7 +40,7 @@ if($vote->getUserData() == true){
 
 
     var now = new Date();
-    var eventDate = new Date("<?php echo date('M d, Y H:i:s', strtotime('March 30, 2030 00:00:00')); ?>");
+    var eventDate = new Date("<?php echo date('M d, Y H:i:s', strtotime('March 30, 2023 00:00:00')); ?>");
 
     var currentTime = now.getTime();
     var eventTime = eventDate.getTime();
@@ -218,10 +215,40 @@ if($vote->getUserData() == true){
   </div>
 </div>
 
-
-<div>
-
-
+<!-- modal admin login -->
+<div class="modal fade modal-signin" id="login-admin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+    <div class="modal-content rounded-5 shadow" style="border-radius: 30px">
+      <div class="modal-header p-3 pb-3">
+        <h5 class="modal-title text-white" id="staticBackdropLabel">
+          Admin Login
+        </h5>
+        <button type="button" class="btn-close-white" data-bs-dismiss="modal" aria-label="Close">
+          x
+        </button>
+      </div>
+      <br />
+      <div class="modal-body p-5 pt-0">
+        <form action="" method="POST" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Student ID</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="school_id" placeholder="Student ID" />
+            <small id="emailHelp" class="form-text text-muted"></small>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password" />
+            <a href="#" class="mt-2"><small>Forgot Password? </small> </a>
+          </div>
+          <div class="d-flex pt-1">
+            <button type="submit" id="loginbutton" name="login-voter" class="btn btn-primary mt-2 flex-grow-1">
+              Login
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -230,6 +257,5 @@ if($vote->getUserData() == true){
 // $studentid['student_id']
 ?>
 <?php
-
 include('includes/footer.php');
 ?>
