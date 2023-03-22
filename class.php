@@ -1,5 +1,7 @@
 <?php
 
+
+
 class Voting
 {
 
@@ -76,21 +78,20 @@ class Voting
       session_start();
     }
     if (isset($_SESSION['userdata'])) {
-      
-      return $_SESSION['userdata'];
 
+      return $_SESSION['userdata'];
     } else {
       // header("Location: index.php");
-      
+
     }
   }
 
-  public function session(){
+  public function session()
+  {
 
-    if($this->getUserData()){
+    if ($this->getUserData()) {
       return $this->getUserData();
-
-    }else{
+    } else {
       return header("Location: welcome.php");
     }
   }
@@ -124,6 +125,7 @@ class Voting
       }
     }
   }
+
   public function show_404()
   {
 
@@ -144,6 +146,7 @@ class Voting
       header("Location: index.php");
     }
   }
+
   public function studentID($student_id)
   {
 
@@ -181,40 +184,247 @@ class Voting
       if ($count == 0) {
 
         // If student ID doesn't exist, show error message and exit
-        ?>
+?>
         <script>
-          alert('Invalid Student ID  <?= " ".$school_id ?>');
+          alert('Invalid Student ID  <?= " " . $school_id ?>');
           window.location.href = "index.php";
         </script>
-    <?php
+      <?php
         exit;
-
       } else {
-        
-      $last_name = $_POST['last_name'];
-      $first_name = $_POST['first_name'];
-      $gender = $_POST['gender'];
-      $course = $_POST['course'];
-      $year = $_POST['year_level'];
-      $password = $_POST['password'];
-      $x = "active";
 
-      $stmt = $connection->prepare("INSERT INTO `student`(`school_id`, `last_name`, `first_name`, `gender`, `course`, `year_level`, `password`, `x`) VALUES (?,?,?,?,?,?,?,?)");
-      $stmt->execute([$school_id, $last_name, $first_name, $gender, $course, $year, $password, $x]);
+        $last_name = $_POST['last_name'];
+        $first_name = $_POST['first_name'];
+        $gender = $_POST['gender'];
+        $course = $_POST['course'];
+        $year = $_POST['year_level'];
+        $password = $_POST['password'];
+        $x = "active";
 
-?>
-      <script>
-        alert('Register Successful, Please Login');
-        window.location.href = "index.php";
-      </script>
+        $stmt = $connection->prepare("INSERT INTO `student`(`school_id`, `last_name`, `first_name`, `gender`, `course`, `year_level`, `password`, `x`) VALUES (?,?,?,?,?,?,?,?)");
+        $stmt->execute([$school_id, $last_name, $first_name, $gender, $course, $year, $password, $x]);
 
-<?php
-        
+      ?>
+        <script>
+          alert('Register Successful');
+          window.location.href = "index.php";
+        </script>
+
+      <?php
+
       }
     }
+  }
+
+  public function addPartyList()
+  {
+  }
+
+  public function registerCandidate()
+  {
+
+    $connection = $this->openConnection();
+
+    if (isset($_POST['register-candidate'])) {
+
+      $school_id = $_POST['student_id'];
+
+      $stmt = $connection->prepare("SELECT COUNT(*) FROM `student_id` WHERE `student_id` = ?");
+
+      $stmt->execute([$school_id]);
+
+      $count = $stmt->fetchColumn();
+
+      if ($count == 0) {
+
+        // If student ID doesn't exist, show error message and exit
+      ?>
+        <script>
+          alert('Invalid Student ID<?= " " . $school_id ?>');
+          window.location.href = "register-candi.php";
+        </script>
+      <?php
+        exit;
+      } else {
+
+        $applicant_status = "initial";
+        $requirements = "0";
+        $x = "active";
+
+        $student_id = $_POST['student_id'];
+        $election_id = $_POST['election_id'];
+        $data_filed = $_POST['date_filed'];
+        $position = $_POST['position_id'];
+        $party_id = $_POST['party_id'];
+        $last_name = $_POST['last_name'];
+        $first_name = $_POST['first_name'];
+        $middle_name = $_POST['middle_name'];
+        $gender = $_POST['gender'];
+        $age = $_POST['age'];
+        $date_birth = $_POST['date_birth'];
+        $place_birth = $_POST['place_birth'];
+        $height = $_POST['height'];
+        $weight = $_POST['weight'];
+        $home_add = $_POST['home_add'];
+        $status = $_POST['status'];
+        $religion = $_POST['religion'];
+        $language = $_POST['language'];
+        $citizenship = $_POST['citizenship'];
+        $contact_num = $_POST['contact_num'];
+        $email = $_POST['email'];
+        $spouse_name = $_POST['spouse_name'];
+        $spouse_add = $_POST['spouse_add'];
+        $num_child = $_POST['num_child'];
+        $tertiary_lev = $_POST['tertiary_lev'];
+        $course = $_POST['course'];
+        $year_lev = $_POST['year_lev'];
+        $major = $_POST['major'];
+        $second_lev = $_POST['second_lev'];
+        $secondary_grad = $_POST['secondary_grad'];
+        $elementary = $_POST['elementary'];
+        $elementary_grad = $_POST['elementary_grad'];
+        $achievements = $_POST['achievements'];
+        $organization = $_POST['organization'];
+        $url = $_POST['url'];
+        // $applicant_status = $_POST['application_status'];
+
+        $stmt = $connection->prepare("INSERT INTO `applicants`(`student_id`, `election_id`, `date_filed`, `position_id`, `party_id`, `last_name`, `first_name`, `middle_name`, `gender`, `age`, `date_birth`, `place_birth`, `height`, `weight`, `home_add`, `status`, `religion`, `language`, `citizenship`, `contact_num`, `email`, `spouse_name`, `spouse_add`, `num_child`, `tertiary_lev`, `course`, `year_lev`, `major`, `second_lev`, `secondary_grad`, `elementary`, `elementary_grad`, `achievements`, `organization`, `requirements`, `url`, `application_status`, `x`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+
+        $stmt->execute([$student_id, $election_id, $data_filed, $position, $party_id, $last_name, $first_name, $middle_name, $gender, $age, $date_birth, $place_birth, $height, $weight, $home_add, $status, $religion, $language, $citizenship, $contact_num, $email, $spouse_name, $spouse_add, $num_child, $tertiary_lev, $course, $year_lev, $major, $second_lev, $secondary_grad, $achievements, $elementary, $elementary_grad, $organization, $requirements, $url, $applicant_status, $x]);
+
+      ?>
+        <script>
+          alert('Register Successful, Please Login');
+          window.location.href = "index.php";
+        </script>
+
+      <?php
+      }
+    }
+  }
+
+  public function addRequirements($id)
+  {
+  }
+
+  public function cadidateList()
+  {
+  }
+  public function votingResult()
+  {
+  }
+
+
+  public function getAdmins()
+  {
+
+
+    $connection = $this->openConnection();
+
+    $stmt = $connection->prepare("SELECT * FROM `admin`");
+    $stmt->execute();
+    $admins = $stmt->fetchAll();
+
+    $total = $stmt->rowCount();
+
+    if ($total > 0) {
+
+      if (isset($admins)) {
+
+        return $admins;
+      }
+    } else {
+      return $this->show_404();
+      echo $connection->errorInfo();
+    }
+  }
+
+  public function addAdmin()
+  {
+    if (isset($_POST['add-admin'])) {
+
+      $first_name = $_POST['first_name'];
+      $last_name = $_POST['last_name'];
+      $middle_name = $_POST['middle_name'];
+      $accesscode = $_POST['access_code'];
+      $type = "admin";
+      $x = "active";
+
+      $connection = $this->openConnection();
+      $stmt = $connection->prepare("INSERT INTO `admin`(`last_name`, `first_name`, `middle_name`, `accesscode`, `type`, `x`) VALUES (?,?,?,?,?,?)");
+      $stmt->execute([$last_name, $first_name, $middle_name, $accesscode, $type, $x]);
+
+      if($stmt == true){
+        ?>
+        <script>
+           swal({
+            title: "Added Successfully!",
+            icon: "success"
+            }).then(function() {
+            // Redirect the user
+            window.location.href='admin-dashboard.php';
+            console.log('The Ok Button was clicked.');
+                        });
+        </script>
+        <?php
+      }else {
+        return $this->show_404();
+        echo $connection->errorInfo();
+      }
+    }
+  }
   
+  public function editAdmin(){
+
+    $connection = $this->openConnection();
+    if (isset($_POST['edit-admin'])) {
+
+      $first_name = $_POST['first_name'];
+      $last_name = $_POST['last_name'];
+      $middle_name = $_POST['middle_name'];
+      $accesscode = $_POST['access_code'];
+      $admin_id = $_POST['admin_id'];
+
+
+      $stmt = $connection->prepare("UPDATE `admin` SET `last_name`='$last_name',`first_name`='$first_name',`middle_name`='$middle_name',`accesscode`='$accesscode' WHERE `admin_id` = ?");
+      $stmt->execute([$admin_id]);
+
+        ?>
+        <script>
+        swal({
+            title: "Successfully Updated!",
+            icon: "success"
+            }).then(function() {
+            // Redirect the user
+            window.location.href='admin-dashboard.php';
+            console.log('The Ok Button was clicked.');
+                        });
+        </script>
+        <?php
+    }
   }
+
+  public function deleteAdmin(){
+  
+    $connection = $this->openConnection();
+    if(isset($_POST['delete-admin'])){
+
+      $admin_id = $_POST['admin_id'];
+
+      $stmt = $connection->prepare('DELETE FROM `admin` WHERE `admin_id` = ?');
+
+      $stmt->execute([$admin_id]);
+
+      ?>
+         <script>
+          alert('Deleted Successfull');
+          window.location.href = "admin-dashboard.php";
+        </script>
+      <?php
+    }
+
   }
+}
 
 $vote = new Voting();
 
