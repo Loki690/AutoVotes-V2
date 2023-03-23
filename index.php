@@ -3,8 +3,8 @@
 require_once('class.php');
 
 $vote->Login();
-
 $vote->voterRegister();
+$vote->loginAdmin();
 
 include('includes/header.php');
 
@@ -13,6 +13,8 @@ if($vote->getUserData() == true){
 }else{
   include('includes/nav.php');
 }
+
+$elections = $vote->getElectionId();
 
 // $vote->session();
 
@@ -78,19 +80,22 @@ if($vote->getUserData() == true){
   <!--Candidates-->
   <div class="container">
     <div class="row">
+      
+      <?php foreach($elections as $election) {?>
       <div class="col-lg-3 col-sm-3 pt-2" data-aos="fade-right">
         <div class="card text-start hvr-grow" id="shadow">
           <img class="card-img-top" src="img/cssg.jpg" alt="Title" />
           <div class="card-body">
-            <h4 class="card-title">CSSG ELECTIONS</h4>
+            <h4 class="card-title"><?= $election['election_name'] ?></h4>
             <button type="button" class="btn btn-outline-primary" tabindex="-1" data-bs-toggle="modal" data-bs-target="#login">
               View Elections
             </button>
           </div>
         </div>
       </div>
+        <?php } ?>
 
-      <div class="col-lg-3 col-sm-3 pt-2" data-aos="fade-right">
+      <!-- <div class="col-lg-3 col-sm-3 pt-2" data-aos="fade-right">
         <div class="card text-start hvr-grow" id="shadow">
           <img class="card-img-top" src="img/ITE.png" alt="Title" />
           <div class="card-body">
@@ -138,8 +143,8 @@ if($vote->getUserData() == true){
             </button>
           </div>
         </div>
-      </div>
-
+      </div> -->
+<!-- 
       <div class="col-lg-3 col-sm-3 pt-2" data-aos="fade-left">
         <div class="card text-start hvr-grow" id="shadow">
           <img class="card-img-top" src="img/HM.png" alt="Title" />
@@ -150,7 +155,7 @@ if($vote->getUserData() == true){
             </button>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
   <!--Candidates-->
@@ -214,7 +219,9 @@ if($vote->getUserData() == true){
     </div>
   </div>
 </div>
-
+<?php
+ 
+?>
 <!-- modal admin login -->
 <div class="modal fade modal-signin" id="login-admin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-md modal-dialog-centered" role="document">
@@ -231,17 +238,17 @@ if($vote->getUserData() == true){
       <div class="modal-body p-5 pt-0">
         <form action="" method="POST" enctype="multipart/form-data">
           <div class="form-group">
-            <label for="exampleInputEmail1">Student ID</label>
-            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="school_id" placeholder="Student ID" />
+            <label for="exampleInputEmail1" class="form-label">Last Name </label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="last_name" placeholder="" required/>
             <small id="emailHelp" class="form-text text-muted"></small>
           </div>
-          <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password" />
-            <a href="#" class="mt-2"><small>Forgot Password? </small> </a>
+          <div class="form-group mt-2">
+            <label for="exampleInputPassword1" class="form-label">Access Code</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" name="accesscode" placeholder="Password" required/>
+            <a href="#" class="mt-2"><small>Forgot Access Code? </small> </a>
           </div>
           <div class="d-flex pt-1">
-            <button type="submit" id="loginbutton" name="login-voter" class="btn btn-primary mt-2 flex-grow-1">
+            <button type="submit" id="loginbutton" name="login-admin" class="btn btn-primary mt-2 flex-grow-1">
               Login
             </button>
           </div>

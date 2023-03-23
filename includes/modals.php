@@ -1,12 +1,4 @@
 <!-- Modals add admin-->
-<?php
-require_once('class.php');
-
-$vote->addAdmin();
-$vote->editAdmin();
-$vote->deleteAdmin();
-
-?>
 <div class="modal fade modal-signin" id="add" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
@@ -111,7 +103,7 @@ $vote->deleteAdmin();
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
       <div class="modal-header p-3 pb-3">
-        <h5 class="modal-title" id="staticBackdropLabel">Edit Name of the admin</h5>
+        <h5 class="modal-title" id="staticBackdropLabel">Delete <?= $item['first_name'] . " " . $item['last_name']; ?>?</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <br>
@@ -160,7 +152,7 @@ $vote->deleteAdmin();
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
       <div class="modal-header p-3 pb-3">
-        <h5 class="modal-title" id="staticBackdropLabel">Adding Admin</h5>
+        <h5 class="modal-title" id="staticBackdropLabel">Adding COMELEC</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <br>
@@ -170,41 +162,42 @@ $vote->deleteAdmin();
           <div class="mb-3 row">
             <label for="inputPassword" class="col-sm-3 col-form-label">First Name: </label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="First Name" id="">
+              <input type="text" class="form-control" name="first_name" placeholder="First Name" id="" required>
             </div>
           </div>
 
           <div class="mb-3 row">
             <label for="MiddleName" class="col-sm-3 col-form-label">Middle Name: </label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="Middle Name" id="">
+              <input type="text" class="form-control" name="last_name" placeholder="Middle Name" id="" required>
             </div>
           </div>
 
           <div class="mb-3 row">
             <label for="LastName" class="col-sm-3 col-form-label">Last Name: </label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="Last Name" id="">
+              <input type="text" class="form-control" name="middle_name" placeholder="Last Name" id="" required>
             </div>
           </div>
 
           <div class="mb-3 row">
             <label for="Access Code" class="col-sm-3 col-form-label">Access Code: </label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="Access Code" id="">
+              <input type="text" class="form-control" name="accesscode" placeholder="Access Code" id="" required>
             </div>
           </div>
 
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Add as Comelec</button>
+          <button type="submit" class="btn btn-primary" name="add-comelec">Add as Comelec</button>
         </div>
 
       </form>
     </div>
   </div>
 </div>
+
 <!--Login and Register Modal-->
 <div class="modal fade modal-signin" id="login" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-md modal-dialog-centered" role="document">
@@ -222,12 +215,12 @@ $vote->deleteAdmin();
         <form action="" method="POST" enctype="multipart/form-data">
           <div class="form-group">
             <label for="exampleInputEmail1">Student ID</label>
-            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="school_id" placeholder="Student ID" required/>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="school_id" placeholder="Student ID" required />
             <small id="emailHelp" class="form-text text-muted">We'll never share your student id with anyone else.</small>
           </div>
           <div class="form-group">
             <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password" required/>
+            <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password" required />
             <a href="#" class="mt-2"><small>Forgot Password? </small> </a>
           </div>
           <div class="d-flex pt-1">
@@ -329,6 +322,189 @@ $vote->deleteAdmin();
           </button>
         </form>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- edit comelec info -->
+<div class="modal fade modal-signin" id="edit-comelec<?= $comelec['admin_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
+      <div class="modal-header p-3 pb-3">
+        <h5 class="modal-title" id="staticBackdropLabel">Edit Name of the admin</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <br>
+      <form action="" method="POST" enctype="multipart/form-data">
+        <div class="modal-body p-5 pt-0">
+          <div class="mb-3 row">
+            <label for="inputPassword" class="col-sm-4 col-form-label">First Name</label>
+            <div class="col-sm-8">
+              <input type="text" name="first_name" class="form-control" value="<?= $comelec['first_name'] ?>">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="MiddleName" class="col-sm-4 col-form-label">Middle Name</label>
+            <div class="col-sm-8">
+              <input type="text" name="middle_name" class="form-control" value="<?= $comelec['middle_name'] ?>">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="LastName" class="col-sm-4 col-form-label">Last Name</label>
+            <div class="col-sm-8">
+              <input type="text" name="last_name" class="form-control" value="<?= $comelec['last_name'] ?>">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="Access Code" class="col-sm-4 col-form-label">Access Code</label>
+            <div class="col-sm-8">
+              <input type="text" name="access_code" class="form-control" value="<?= $comelec['accesscode'] ?>">
+              <input type="hidden" name="admin_id" value="<?= $comelec['admin_id'] ?>">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" name="edit-comelec">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- delete comelec info -->
+<div class="modal fade modal-signin" id="delete-comelec<?= $comelec['admin_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
+      <div class="modal-header p-3 pb-3">
+        <h5 class="modal-title" id="staticBackdropLabel">Delete <?= $comelec['first_name'] . " " . $comelec['last_name']; ?>?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <br>
+      <form action="" method="POST" enctype="multipart/form-data">
+        <div class="modal-body p-5 pt-0">
+          <div class="mb-3 row">
+            <label for="inputPassword" class="col-sm-4 col-form-label">First Name</label>
+            <div class="col-sm-8">
+              <input type="text" name="first_name" class="form-control" value="<?= $comelec['first_name'] ?>">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="MiddleName" class="col-sm-4 col-form-label">Middle Name</label>
+            <div class="col-sm-8">
+              <input type="text" name="middle_name" class="form-control" value="<?= $comelec['middle_name'] ?>">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="LastName" class="col-sm-4 col-form-label">Last Name</label>
+            <div class="col-sm-8">
+              <input type="text" name="last_name" class="form-control" value="<?= $comelec['last_name'] ?>">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="Access Code" class="col-sm-4 col-form-label">Access Code</label>
+            <div class="col-sm-8">
+              <input type="text" name="access_code" class="form-control" value="<?= $comelec['accesscode'] ?>">
+              <input type="hidden" name="admin_id" value="<?= $comelec['admin_id'] ?>">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger" name="delete-comelec">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- add election -->
+
+
+<?php
+function create_time_range($start, $end, $interval = '30 mins', $format = '12')
+{
+  $time_to_Start = strtotime($start);
+  $time_to_End   = strtotime($end);
+  $time_Format = ($format == '12') ? 'g:i:s A' : 'G:i:s';
+
+  $current_time   = time();
+  $time_adding   = strtotime('+' . $interval, $current_time);
+  $difference_time      = $time_adding - $current_time;
+
+  $time_lists = array();
+  while ($time_to_Start < $time_to_End) {
+    $time_lists[] = date($time_Format, $time_to_Start);
+    $time_to_Start += $difference_time;
+  }
+  $time_lists[] = date($time_Format, $time_to_Start);
+  return $time_lists;
+}
+$time_lists = create_time_range('7:30', '23:30', '30 mins');
+?>
+<div class="modal fade modal-signin" id="election" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
+      <div class="modal-header p-3 pb-3">
+        <h5 class="modal-title" id="staticBackdropLabel">Adding Election</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <br>
+      <form action="" method="POST" enctype="multipart/form-data">
+        <div class="modal-body p-5 pt-0">
+
+          <div class="mb-3 row">
+            <label for="ElectionName" class="col-sm-3 col-form-label">Election Name: </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Election Name" id="">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="ElectionDate" class="col-sm-3 col-form-label">Election Date: </label>
+            <div class="col-sm-8">
+              <input type="date" class="form-control" placeholder="Middle Name" id="">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="Access Code" class="col-sm-3 col-form-label">Start Time: </label>
+            <div class="col-sm-4">
+              <select class="form-select" aria-label="Default select example">
+                <option selected>Select Time</option>
+                <?php foreach ($time_lists as $time_of_Key => $time_Value) { ?>
+                  <option value="<?php echo $time_Value; ?>"><?php echo $time_Value; ?></option>
+                <?php } ?>
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="Access Code" class="col-sm-3 col-form-label">End Time: </label>
+            <div class="col-sm-4">
+              <select class="form-select" aria-label="Default select example">
+                <option selected>Select Time</option>
+                <?php foreach($time_lists as $time_of_Key=>$time_Value){ ?>
+                <option value="<?php echo $time_Value; ?>"><?php echo $time_Value; ?></option>
+                <?php } ?>
+              </select>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Add Election</button>
+        </div>
+
+      </form>
     </div>
   </div>
 </div>
