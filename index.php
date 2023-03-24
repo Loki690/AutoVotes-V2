@@ -70,7 +70,7 @@ $elections = $vote->getElectionId();
 
 <main>
   <!-- Dcc Logo-->
-  <div class="cover">
+  <div class="container-fuid cover d-flex justify-content-center">
     <img class="img-fluid" id="cover" src="img/cover.png" width="1400" height="450" alt="" />
   </div>
 
@@ -79,14 +79,20 @@ $elections = $vote->getElectionId();
   </div>
   <!--Candidates-->
   <div class="container">
-    <div class="row">
-      
+    <div class="row d-flex jus">
       <?php foreach($elections as $election) {?>
       <div class="col-lg-3 col-sm-3 pt-2" data-aos="fade-right">
         <div class="card text-start hvr-grow" id="shadow">
-          <img class="card-img-top" src="img/cssg.jpg" alt="Title" />
+          <img class="card-img-top" src="uploads/<?= $election['election_poster']; ?>" alt="Title" />
+          
           <div class="card-body">
-            <h4 class="card-title"><?= $election['election_name'] ?></h4>
+          <h4 class="card-title"><?= $election['election_name'] ?></h4>
+            <div>
+            <small class="fw-bold">Election Starts : <?= date('F d, Y g:i A',strtotime($election['start_date'] ))?></small>
+            </div>
+            <div class="mt-2">
+            <small class="fw-bold">Election Ends : <?= date('F d, Y g:i A',strtotime($election['end_date'] ))?></small>
+            </div>
             <button type="button" class="btn btn-outline-primary" tabindex="-1" data-bs-toggle="modal" data-bs-target="#login">
               View Elections
             </button>

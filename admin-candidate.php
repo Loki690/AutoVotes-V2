@@ -41,9 +41,7 @@ $candidates = $vote->getCandidates();
                             <div class="sb-nav-link-icon"><i class='fas fa-vote-yea' id="icon"></i></div>Election
                         </a>
                         <hr class="dropdown-divider bg-white" />
-
                     </div>
-
                 </div>
                 <div class="sb-sidenav-footer" id="nav-footer">
                     <div class="small text-white">Logged in as: <?= $adminDetails['last_name'] ?></div>
@@ -81,12 +79,14 @@ $candidates = $vote->getCandidates();
 
                                 </tr>
                             <tbody>
+                            <?php if(empty($candidates)) {?>
                                 <?php foreach ($candidates as $candidate) {
 
                                     $applicant_id = $candidate['applicant_id'];
                                     $app = $vote->getApplicant($applicant_id);
 
                                 ?>
+                               
                                 <tr>
                                     <?php if (empty($app['first_name'])) { ?>
                                     <td>walay sulod</td>
@@ -119,7 +119,12 @@ $candidates = $vote->getCandidates();
                                     </td>
 
                                 </tr>
+                           
                                 <?php } ?>
+                                <?php }else{
+                                    ?>
+                                    <h3>No data</h3>
+                                    <?php }?>
                             </tbody>
 
                             </thead>

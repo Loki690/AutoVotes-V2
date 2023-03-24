@@ -2,7 +2,32 @@
 require_once('class.php');
 include('includes/admin-header.php');
 $elections = $vote->getElectionId();
+$vote->addElecion();
+
+$vote->editElection();
 ?>
+<?php
+function create_time_range($start, $end, $interval = '1 mins', $format = '12')
+{
+  $time_to_Start = strtotime($start);
+  $time_to_End   = strtotime($end);
+  $time_Format = ($format == '12') ? 'g:i:s A' : 'G:i:s';
+
+  $current_time   = time();
+  $time_adding   = strtotime('+' . $interval, $current_time);
+  $difference_time      = $time_adding - $current_time;
+
+  $time_lists = array();
+  while ($time_to_Start < $time_to_End) {
+    $time_lists[] = date($time_Format, $time_to_Start);
+    $time_to_Start += $difference_time;
+  }
+  $time_lists[] = date($time_Format, $time_to_Start);
+  return $time_lists;
+}
+$time_lists = create_time_range('7:00', '24:00', '1 hour');
+?>
+
     <body class="sb-nav-fixed">
     <?php
     include('includes/admin-nav.php');
@@ -20,7 +45,7 @@ $elections = $vote->getElectionId();
                             <a id="nav-hover" href="admin-add-com.php" class="nav-link "><div class="sb-nav-link-icon"><i
                                     class="fa fa-user me-2" id="icon"></i></div>Comelec</a>
                             <hr class="dropdown-divider bg-dark"/>
-                            <a id="nav-hover" href="admin-election.php" class="nav-link"><div class="sb-nav-link-icon"><i 
+                            <a id="nav-hover" href="admin-interview.php" class="nav-link"><div class="sb-nav-link-icon"><i 
                                 class="fa-solid fa-podcast" id="icon"></i></div>Interview</a>
                             <hr class="dropdown-divider bg-dark"/>
                             <a id="nav-hover" href="admin-candidate.php" class="nav-link "><div class="sb-nav-link-icon"><i 
@@ -78,22 +103,25 @@ $elections = $vote->getElectionId();
                                     <tbody>
                                         <?php
                                         foreach($elections as $elec){
+                                            
                                         ?>
                                         <tr>
                                             <td><?= $elec['election_name'] ?></td>
-                                            <td><?= $elec['start_date'] ?></td>
-                                            <td><?= $elec['end_date'] ?></td>
+                                            <td><?= date('F d, Y g:i A',strtotime($elec['start_date'] )) ?></td>
+                                            <td><?= date('F d, Y g:i A',strtotime($elec['end_date'] )) ?></td>
                                           
                                             <td>
                                                 <div class="d-flex justify-content-center">
-                                                    <button class="btn btn-sm btn-success mx-3"><i class="fas fa-edit"> </i> Edit</button>
-                                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Delete</button>
+                                                    <button class="btn btn-sm btn-success mx-3" tabindex="-1" data-bs-toggle="modal" data-bs-target="#edit-election<?= $elec['election_id'] ?>" ><i class="fas fa-edit"> </i> Edit</button>
+                                                    <button class="btn btn-sm btn-danger" tabindex="-1" data-bs-toggle="modal" data-bs-target="#delete-election<?= $elec['election_id'] ?>"><i class="fas fa-trash"></i> Delete</button>
                                                 </div>
                                             </td>
                                            
                                         </tr>
 
-                                       
+                                        <?php 
+                                        include('includes/modals.php');
+                                        ?>
                                       <?php } ?>
                                         
                                     </tbody>
@@ -105,9 +133,7 @@ $elections = $vote->getElectionId();
                         </div>
                     </div>
                 </main>
-                <?php 
-                include('includes/modals.php');
-                 ?>
+              
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-center small">

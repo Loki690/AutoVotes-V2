@@ -23,7 +23,7 @@ $adminDetails = $vote->getAdminData();
                         <hr class="dropdown-divider" />
                     </li>
                     <form action="" method="POST">
-                    <li><a class="dropdown-item" href="#!"><button type="submit" name="logout-admin">Logout</button></a></li>
+                    <li><a class="dropdown-item" href="#!"><button class="btn btn-danger" type="submit" name="logout-admin">Logout</button></a></li>
                     </form>
                   
                 </ul>

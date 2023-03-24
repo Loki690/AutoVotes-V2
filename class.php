@@ -391,7 +391,6 @@ class Voting
             alert('Register Successfull');
             window.location.href = "index.php";
           </script>
-
         <?php
         }
       }
@@ -457,7 +456,7 @@ class Voting
         </script>
         <?php
         ?>
-        
+
         <!-- <script>
            swal({
             title: "Added Successfully!",
@@ -495,14 +494,14 @@ class Voting
       ?>
       <script>
         swal({
-            title: "Successfully Updated!",
-            icon: "success"
-            }).then(function() {
-            // Redirect the user
-            window.location.href='admin-dashboard.php';
-            console.log('The Ok Button was clicked.');
-                        });
-        </script>
+          title: "Successfully Updated!",
+          icon: "success"
+        }).then(function() {
+          // Redirect the user
+          window.location.href = 'admin-dashboard.php';
+          console.log('The Ok Button was clicked.');
+        });
+      </script>
     <?php
     }
   }
@@ -524,8 +523,8 @@ class Voting
       $stmt->execute([$admin_id]);
 
     ?>
-     <script>
-        alert('Successfully Updated! <?= $first_name." ".$last_name ?>');
+      <script>
+        alert('Successfully Updated! <?= $first_name . " " . $last_name ?>');
         window.location.href = "admin-add-com.php";
       </script>
       <!-- <script>
@@ -559,7 +558,7 @@ class Voting
         alert('Deleted Successfull');
         window.location.href = "admin-dashboard.php";
       </script>
-      <?php
+    <?php
     }
   }
 
@@ -574,7 +573,7 @@ class Voting
       $stmt->execute([$admin_id]);
     ?>
       <script>
-        alert('Deleted Successfull');
+        confirm('Deleted Successfull');
         window.location.href = "admin-add-com.php";
       </script>
       <?php
@@ -628,7 +627,7 @@ class Voting
   public function getElectionId()
   {
     $connection = $this->openConnection();
-    $stmt = $connection->prepare("SELECT * FROM `election` where `x` != 'deleted' ");
+    $stmt = $connection->prepare("SELECT * FROM `election` where `x` != 'deleted' ORDER BY `election_id` DESC ");
     $stmt->execute();
     $elections = $stmt->fetchAll();
 
@@ -812,11 +811,122 @@ class Voting
                         });
         </script> -->
 
-<?php
+        <?php
       } else {
         return $this->show_404();
         echo $connection->errorInfo();
       }
+    }
+  }
+
+  public function addElecion()
+  {
+
+    $connection = $this->openConnection();
+
+    if (isset($_POST['add-election'])) {
+
+      $x = "active";
+
+      $election_name = $_POST['election_name'];
+      $election_date = $_POST['election_date'];
+      $election_start = $_POST['election_start'];
+      $election_end = $_POST['election_end'];
+
+      $startdate = date('Y-m-d H:i:s', strtotime($election_date . " " . $election_start . ":00:00"));
+      $enddate = date('Y-m-d H:i:s', strtotime($election_date . " " . $election_end . ":00:00"));
+
+
+      $election_poster = rand(1000, 1000000) . "-" . $_FILES['election_poster']['name'];
+      $image_loc = $_FILES['election_poster']['tmp_name'];
+      $folder = "uploads/";
+
+      $new_file_name = strtolower($election_poster);
+      $final_file = str_replace(' ', '-', $new_file_name);
+
+      if (move_uploaded_file($image_loc, $folder . $final_file)) {
+
+        $stmt = $connection->prepare("INSERT INTO `election`( `election_name`, `start_date`, `end_date`, `x`, `election_poster`) VALUES (?,?,?,?,?)");
+
+        $stmt->execute([$election_name, $startdate, $enddate, $x, $final_file]);
+
+        if ($stmt == true) {
+        ?>
+          <script>
+            alert('Added Election');
+            window.location.href = "admin-election.php";
+          </script>
+<?php
+        } else {
+
+          return $this->show_404();
+          echo $connection->errorInfo();
+        }
+      }
+    }
+  }
+
+  public function editElection(){
+
+    
+    $connection = $this->openConnection();
+
+    if(isset($_POST['edit-election'])){
+
+
+      $election_name = $_POST['election_name'];
+      $election_date = $_POST['election_date'];
+      $election_start = $_POST['election_start'];
+      $election_end = $_POST['election_end'];
+      $status = $_POST['status'];
+      $election_id = $_POST['election_id'];
+
+      $startdate = date('Y-m-d H:i:s', strtotime($election_date . " " . $election_start . ":00:00"));
+      $enddate = date('Y-m-d H:i:s', strtotime($election_date . " " . $election_end . ":00:00"));
+
+      
+      $election_poster = rand(1000, 1000000) . "-" . $_FILES['election_poster']['name'];
+      $image_loc = $_FILES['election_poster']['tmp_name'];
+      $folder = "uploads/";
+
+      $new_file_name = strtolower($election_poster);
+      $final_file = str_replace(' ', '-', $new_file_name);
+
+      if (move_uploaded_file($image_loc, $folder . $final_file)) {
+
+        $stmt = $connection->prepare("UPDATE `election` SET `election_name`='$election_name',`start_date`='$startdate',`end_date`='$enddate',`x`='$status',`election_poster`='$final_file' WHERE `election_id` = ?");
+        $stmt->execute([$election_id]);
+
+        if ($stmt == true) {
+          ?>
+            <script>
+              alert('Election Updated!');
+              window.location.href = "admin-election.php";
+            </script>
+        <?php
+          } else {
+  
+            return $this->show_404();
+            echo $connection->errorInfo();
+          }
+  
+      }
+    }
+  }
+
+  public function deleteElection(){
+    $connection = $this->openConnection();
+    if (isset($_POST['delete-election'])) {
+
+      $election_id = $_POST['election_id'];
+      $stmt = $connection->prepare('DELETE FROM `election` WHERE `election_id` = ?');
+      $stmt->execute([$election_id]);
+    ?>
+      <script>
+        confirm('Deleted Successfull');
+        window.location.href = "admin-add-com.php";
+      </script>
+      <?php
     }
   }
 }

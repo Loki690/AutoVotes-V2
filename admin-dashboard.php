@@ -103,11 +103,10 @@ $vote->deleteAdmin();
                                     </tr>
                                 <?php
                                     include('includes/modals.php');
-                                    
                                 } ?>
 
                             </tbody>
-                       
+
 
                             </thead>
 

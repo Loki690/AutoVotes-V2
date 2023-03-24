@@ -97,7 +97,11 @@ $applicants = $vote->getApplicants();
                                     </td>
                                     <td><?= $pos['position_title']; ?></td>
                                     <td><?= $party['party'] ?></td>
-                                    <td><?= $elec['election_name'] ?></td>
+                                    <?php if(empty($elec['election_name'])){ ?>
+                                    <td>No data</td>
+                                    <?php }else{ ?>
+                                        <td><?= $elec['election_name'] ?></td>
+                                        <?php } ?>
                                     <td>dsfdsfs</td>
                                     <td>
                                         <div class="d-flex justify-content-center">

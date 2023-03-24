@@ -429,27 +429,7 @@
 <!-- add election -->
 
 
-<?php
-function create_time_range($start, $end, $interval = '30 mins', $format = '12')
-{
-  $time_to_Start = strtotime($start);
-  $time_to_End   = strtotime($end);
-  $time_Format = ($format == '12') ? 'g:i:s A' : 'G:i:s';
 
-  $current_time   = time();
-  $time_adding   = strtotime('+' . $interval, $current_time);
-  $difference_time      = $time_adding - $current_time;
-
-  $time_lists = array();
-  while ($time_to_Start < $time_to_End) {
-    $time_lists[] = date($time_Format, $time_to_Start);
-    $time_to_Start += $difference_time;
-  }
-  $time_lists[] = date($time_Format, $time_to_Start);
-  return $time_lists;
-}
-$time_lists = create_time_range('7:30', '23:30', '30 mins');
-?>
 <div class="modal fade modal-signin" id="election" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
@@ -460,28 +440,42 @@ $time_lists = create_time_range('7:30', '23:30', '30 mins');
       <br>
       <form action="" method="POST" enctype="multipart/form-data">
         <div class="modal-body p-5 pt-0">
-
           <div class="mb-3 row">
             <label for="ElectionName" class="col-sm-3 col-form-label">Election Name: </label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="Election Name" id="">
+              <input type="text" class="form-control" name="election_name" placeholder="Election Name" id="" required>
             </div>
           </div>
 
           <div class="mb-3 row">
             <label for="ElectionDate" class="col-sm-3 col-form-label">Election Date: </label>
             <div class="col-sm-8">
-              <input type="date" class="form-control" placeholder="Middle Name" id="">
+              <input type="date" class="form-control" name="election_date" placeholder="Election Date" id="">
             </div>
           </div>
           <div class="mb-3 row">
             <label for="Access Code" class="col-sm-3 col-form-label">Start Time: </label>
             <div class="col-sm-4">
-              <select class="form-select" aria-label="Default select example">
+              <select class="form-select" aria-label="Default select example" name="election_start">
                 <option selected>Select Time</option>
-                <?php foreach ($time_lists as $time_of_Key => $time_Value) { ?>
-                  <option value="<?php echo $time_Value; ?>"><?php echo $time_Value; ?></option>
-                <?php } ?>
+                <option value="6">6AM</option>
+                <option value="7">7AM</option>
+                <option value="8">8AM</option>
+                <option value="9">9AM</option>
+                <option value="10">10AM</option>
+                <option value="11">11AM</option>
+                <option value="12">12PM</option>
+                <option value="13">1PM</option>
+                <option value="14">2PM</option>
+                <option value="15">3PM</option>
+                <option value="16">4PM</option>
+                <option value="17">5PM</option>
+                <option value="18">6PM</option>
+                <option value="19">7PM</option>
+                <option value="20">8PM</option>
+                <option value="21">9PM</option>
+                <option value="22">10PM</option>
+                <option value="23">11PM</option>
               </select>
             </div>
           </div>
@@ -489,19 +483,187 @@ $time_lists = create_time_range('7:30', '23:30', '30 mins');
           <div class="mb-3 row">
             <label for="Access Code" class="col-sm-3 col-form-label">End Time: </label>
             <div class="col-sm-4">
-              <select class="form-select" aria-label="Default select example">
+              <select class="form-select" aria-label="Default select example" name="election_end">
                 <option selected>Select Time</option>
-                <?php foreach($time_lists as $time_of_Key=>$time_Value){ ?>
-                <option value="<?php echo $time_Value; ?>"><?php echo $time_Value; ?></option>
-                <?php } ?>
+                <option value="6">6AM</option>
+                <option value="7">7AM</option>
+                <option value="8">8AM</option>
+                <option value="9">9AM</option>
+                <option value="10">10AM</option>
+                <option value="11">11AM</option>
+                <option value="12">12PM</option>
+                <option value="13">1PM</option>
+                <option value="14">2PM</option>
+                <option value="15">3PM</option>
+                <option value="16">4PM</option>
+                <option value="17">5PM</option>
+                <option value="18">6PM</option>
+                <option value="19">7PM</option>
+                <option value="20">8PM</option>
+                <option value="21">9PM</option>
+                <option value="22">10PM</option>
+                <option value="23">11PM</option>
               </select>
             </div>
           </div>
-
+          <div class="mb-3 row">
+            <label for="ElectionDate" class="col-sm-3 col-form-label">Election Poster</label>
+            <div class="col-sm-8">
+              <input type="file" class="form-control" name="election_poster" id="" required>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Add Election</button>
+          <button type="submit" class="btn btn-primary" name="add-election">Add Election</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+<!-- 
+edit electios -->
+<div class="modal fade modal-signin" id="edit-election<?= $elec['election_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
+      <div class="modal-header p-3 pb-3">
+        <h5 class="modal-title" id="staticBackdropLabel">Edit Election</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <br>
+      <form action="" method="POST" enctype="multipart/form-data">
+        <div class="modal-body p-5 pt-0">
+          <div class="mb-3 row">
+            <label for="ElectionName" class="col-sm-3 col-form-label">Election Name: </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" value="<?= $elec['election_name'] ?>" name="election_name" id="" required>
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="ElectionDate" class="col-sm-3 col-form-label">Election Date: </label>
+            <div class="col-sm-8">
+              <input type="date" class="form-control" name="election_date" id="">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="Access Code" class="col-sm-3 col-form-label">Start Time: </label>
+            <div class="col-sm-4">
+              <select class="form-select" aria-label="Default select example" name="election_start">
+                <option selected>Select Time</option>
+                <option value="6">6 AM</option>
+                <option value="7">7 AM</option>
+                <option value="8">8 AM</option>
+                <option value="9">9 AM</option>
+                <option value="10">10 AM</option>
+                <option value="11">11 AM</option>
+                <option value="12">12 PM</option>
+                <option value="13">1 PM</option>
+                <option value="14">2 PM</option>
+                <option value="15">3 PM</option>
+                <option value="16">4 PM</option>
+                <option value="17">5 PM</option>
+                <option value="18">6 PM</option>
+                <option value="19">7 PM</option>
+                <option value="20">8 PM</option>
+                <option value="21">9 PM</option>
+                <option value="22">10 PM</option>
+                <option value="23">11 PM</option>
+              </select>
+            </div>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" value="<?=  date('F d, Y g:i A',strtotime($elec['start_date'] )) ?>" readonly>
+           
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="Access Code" class="col-sm-3 col-form-label">End Time: </label>
+            <div class="col-sm-4">
+              <select class="form-select" aria-label="Default select example" name="election_end">
+                <option selected>Select Time</option>
+                <option value="6">6 AM</option>
+                <option value="7">7 AM</option>
+                <option value="8">8 AM</option>
+                <option value="9">9 AM</option>
+                <option value="10">10 AM</option>
+                <option value="11">11 AM</option>
+                <option value="12">12 PM</option>
+                <option value="13">1 PM</option>
+                <option value="14">2 PM</option>
+                <option value="15">3 PM</option>
+                <option value="16">4 PM</option>
+                <option value="17">5 PM</option>
+                <option value="18">6 PM</option>
+                <option value="19">7 PM</option>
+                <option value="20">8 PM</option>
+                <option value="21">9 PM</option>
+                <option value="22">10 PM</option>
+                <option value="23">11 PM</option>
+              </select>
+            </div>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" value="<?=  date('F d, Y g:i A',strtotime($elec['end_date'] )) ?>" readonly>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="ElectionDate" class="col-sm-3 col-form-label">Update Poster</label>
+            <div class="col-sm-8">
+              <input type="file" class="form-control" name="election_poster" id="" value="<?= $elec['election_poster']; ?>">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="ElectionDate" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-8">
+             <img src="uploads/<?= $elec['election_poster']; ?>" alt="Election Poster" width="100px" >
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="status" class="col-sm-3 col-form-label">Status</label>
+            <div class="col-sm-8">
+            <select class="form-select" aria-label="Default select example" name="status">
+                <option value="<?= $elec['x'] ?>" selected><?= $elec['x']?></option>
+                <option value="active">active</option>
+                <option value="inactive">inactive</option>
+                <option value="completed">completed</option>
+              </select>
+            </div>
+          </div>
+          <input type="hidden" value="<?= $elec['election_id']; ?>" name="election_id">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-success" name="edit-election">Edit Election</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- delete election  -->
+<div class="modal fade modal-signin" id="delete-election<?= $elec['election_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
+      <div class="modal-header p-3 pb-3">
+        <h5 class="modal-title" id="staticBackdropLabel">Edit Election</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <br>
+      <form action="" method="POST" enctype="multipart/form-data">
+        <div class="modal-body p-5 pt-0">
+          <div class="row">
+            <label for="ElectionName" class="col-sm-3 col-form-label">Election Name: </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" value="<?= $elec['election_name']?>" name="election_name" id="" readonly>
+            </div>
+          </div>
+          <input type="hidden" value="<?= $elec['election_id']; ?>" name="election_id">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger" name="delete-election">Delete Election</button>
         </div>
 
       </form>
