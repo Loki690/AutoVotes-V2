@@ -91,7 +91,7 @@ class Voting
     if ($this->getUserData()) {
       return $this->getUserData();
     } else {
-      return header("Location: welcome.php");
+      return header("Location: index.php");
     }
   }
 
@@ -125,8 +125,86 @@ class Voting
     }
   }
 
-  public function loginAdmin(){
 
+  public function setAdminData($array)
+  {
+
+    if (!isset($_SESSION)) {
+      session_start();
+    }
+    $_SESSION['admindata'] = array(
+      "last_name" => $array['last_name'],
+      "first_name" => $array['last_name'],
+      "accesscode" => $array['accesscode'],
+    );
+
+    return $_SESSION['admindata'];
+  }
+
+  public function getAdminData()
+  {
+
+    if (!isset($_SESSION)) {
+      session_start();
+    }
+
+    if (isset($_SESSION['admindata'])) {
+      return $_SESSION['admindata'];
+    } else {
+
+      return header("Location: index.php");
+    }
+  }
+
+  public function adminSession()
+  {
+
+    if ($this->getAdminData()) {
+      return $this->getAdminData();
+    } else {
+      return header("Location: index.php");
+    }
+  }
+
+  public function loginAdmin()
+  {
+
+    $connection = $this->openConnection();
+
+    if (isset($_POST['login-admin'])) {
+      $last_name = $_POST['last_name'];
+      $accesscode = $_POST['accesscode'];
+
+      $stmt = $connection->prepare("SELECT * FROM `admin` WHERE last_name = ? AND accesscode = ?");
+      $stmt->execute([$last_name, $accesscode]);
+
+      $admin = $stmt->fetch();
+      $total = $stmt->rowCount();
+
+      if ($total > 0) {
+
+        echo "welcome admin";
+        $this->setAdminData($admin);
+        header("Location: admin-dashboard.php");
+      } else {
+        // echo $connection->errorInfo();
+      }
+    }
+  }
+
+  public function logoutAdmin()
+  {
+
+    if (isset($_POST['logout-admin'])) {
+
+      if (!isset($_SESSION)) {
+        session_start();
+      }
+      $_SESSION['admindata'] = null;
+      unset($_SESSION['admindata']);
+
+      header("Location: index.php");
+    }
   }
 
   public function show_404()
@@ -248,7 +326,7 @@ class Voting
           alert('Invalid Student ID<?= " " . $school_id ?>');
           window.location.href = "register-candi.php";
         </script>
-      <?php
+        <?php
         exit;
       } else {
 
@@ -295,29 +373,26 @@ class Voting
 
         // $applicant_status = $_POST['application_status'];
 
-        $image = rand(1000, 1000000)."-".$_FILES['photo']['name'];
+        $image = rand(1000, 1000000) . "-" . $_FILES['photo']['name'];
         $image_loc = $_FILES['photo']['tmp_name'];
         $folder = "uploads/";
-  
-        $new_file_name = strtolower($image);
-        $final_file = str_replace(' ','-',$new_file_name);
 
-        if(move_uploaded_file($image_loc, $folder.$final_file)){
+        $new_file_name = strtolower($image);
+        $final_file = str_replace(' ', '-', $new_file_name);
+
+        if (move_uploaded_file($image_loc, $folder . $final_file)) {
 
           $stmt = $connection->prepare("INSERT INTO `applicants`(`student_id`, `election_id`, `date_filed`, `position_id`, `party_id`, `last_name`, `first_name`, `middle_name`, `gender`, `age`, `date_birth`, `place_birth`, `height`, `weight`, `home_add`, `status`, `religion`, `language`, `citizenship`, `contact_num`, `email`, `spouse_name`, `spouse_add`, `num_child`, `tertiary_lev`, `course`, `year_lev`, `major`, `second_lev`, `secondary_grad`, `elementary`, `elementary_grad`, `achievements`, `organization`, `requirements`, `url`, `application_status`, `x`, `photo`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
           $stmt->execute([$student_id, $election_id, $data_filed, $position, $party_id, $last_name, $first_name, $middle_name, $gender, $age, $date_birth, $place_birth, $height, $weight, $home_add, $status, $religion, $language, $citizenship, $contact_num, $email, $spouse_name, $spouse_add, $num_child, $tertiary_lev, $course, $year_lev, $major, $second_lev, $secondary_grad, $achievements, $elementary, $elementary_grad, $organization, $requirements, $url, $applicant_status, $x, $final_file]);
-  
+
         ?>
           <script>
             alert('Register Successfull');
             window.location.href = "index.php";
           </script>
-  
         <?php
         }
-
-    
       }
     }
   }
@@ -340,7 +415,7 @@ class Voting
 
     $connection = $this->openConnection();
 
-    $stmt = $connection->prepare("SELECT * FROM `admin`");
+    $stmt = $connection->prepare("SELECT * FROM `admin` where `type` = 'admin'");
     $stmt->execute();
     $admins = $stmt->fetchAll();
 
@@ -373,9 +448,16 @@ class Voting
       $stmt = $connection->prepare("INSERT INTO `admin`(`last_name`, `first_name`, `middle_name`, `accesscode`, `type`, `x`) VALUES (?,?,?,?,?,?)");
       $stmt->execute([$last_name, $first_name, $middle_name, $accesscode, $type, $x]);
 
-      if($stmt == true){
+      if ($stmt == true) {
         ?>
         <script>
+          alert('Added Admin');
+          window.location.href = "admin-dashboard.php";
+        </script>
+        <?php
+        ?>
+
+        <!-- <script>
            swal({
             title: "Added Successfully!",
             icon: "success"
@@ -384,16 +466,17 @@ class Voting
             window.location.href='admin-dashboard.php';
             console.log('The Ok Button was clicked.');
                         });
-        </script>
-        <?php
-      }else {
+        </script> -->
+      <?php
+      } else {
         return $this->show_404();
         echo $connection->errorInfo();
       }
     }
   }
-  
-  public function editAdmin(){
+
+  public function editAdmin()
+  {
 
     $connection = $this->openConnection();
     if (isset($_POST['edit-admin'])) {
@@ -408,25 +491,61 @@ class Voting
       $stmt = $connection->prepare("UPDATE `admin` SET `last_name`='$last_name',`first_name`='$first_name',`middle_name`='$middle_name',`accesscode`='$accesscode' WHERE `admin_id` = ?");
       $stmt->execute([$admin_id]);
 
-        ?>
-        <script>
+      ?>
+      <script>
         swal({
-            title: "Successfully Updated!",
-            icon: "success"
-            }).then(function() {
-            // Redirect the user
-            window.location.href='admin-dashboard.php';
-            console.log('The Ok Button was clicked.');
-                        });
-        </script>
-        <?php
+          title: "Successfully Updated!",
+          icon: "success"
+        }).then(function() {
+          // Redirect the user
+          window.location.href = 'admin-dashboard.php';
+          console.log('The Ok Button was clicked.');
+        });
+      </script>
+    <?php
     }
   }
 
-  public function deleteAdmin(){
-  
+  public function editComelec()
+  {
+
     $connection = $this->openConnection();
-    if(isset($_POST['delete-admin'])){
+    if (isset($_POST['edit-comelec'])) {
+
+      $first_name = $_POST['first_name'];
+      $last_name = $_POST['last_name'];
+      $middle_name = $_POST['middle_name'];
+      $accesscode = $_POST['access_code'];
+      $admin_id = $_POST['admin_id'];
+
+
+      $stmt = $connection->prepare("UPDATE `admin` SET `last_name`='$last_name',`first_name`='$first_name',`middle_name`='$middle_name',`accesscode`='$accesscode' WHERE `admin_id` = ?");
+      $stmt->execute([$admin_id]);
+
+    ?>
+      <script>
+        alert('Successfully Updated! <?= $first_name . " " . $last_name ?>');
+        window.location.href = "admin-add-com.php";
+      </script>
+      <!-- <script>
+        swal({
+          title: "Successfully Updated!",
+          icon: "success"
+        }).then(function() {
+          // Redirect the user
+          window.location.href = 'admin-add-com.php';
+          console.log('The Ok Button was clicked.');
+        });
+      </script> -->
+    <?php
+    }
+  }
+
+  public function deleteAdmin()
+  {
+
+    $connection = $this->openConnection();
+    if (isset($_POST['delete-admin'])) {
 
       $admin_id = $_POST['admin_id'];
 
@@ -434,17 +553,35 @@ class Voting
 
       $stmt->execute([$admin_id]);
 
-      ?>
-         <script>
-          alert('Deleted Successfull');
-          window.location.href = "admin-dashboard.php";
-        </script>
-      <?php
+    ?>
+      <script>
+        alert('Deleted Successfull');
+        window.location.href = "admin-dashboard.php";
+      </script>
+    <?php
     }
-
   }
 
-  public function getComelec(){
+  public function deleteComelec()
+  {
+
+    $connection = $this->openConnection();
+    if (isset($_POST['delete-comelec'])) {
+      $admin_id = $_POST['admin_id'];
+
+      $stmt = $connection->prepare('DELETE FROM `admin` WHERE `admin_id` = ?');
+      $stmt->execute([$admin_id]);
+    ?>
+      <script>
+        confirm('Deleted Successfull');
+        window.location.href = "admin-add-com.php";
+      </script>
+      <?php
+    }
+  }
+
+  public function getComelec()
+  {
     $connection = $this->openConnection();
 
     $stmt = $connection->prepare("SELECT * FROM `admin` WHERE `type` = 'comelec' ");
@@ -463,11 +600,12 @@ class Voting
       return $this->show_404();
       echo $connection->errorInfo();
     }
-  
   }
 
 
-  public function getApplicants(){
+  public function getApplicants()
+  {
+
     $connection = $this->openConnection();
 
     $stmt = $connection->prepare("SELECT * FROM `applicants`");
@@ -476,35 +614,36 @@ class Voting
 
     $total = $stmt->rowCount();
 
-    if($total > 0){
-      if(isset($applicants)){
+    if ($total > 0) {
+      if (isset($applicants)) {
         return $applicants;
       }
-    }else{
+    } else {
       return $this->show_404();
       echo $connection->errorInfo();
     }
-
   }
 
-  public function getElectionId(){
+  public function getElectionId()
+  {
     $connection = $this->openConnection();
-    $stmt = $connection->prepare("SELECT * FROM `election` where `x` != 'deleted' ");
+    $stmt = $connection->prepare("SELECT * FROM `election` where `x` != 'deleted' ORDER BY `election_id` DESC ");
     $stmt->execute();
     $elections = $stmt->fetchAll();
 
     $total = $stmt->rowCount();
 
-    if($total > 0){
-      if(isset($elections)){
+    if ($total > 0) {
+      if (isset($elections)) {
         return $elections;
       }
-    }else{
+    } else {
       return $this->show_404();
       echo $connection->errorInfo();
     }
   }
-  public function getPositionId(){
+  public function getPositionId()
+  {
     $connection = $this->openConnection();
     $stmt = $connection->prepare("SELECT * FROM `position` where `x` != 'deleted' ");
     $stmt->execute();
@@ -512,33 +651,284 @@ class Voting
 
     $total = $stmt->rowCount();
 
-    if($total > 0){
-      if(isset($positions)){
+    if ($total > 0) {
+      if (isset($positions)) {
         return $positions;
       }
-    }else{
+    } else {
       return $this->show_404();
       echo $connection->errorInfo();
     }
   }
 
-  public function getPartyId(){
+  public function getPartyId()
+  {
     $connection = $this->openConnection();
     $stmt = $connection->prepare("SELECT * FROM `party` where `x` != 'deleted' ");
     $stmt->execute();
     $partys = $stmt->fetchAll();
     $total = $stmt->rowCount();
 
-    if($total > 0){
-      if(isset($partys)){
+    if ($total > 0) {
+      if (isset($partys)) {
         return $partys;
       }
-    }else{
+    } else {
       return $this->show_404();
       echo $connection->errorInfo();
     }
   }
 
+  public function getParty($party_id)
+  {
+
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT * FROM `party` WHERE `party_id` = '$party_id' ");
+    $stmt->execute();
+    $partys = $stmt->fetch();
+    $total = $stmt->rowCount();
+
+    if ($total > 0) {
+      if (isset($partys)) {
+
+        return $partys;
+      }
+    } else {
+    }
+  }
+
+  public function getPosition($position_id)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT * FROM `position` WHERE `position_id` = '$position_id' ");
+    $stmt->execute();
+    $positions = $stmt->fetch();
+    $total = $stmt->rowCount();
+
+    if ($total > 0) {
+      if (isset($positions)) {
+
+        return $positions;
+      }
+    } else {
+
+      return $connection->errorInfo();
+    }
+  }
+
+  public function getElection($election_id)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT * FROM `election` WHERE `election_id` = '$election_id' ");
+    $stmt->execute();
+    $elections = $stmt->fetch();
+    $total = $stmt->rowCount();
+
+    if ($total > 0) {
+      if (isset($elections)) {
+
+        return $elections;
+      }
+    } else {
+
+      return $connection->errorInfo();
+    }
+  }
+
+  public function getCandidates()
+  {
+
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT * FROM `applicant_logs` WHERE `application_status` = 'final' ");
+    $stmt->execute();
+    $candidates = $stmt->fetchAll();
+    $total = $stmt->rowCount();
+
+    if ($total > 0) {
+      if (isset($candidates)) {
+
+        return $candidates;
+      }
+    } else {
+
+      return $connection->errorInfo();
+    }
+  }
+
+  public function getApplicant($applicant_id)
+  {
+
+    $connection = $this->openConnection();
+
+    $stmt = $connection->prepare("SELECT * FROM `applicants` WHERE `student_id` = ?");
+    $stmt->execute([$applicant_id]);
+    $applicant = $stmt->fetch();
+
+    $total = $stmt->rowCount();
+
+    if ($total > 0) {
+
+      if (isset($applicant)) {
+        return $applicant;
+      }
+    }
+  }
+
+  public function addComelec()
+  {
+
+    if (isset($_POST['add-comelec'])) {
+
+      $first_name = $_POST['first_name'];
+      $last_name = $_POST['last_name'];
+      $middle_name = $_POST['middle_name'];
+      $accesscode = $_POST['accesscode'];
+
+      $type = "comelec";
+      $x = "active";
+
+      $connection = $this->openConnection();
+      $stmt = $connection->prepare("INSERT INTO `admin`(`last_name`, `first_name`, `middle_name`, `accesscode`, `type`, `x`) VALUES (?,?,?,?,?,?)");
+      $stmt->execute([$last_name, $first_name, $middle_name, $accesscode, $type, $x]);
+
+      if ($stmt == true) {
+
+      ?>
+        <script>
+          alert('Added Comelec');
+          window.location.href = "admin-add-com.php";
+        </script>
+        <?php
+        ?>
+        <!-- <script>
+           swal({
+            title: "Added Successfully!",
+            icon: "success"
+            }).then(function() {
+            // Redirect the user
+            window.location.href='admin-dashboard.php';
+            console.log('The Ok Button was clicked.');
+                        });
+        </script> -->
+
+        <?php
+      } else {
+        return $this->show_404();
+        echo $connection->errorInfo();
+      }
+    }
+  }
+
+  public function addElecion()
+  {
+
+    $connection = $this->openConnection();
+
+    if (isset($_POST['add-election'])) {
+
+      $x = "active";
+
+      $election_name = $_POST['election_name'];
+      $election_date = $_POST['election_date'];
+      $election_start = $_POST['election_start'];
+      $election_end = $_POST['election_end'];
+
+      $startdate = date('Y-m-d H:i:s', strtotime($election_date . " " . $election_start . ":00:00"));
+      $enddate = date('Y-m-d H:i:s', strtotime($election_date . " " . $election_end . ":00:00"));
+
+
+      $election_poster = rand(1000, 1000000) . "-" . $_FILES['election_poster']['name'];
+      $image_loc = $_FILES['election_poster']['tmp_name'];
+      $folder = "uploads/";
+
+      $new_file_name = strtolower($election_poster);
+      $final_file = str_replace(' ', '-', $new_file_name);
+
+      if (move_uploaded_file($image_loc, $folder . $final_file)) {
+
+        $stmt = $connection->prepare("INSERT INTO `election`( `election_name`, `start_date`, `end_date`, `x`, `election_poster`) VALUES (?,?,?,?,?)");
+
+        $stmt->execute([$election_name, $startdate, $enddate, $x, $final_file]);
+
+        if ($stmt == true) {
+        ?>
+          <script>
+            alert('Added Election');
+            window.location.href = "admin-election.php";
+          </script>
+<?php
+        } else {
+
+          return $this->show_404();
+          echo $connection->errorInfo();
+        }
+      }
+    }
+  }
+
+  public function editElection(){
+
+    
+    $connection = $this->openConnection();
+
+    if(isset($_POST['edit-election'])){
+
+
+      $election_name = $_POST['election_name'];
+      $election_date = $_POST['election_date'];
+      $election_start = $_POST['election_start'];
+      $election_end = $_POST['election_end'];
+      $status = $_POST['status'];
+      $election_id = $_POST['election_id'];
+
+      $startdate = date('Y-m-d H:i:s', strtotime($election_date . " " . $election_start . ":00:00"));
+      $enddate = date('Y-m-d H:i:s', strtotime($election_date . " " . $election_end . ":00:00"));
+
+      
+      $election_poster = rand(1000, 1000000) . "-" . $_FILES['election_poster']['name'];
+      $image_loc = $_FILES['election_poster']['tmp_name'];
+      $folder = "uploads/";
+
+      $new_file_name = strtolower($election_poster);
+      $final_file = str_replace(' ', '-', $new_file_name);
+
+      if (move_uploaded_file($image_loc, $folder . $final_file)) {
+
+        $stmt = $connection->prepare("UPDATE `election` SET `election_name`='$election_name',`start_date`='$startdate',`end_date`='$enddate',`x`='$status',`election_poster`='$final_file' WHERE `election_id` = ?");
+        $stmt->execute([$election_id]);
+
+        if ($stmt == true) {
+          ?>
+            <script>
+              alert('Election Updated!');
+              window.location.href = "admin-election.php";
+            </script>
+        <?php
+          } else {
+  
+            return $this->show_404();
+            echo $connection->errorInfo();
+          }
+  
+      }
+    }
+  }
+
+  public function deleteElection(){
+    $connection = $this->openConnection();
+    if (isset($_POST['delete-election'])) {
+
+      $election_id = $_POST['election_id'];
+      $stmt = $connection->prepare('DELETE FROM `election` WHERE `election_id` = ?');
+      $stmt->execute([$election_id]);
+    ?>
+      <script>
+        confirm('Deleted Successfull');
+        window.location.href = "admin-add-com.php";
+      </script>
+      <?php
+    }
+  }
 }
 
 $vote = new Voting();

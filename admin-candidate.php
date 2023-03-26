@@ -1,14 +1,12 @@
 <?php
-include('includes/admin-header.php');
 require_once('class.php');
-$comelecs = $vote->getComelec();
-$vote->addComelec();
-$vote->editComelec();
-$vote->deleteComelec();
+include('includes/admin-header.php');
+
+$candidates = $vote->getCandidates();
 ?>
 
 <body class="sb-nav-fixed">
-<?php
+    <?php
     include('includes/admin-nav.php');
     ?>
     <div id="layoutSidenav">
@@ -21,7 +19,7 @@ $vote->deleteComelec();
                             <div class="sb-nav-link-icon"><i class="fas fa-home" id="icon"></i></div>Home
                         </a>
                         <hr class="dropdown-divider bg-dark" />
-                        <a id="nav-hover" href="admin-add-com.php" class="nav-link active">
+                        <a id="nav-hover" href="admin-add-com.php" class="nav-link">
                             <div class="sb-nav-link-icon"><i class="fa fa-user me-2" id="icon"></i></div>Comelec
                         </a>
                         <hr class="dropdown-divider bg-dark" />
@@ -29,7 +27,7 @@ $vote->deleteComelec();
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-podcast" id="icon"></i></div>Interview
                         </a>
                         <hr class="dropdown-divider bg-dark" />
-                        <a id="nav-hover" href="admin-candidate.php" class="nav-link ">
+                        <a id="nav-hover" href="admin-candidate.php" class="nav-link active">
                             <div class="sb-nav-link-icon"><i class="fas fa-users" id="icon"></i></div>Candidates
                         </a>
                         <hr class="dropdown-divider bg-dark" />
@@ -43,12 +41,11 @@ $vote->deleteComelec();
                             <div class="sb-nav-link-icon"><i class='fas fa-vote-yea' id="icon"></i></div>Election
                         </a>
                         <hr class="dropdown-divider bg-white" />
-
                     </div>
-
                 </div>
                 <div class="sb-sidenav-footer" id="nav-footer">
-                    <div class="small text-white">Logged in as:</div>
+                    <div class="small text-white">Logged in as: <?= $adminDetails['last_name'] ?></div>
+
                 </div>
             </nav>
         </div>
@@ -58,21 +55,12 @@ $vote->deleteComelec();
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
                         aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="admin-dashboard.php" style="text-decoration: none;"> <i
-                                        class="fas fa-home"></i> HOME</a></li>
-                            <li class="breadcrumb-item active" aria-current="page"><i
-                                    class="fa fa-user me-2"></i>COMELEC</li>
+                            <li class="breadcrumb-item"><a href="admin-interview.php" style="text-decoration: none;"> <i
+                                        class="fa-solid fa-podcast"></i> INTERVIEW</a></li>
+                            <li class="breadcrumb-item active" aria-current="page"> <i class="fas fa-users"></i>
+                                CANDIDATES</li>
                         </ol>
                     </nav>
-
-                    <div>
-                        <button type="button" class="btn btn-sm btn-primary mb-3 me-2" tabindex="-1"
-                            data-bs-toggle="modal" data-bs-target="#add-comelec">
-                            <i class="fa fa-plus" aria-hidden="true"></i>
-                            ADD COMELEC
-                        </button>
-                    </div>
-
 
                 </div>
                 <hr>
@@ -81,31 +69,62 @@ $vote->deleteComelec();
                         <table class="table table-hover" id="datatablesSimple">
                             <thead>
                                 <tr>
+
                                     <th>Full Name</th>
-                                    <th>Access code</th>
-                                    <th>Action</th>
+                                    <th>Positon</th>
+                                    <th>Party</th>
+                                    <th>Election</th>
+                                   
+                                    <th>Status</th>
 
                                 </tr>
                             <tbody>
-                                <?php foreach ($comelecs as $comelec) { ?>
+                            <?php if(empty($candidates)) {?>
+                                <?php foreach ($candidates as $candidate) {
 
+                                    $applicant_id = $candidate['applicant_id'];
+                                    $app = $vote->getApplicant($applicant_id);
+
+                                ?>
+                               
                                 <tr>
-                                    <td><?= $comelec['first_name'] . " " . $comelec['middle_name'] . " " . $comelec['last_name'] ?>
-                                    </td>
-                                    <td><?= $comelec['accesscode']." ".$comelec['admin_id'] ?></td>
+                                    <?php if (empty($app['first_name'])) { ?>
+                                    <td>walay sulod</td>
+                                    <?php } else { ?>
+                                    <td><?= $app['first_name'] ?></td>
+                                    <?php } ?>
+                                    <?php 
+                                    $position_id = $app['position_id'];
+                                    $pos = $vote->getPosition($position_id);
+                                    ?>
+                                    <td><?= $pos['position_title'] ?></td>
+                                    <?php
+                                        $party_id = $app['party_id'];
+                                        $par = $vote->getParty($party_id);
+                                    ?>
+                                    <td><?= $par['party'] ?></td>
+                                    <?php
+                                        $election_id = $app['election_id'];
+                                        $elec = $vote->getElection($election_id);                                   
+                                    ?>
+                                    <td><?= $elec['election_name'] ?></td>
+                                   
                                     <td>
                                         <div class="d-flex justify-content-center">
-                                            <button class="btn btn-sm btn-success mx-3" tabindex="-1" data-bs-toggle="modal" data-bs-target="#edit-comelec<?= $comelec['admin_id'];?>"><i class="fas fa-edit"></i>
-                                                Edit</button>
-                                            <button class="btn btn-sm btn-danger" tabindex="-1" data-bs-toggle="modal" data-bs-target="#delete-comelec<?= $comelec['admin_id'];?>"><i class="fas fa-trash"></i>
+                                            
+                                            <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i>
                                                 Delete</button>
                                         </div>
+
                                     </td>
+
                                 </tr>
-                                    <?php
-                                    include('includes/modals.php');
-                                    ?>
+                           
                                 <?php } ?>
+                                <?php }else{
+                                    ?>
+                                    <h3>No data</h3>
+                                    <?php }?>
                             </tbody>
 
                             </thead>
@@ -115,6 +134,7 @@ $vote->deleteComelec();
                     </div>
                 </div>
             </main>
+
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-center small">
