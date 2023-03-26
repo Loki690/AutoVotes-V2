@@ -4,7 +4,6 @@ require_once('class.php');
 
 $admin = $vote->getAdmins();
 
-$vote->adminSession();
 
 $vote->addAdmin();
 
@@ -69,6 +68,20 @@ $vote->deleteAdmin();
                         </ol>
                     </nav>
 
+                    <?php
+                    function generateaccesscode() {
+                        $chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+                        $count = mb_strlen($chars);
+
+                        for ($i = 0, $result = ''; $i < 8; $i++) {
+                            $index = rand(0, $count - 1);
+                            $result .= mb_substr($chars, $index, 1);
+                        }
+
+                        return $result;
+                    }
+                    $accesscode = generateaccesscode();
+                    ?>
                     <div>
                         <button type="button" class="btn btn-sm btn-primary mb-3 me-2" tabindex="-1" data-bs-toggle="modal" data-bs-target="#add">
                             <i class="fa fa-plus" aria-hidden="true"></i>

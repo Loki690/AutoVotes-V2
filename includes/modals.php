@@ -1,4 +1,5 @@
 <!-- Modals add admin-->
+
 <div class="modal fade modal-signin" id="add" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
@@ -34,7 +35,7 @@
           <div class="mb-3 row">
             <label for="Access Code" class="col-sm-4 col-form-label">Access Code</label>
             <div class="col-sm-8">
-              <input type="text" name="access_code" class="form-control" placeholder="Access Code" id="" required>
+              <input type="text" name="access_code" class="form-control" placeholder="Access Code" id="" value="<?= $accesscode; ?>">
             </div>
           </div>
         </div>
@@ -239,7 +240,7 @@
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px">
       <div class="modal-header p-3 pb-3">
         <h5 class="modal-title text-white" id="staticBackdropLabel">
-          Register Autovote
+          Voter's Registration
         </h5>
         <button type="button" class="btn-close-white" data-bs-dismiss="modal" aria-label="Close">
           x
@@ -253,21 +254,21 @@
             <div class="col-sm-6 mt-3" data-aos="fade-right">
               <div class="form-group">
                 <label for="exampleInputEmail1">First Name</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="first_name" placeholder="First Name" />
+                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="first_name" placeholder="Jerecho"  required/>
               </div>
             </div>
 
             <div class="col-sm-6 mt-3">
               <div class="form-group">
                 <label for="exampleInputEmail1">Last Name</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="last_name" placeholder="Last Name" />
+                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="last_name" placeholder="Miles"  required/>
               </div>
             </div>
 
             <div class="col-sm-6 mt-3">
               <div class="form-group">
                 <label for="exampleInputEmail1">Gender</label>
-                <select class="form-select" name="gender" aria-label="Default select example">
+                <select class="form-select" name="gender" aria-label="Default select example" required>
                   <option selected>Select Gender</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
@@ -278,7 +279,7 @@
             <div class="col-sm-6 mt-3">
               <div class="form-group">
                 <label for="exampleInputEmail1">Course</label>
-                <select class="form-select" name="course" aria-label="Default select example">
+                <select class="form-select" name="course" aria-label="Default select example" required>
                   <option selected>Select Course</option>
                   <option value="BSIT">BSIT</option>
                   <option value="BSCRIM">BSCRIM</option>
@@ -292,7 +293,7 @@
             <div class="col-sm-6 mt-3">
               <div class="form-group">
                 <label for="exampleInputEmail1">Year Level</label>
-                <select class="form-select" name="year_level" aria-label="Default select example">
+                <select class="form-select" name="year_level" aria-label="Default select example" required>
                   <option selected>Select Year Level</option>
                   <option value="1st Year">1st Year</option>
                   <option value="2nd Year">2nd Year</option>
@@ -305,14 +306,14 @@
             <div class="col-sm-6 mt-3">
               <div class="form-group">
                 <label for="exampleInputEmail1">Student ID</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="school_id" placeholder="Student ID" />
+                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="school_id" placeholder="Valid student ID number" required />
               </div>
             </div>
 
             <div class="col-sm-6 mt-3">
               <div class="form-group">
                 <label for="exampleInputEmail1">Password</label>
-                <input type="password" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="password" placeholder="Enter Password" />
+                <input type="password" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="password" placeholder="Enter Password"  required/>
               </div>
             </div>
           </div>
@@ -522,8 +523,8 @@
     </div>
   </div>
 </div>
-<!-- 
-edit electios -->
+
+<!-- edit elections -->
 <div class="modal fade modal-signin" id="edit-election<?= $elec['election_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
@@ -610,7 +611,7 @@ edit electios -->
           <div class="mb-3 row">
             <label for="ElectionDate" class="col-sm-3 col-form-label">Update Poster</label>
             <div class="col-sm-8">
-              <input type="file" class="form-control" name="election_poster" id="" value="<?= $elec['election_poster']; ?>">
+              <input type="file" class="form-control" name="election_poster" id="election_poster" value="uploads/<?= $elec['election_poster']; ?>">
             </div>
           </div>
           <div class="mb-3 row">
@@ -641,7 +642,6 @@ edit electios -->
     </div>
   </div>
 </div>
-
 <!-- delete election  -->
 <div class="modal fade modal-signin" id="delete-election<?= $elec['election_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">

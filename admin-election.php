@@ -2,9 +2,12 @@
 require_once('class.php');
 include('includes/admin-header.php');
 $elections = $vote->getElectionId();
-$vote->addElecion();
 
+$vote->addElecion();
 $vote->editElection();
+
+$vote->deleteElection();
+
 ?>
 <?php
 function create_time_range($start, $end, $interval = '1 mins', $format = '12')

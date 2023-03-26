@@ -78,8 +78,8 @@ $elections = $vote->getElectionId();
     <h5 class="title-app mt-5">ELECTION TYPES</h5>
   </div>
   <!--Candidates-->
-  <div class="container">
-    <div class="row d-flex jus">
+  <div class="container ">
+    <div class="row  d-flex justify-content-center">
       <?php foreach($elections as $election) {?>
       <div class="col-lg-3 col-sm-3 pt-2" data-aos="fade-right">
         <div class="card text-start hvr-grow" id="shadow">
@@ -93,7 +93,7 @@ $elections = $vote->getElectionId();
             <div class="mt-2">
             <small class="fw-bold">Election Ends : <?= date('F d, Y g:i A',strtotime($election['end_date'] ))?></small>
             </div>
-            <button type="button" class="btn btn-outline-primary" tabindex="-1" data-bs-toggle="modal" data-bs-target="#login">
+            <button type="button" class="btn btn-outline-primary mt-5" tabindex="-1" data-bs-toggle="modal" data-bs-target="#login">
               View Elections
             </button>
           </div>
@@ -101,67 +101,7 @@ $elections = $vote->getElectionId();
       </div>
         <?php } ?>
 
-      <!-- <div class="col-lg-3 col-sm-3 pt-2" data-aos="fade-right">
-        <div class="card text-start hvr-grow" id="shadow">
-          <img class="card-img-top" src="img/ITE.png" alt="Title" />
-          <div class="card-body">
-            <h4 class="card-title">ITE ELECTIONS</h4>
-
-            <button type="button" class="btn btn-outline-primary" tabindex="-1" data-bs-toggle="modal" data-bs-target="#login">
-              View Elections
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-sm-3 pt-2" data-aos="fade-right">
-        <div class="card text-start hvr-grow" id="shadow">
-          <img class="card-img-top" src="img/BSAD.png" alt="Title" />
-          <div class="card-body">
-            <h4 class="card-title">BUSINESS ADMINISTRATION ELECTION</h4>
-
-            <button type="button" class="btn btn-outline-primary" tabindex="-1" data-bs-toggle="modal" data-bs-target="#login">
-              View Elections
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-sm-3 pt-2" data-aos="fade-right">
-        <div class="card text-start hvr-grow" id="shadow">
-          <img class="card-img-top" src="img/CELA.png" alt="Title" />
-          <div class="card-body">
-            <h4 class="card-title">CELA ELECTION</h4>
-            <button type="button" class="btn btn-outline-primary" tabindex="-1" data-bs-toggle="modal" data-bs-target="#login">
-              View Elections
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-sm-3 pt-2" data-aos="fade-left">
-        <div class="card text-start hvr-grow" id="shadow">
-          <img class="card-img-top" src="img/CJE.png" alt="Title" />
-          <div class="card-body">
-            <h4 class="card-title">CJE ELECTION</h4>
-            <button type="button" class="btn btn-outline-primary" tabindex="-1" data-bs-toggle="modal" data-bs-target="#login">
-              View Elections
-            </button>
-          </div>
-        </div>
-      </div> -->
-<!-- 
-      <div class="col-lg-3 col-sm-3 pt-2" data-aos="fade-left">
-        <div class="card text-start hvr-grow" id="shadow">
-          <img class="card-img-top" src="img/HM.png" alt="Title" />
-          <div class="card-body">
-            <h4 class="card-title">HOSPITALITY MANAGEMENT ELECTION</h4>
-            <button type="button" class="btn btn-outline-primary" tabindex="-1" data-bs-toggle="modal" data-bs-target="#login">
-              View Elections
-            </button>
-          </div>
-        </div>
-      </div> -->
+    
     </div>
   </div>
   <!--Candidates-->
@@ -243,11 +183,11 @@ $elections = $vote->getElectionId();
       <br />
       <div class="modal-body p-5 pt-0">
         <form action="" method="POST" enctype="multipart/form-data">
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="exampleInputEmail1" class="form-label">Last Name </label>
             <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="last_name" placeholder="" required/>
             <small id="emailHelp" class="form-text text-muted"></small>
-          </div>
+          </div> -->
           <div class="form-group mt-2">
             <label for="exampleInputPassword1" class="form-label">Access Code</label>
             <input type="password" class="form-control" id="exampleInputPassword1" name="accesscode" placeholder="Password" required/>
