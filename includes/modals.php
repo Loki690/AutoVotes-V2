@@ -771,24 +771,26 @@
                     <div class="mb-3 row">
                         <label for="Position" class="col-sm-3 col-form-label">Position: </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" placeholder="Position" id="" name="position" required>
+                            <input type="text" class="form-control" placeholder="Position" id="" name="position"
+                                required>
                         </div>
                     </div>
 
                     <div class="mb-3 row">
                         <label for="type" class="col-sm-3 col-form-label">Type: </label>
                         <div class="col-sm-8">
-                            <select class="form-select" aria-label="Default select example" name="type" id="type-select">
+                            <select class="form-select" aria-label="Default select example" name="type"
+                                id="type-select">
                                 <option selected>Select Type</option>
                                 <option value="single">Single</option>
                                 <option value="multiple">Multiple</option>
                             </select>
                         </div>
                     </div>
-                    <div class="mb-3 row form-group"  id="count-input" style="display: none;">
-                    <label for="position_count" class="col-sm-3 col-form-label">Max #: </label>
+                    <div class="mb-3 row form-group" id="count-input" style="display: none;">
+                        <label for="position_count" class="col-sm-3 col-form-label">Max #: </label>
                         <div class="col-sm-8">
-                           <input type="text" class="form-control" name="count" placeholder="Max #" >
+                            <input type="text" class="form-control" name="count" placeholder="Max #">
                         </div>
                     </div>
                 </div>
@@ -816,8 +818,7 @@
                     <div class="row">
                         <label for="ElectionName" class="col-sm-3 col-form-label">Position Title: </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control"
-                                value="<?= $pos['position_title'] ?>"
+                            <input type="text" class="form-control" value="<?= $pos['position_title'] ?>"
                                 name="election_name" id="" readonly>
                         </div>
                     </div>
@@ -833,8 +834,8 @@
     </div>
 </div>
 <!-- edit position -->
-<div class="modal fade modal-signin" id="edit-posotion<?= $pos['position_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade modal-signin" id="edit-posotion<?= $pos['position_id'] ?>" data-bs-backdrop="static"
+    data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
             <div class="modal-header p-3 pb-3">
@@ -848,7 +849,8 @@
                     <div class="mb-3 row">
                         <label for="Position" class="col-sm-3 col-form-label">Position: </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" placeholder="Position" id="" name="position" value="<?= $pos['position_title']?>">
+                            <input type="text" class="form-control" placeholder="Position" id="" name="position"
+                                value="<?= $pos['position_title']?>">
                             <input type="hidden" value="<?= $pos['position_id'] ?>" name="position_id">
                         </div>
                     </div>
@@ -878,7 +880,92 @@
             </form>
         </div>
     </div>
-    
-   
+</div>
+<!-- add requirements  -->
+<div class="modal fade modal-signin" id="add-requirement" data-bs-backdrop="static" data-bs-keyboard="false"
+    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
+            <div class="modal-header p-3 pb-3">
+                <h5 class="modal-title" id="staticBackdropLabel">Adding Requirements</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <br>
+            <form action="" method="POST" enctype="multipart/form-data">
+                <div class="modal-body p-5 pt-0">
+
+                    <div class="mb-3 row">
+                        <label for="Requirement" class="col-sm-3 col-form-label">Requirement: </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="Requirement" id="" name="requirement">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" name="add-requirement">Add Requiment</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<!-- delete requirement -->
+<div class="modal fade modal-signin" id="delete-requirement<?= $req['requirement_id'] ?>" data-bs-backdrop="static"
+    data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
+            <div class="modal-header p-3 pb-3">
+                <h5 class="modal-title" id="staticBackdropLabel">Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <br>
+            <form action="" method="POST" enctype="multipart/form-data">
+                <div class="modal-body p-5 pt-0">
+                    <div class="row">
+                        <label for="ElectionName" class="col-sm-3 col-form-label">Position Title: </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="<?= $req['requirement'] ?>"
+                                name="election_name" id="" readonly>
+                        </div>
+                    </div>
+                    <input type="hidden" value="<?= $req['requirement_id'] ?>" name="requirement_id">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger" name="delete-requirement">Delete</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<!-- edit requirements -->
+<div class="modal fade modal-signin" id="edit-requirement<?= $req['requirement_id'] ?>" data-bs-backdrop="static"
+    data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
+            <div class="modal-header p-3 pb-3">
+                <h5 class="modal-title" id="staticBackdropLabel">Edit Requirement</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <br>
+            <form action="" method="POST" enctype="multipart/form-data">
+                <div class="modal-body p-5 pt-0">
+                    <div class="row">
+                        <label for="ElectionName" class="col-sm-3 col-form-label">Position Title: </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="<?= $req['requirement'] ?>"
+                                name="election_name" id="">
+                        </div>
+                    </div>
+                    <input type="hidden" value="<?= $req['requirement_id'] ?>" name="requirement_id">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" name="edit-requirement">Edit</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
 </div>
 <!--Modals-->
