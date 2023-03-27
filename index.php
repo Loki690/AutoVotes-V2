@@ -79,7 +79,7 @@ $elections = $vote->getElectionId();
   </div>
   <!--Candidates-->
   <div class="container ">
-    <div class="row  d-flex justify-content-center">
+    <div class="row">
       <?php foreach($elections as $election) {?>
       <div class="col-lg-3 col-sm-3 pt-2" data-aos="fade-right">
         <div class="card text-start hvr-grow" id="shadow">

@@ -120,11 +120,11 @@ class Voting
         header("Location: welcome.php");
       } else {
         ?>
-        <script>
-          alert('Invalid Username or Password');
-          window.location.href = "index.php";
-        </script>
-      <?php
+<script>
+alert('Invalid Username or Password');
+window.location.href = "index.php";
+</script>
+<?php
         exit;
       }
     }
@@ -281,11 +281,11 @@ class Voting
       if ($count == 0) {
         // If student ID doesn't exist, show error message and exit
       ?>
-        <script>
-          alert('Invalid Student ID  <?= " " . $school_id ?>');
-          window.location.href = "index.php";
-        </script>
-      <?php
+<script>
+alert('Invalid Student ID  <?= " " . $school_id ?>');
+window.location.href = "index.php";
+</script>
+<?php
         exit;
       } else {
 
@@ -301,12 +301,12 @@ class Voting
         $stmt->execute([$school_id, $last_name, $first_name, $gender, $course, $year, $password, $x]);
 
       ?>
-        <script>
-          alert('Registration Successful');
-          window.location.href = "index.php";
-        </script>
+<script>
+alert('Registration Successful');
+window.location.href = "index.php";
+</script>
 
-      <?php
+<?php
 
       }
     }
@@ -335,11 +335,11 @@ class Voting
 
         // If student ID doesn't exist, show error message and exit
       ?>
-        <script>
-          alert('Invalid Student ID<?= " " . $school_id ?>');
-          window.location.href = "register-candi.php";
-        </script>
-        <?php
+<script>
+alert('Invalid Student ID<?= " " . $school_id ?>');
+window.location.href = "register-candi.php";
+</script>
+<?php
         exit;
       } else {
 
@@ -400,11 +400,11 @@ class Voting
           $stmt->execute([$student_id, $election_id, $data_filed, $position, $party_id, $last_name, $first_name, $middle_name, $gender, $age, $date_birth, $place_birth, $height, $weight, $home_add, $status, $religion, $language, $citizenship, $contact_num, $email, $spouse_name, $spouse_add, $num_child, $tertiary_lev, $course, $year_lev, $major, $second_lev, $secondary_grad, $achievements, $elementary, $elementary_grad, $organization, $requirements, $url, $applicant_status, $x, $final_file]);
 
         ?>
-          <script>
-            alert('Register Successfull');
-            window.location.href = "index.php";
-          </script>
-        <?php
+<script>
+alert('Register Successfull');
+window.location.href = "index.php";
+</script>
+<?php
         }
       }
     }
@@ -463,14 +463,14 @@ class Voting
 
       if ($stmt == true) {
         ?>
-        <script>
-          alert('Added Admin');
-          window.location.href = "admin-dashboard.php";
-        </script>
-        <?php
+<script>
+alert('Added Admin');
+window.location.href = "admin-dashboard.php";
+</script>
+<?php
         ?>
 
-        <!-- <script>
+<!-- <script>
            swal({
             title: "Added Successfully!",
             icon: "success"
@@ -480,7 +480,7 @@ class Voting
             console.log('The Ok Button was clicked.');
                         });
         </script> -->
-      <?php
+<?php
       } else {
         return $this->show_404();
         echo $connection->errorInfo();
@@ -505,17 +505,17 @@ class Voting
       $stmt->execute([$admin_id]);
 
       ?>
-      <script>
-        swal({
-          title: "Successfully Updated!",
-          icon: "success"
-        }).then(function() {
-          // Redirect the user
-          window.location.href = 'admin-dashboard.php';
-          console.log('The Ok Button was clicked.');
-        });
-      </script>
-    <?php
+<script>
+swal({
+    title: "Successfully Updated!",
+    icon: "success"
+}).then(function() {
+    // Redirect the user
+    window.location.href = 'admin-dashboard.php';
+    console.log('The Ok Button was clicked.');
+});
+</script>
+<?php
     }
   }
 
@@ -536,11 +536,11 @@ class Voting
       $stmt->execute([$admin_id]);
 
     ?>
-      <script>
-        alert('Successfully Updated! <?= $first_name . " " . $last_name ?>');
-        window.location.href = "admin-add-com.php";
-      </script>
-      <!-- <script>
+<script>
+alert('Successfully Updated! <?= $first_name . " " . $last_name ?>');
+window.location.href = "admin-add-com.php";
+</script>
+<!-- <script>
         swal({
           title: "Successfully Updated!",
           icon: "success"
@@ -550,7 +550,7 @@ class Voting
           console.log('The Ok Button was clicked.');
         });
       </script> -->
-    <?php
+<?php
     }
   }
 
@@ -567,11 +567,11 @@ class Voting
       $stmt->execute([$admin_id]);
 
     ?>
-      <script>
-        alert('Deleted Successfull');
-        window.location.href = "admin-dashboard.php";
-      </script>
-    <?php
+<script>
+alert('Deleted Successfull');
+window.location.href = "admin-dashboard.php";
+</script>
+<?php
     }
   }
 
@@ -585,11 +585,11 @@ class Voting
       $stmt = $connection->prepare('DELETE FROM `admin` WHERE `admin_id` = ?');
       $stmt->execute([$admin_id]);
     ?>
-      <script>
-        confirm('Deleted Successfull');
-        window.location.href = "admin-add-com.php";
-      </script>
-      <?php
+<script>
+confirm('Deleted Successfull');
+window.location.href = "admin-add-com.php";
+</script>
+<?php
     }
   }
 
@@ -806,22 +806,22 @@ class Voting
       if ($existingRecord) {
         // Access code already exists, show error message
       ?>
-        <script>
-          alert('Access Code already taken <?= $accesscode ?>');
-          window.location.href = "admin-add-com.php";
-        </script>
-        <?php
+<script>
+alert('Access Code already taken <?= $accesscode ?>');
+window.location.href = "admin-add-com.php";
+</script>
+<?php
       } else {
         // Access code doesn't exist, insert new record
         $stmt = $connection->prepare("INSERT INTO `admin`(`last_name`, `first_name`, `middle_name`, `accesscode`, `type`, `x`) VALUES (?,?,?,?,?,?)");
         $stmt->execute([$last_name, $first_name, $middle_name, $accesscode, $type, $x]);
         if ($stmt == true) {
         ?>
-          <script>
-            alert('Added Comelec');
-            window.location.href = "admin-add-com.php";
-          </script>
-        <?php
+<script>
+alert('Added Comelec');
+window.location.href = "admin-add-com.php";
+</script>
+<?php
         }
       }
     }
@@ -860,11 +860,11 @@ class Voting
 
         if ($stmt == true) {
         ?>
-          <script>
-            alert('Added Election');
-            window.location.href = "admin-election.php";
-          </script>
-        <?php
+<script>
+alert('Added Election');
+window.location.href = "admin-election.php";
+</script>
+<?php
         } else {
 
           return $this->show_404();
@@ -907,11 +907,11 @@ class Voting
 
         if ($stmt == true) {
         ?>
-          <script>
-            alert('Election Updated!');
-            window.location.href = "admin-election.php";
-          </script>
-      <?php
+<script>
+alert('Election Updated!');
+window.location.href = "admin-election.php";
+</script>
+<?php
         } else {
           return $this->show_404();
           echo $connection->errorInfo();
@@ -923,11 +923,11 @@ class Voting
 
         if ($stmt == true) {
         ?>
-          <script>
-            alert('Election Updated!');
-            window.location.href = "admin-election.php";
-          </script>
-      <?php
+<script>
+alert('Election Updated!');
+window.location.href = "admin-election.php";
+</script>
+<?php
         } else {
           return $this->show_404();
           echo $connection->errorInfo();
@@ -945,14 +945,137 @@ class Voting
       $stmt = $connection->prepare('DELETE FROM `election` WHERE `election_id` = ?');
       $stmt->execute([$election_id]);
       ?>
-      <script>
-        confirm('Deleted Successfull');
-        window.location.href = "admin-election.php";
-      </script>
+<script>
+confirm('Deleted Successfull');
+window.location.href = "admin-election.php";
+</script>
 <?php
     }
   }
+
+  public function getVoters(){
+
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT * FROM `student` where `x` != 'deleted'");
+    $stmt->execute();
+    $applicants = $stmt->fetchAll();
+
+    $total = $stmt->rowCount();
+
+    if ($total > 0) {
+      if (isset($applicants)) {
+        return $applicants;
+      }
+    } else {
+      return $this->show_404();
+      echo $connection->errorInfo();
+    }
+
+  }
+
+  public function deleteVoter(){
+
+    $connection = $this->openConnection();
+    if (isset($_POST['delete-voter'])) {
+
+      $voter_id = $_POST['voter_id'];
+      $x = "deleted";
+
+      $stmt = $connection->prepare("UPDATE `student` SET `x` = '$x' WHERE `student_id` = ? ");
+      $stmt->execute([$voter_id]);
+      ?>
+<script>
+confirm('Deleted Successfull');
+window.location.href = "comelec-voter.php";
+</script>
+<?php
+    }
+
+  }
+
+  public function addPosition(){
+
+    $connection = $this->openConnection();
+
+
+    if (isset($_POST['add-position'])) {
+
+     
+      $type = $_POST['type'];
+      $position = $_POST['position'];
+      $x = "active";
+      $count = $_POST['count'];
+
+      if($type == 'single'){
+        $stmt = $connection->prepare("INSERT INTO `position`(`position_title`,`type`, `x`) VALUES (?,?,?)");
+        $stmt->execute([$position, $type, $x]);
+        ?>
+<script>
+confirm('Position Added');
+window.location.href = "comelec-position.php";
+</script>
+<?php
+      }else{
+        $stmt = $connection->prepare("INSERT INTO `position`(`position_title`,`type`,`count`, `x`) VALUES (?,?,?,?)");
+        $stmt->execute([$position, $type, $count, $x]);
+        ?>
+<script>
+confirm('Position Added');
+window.location.href = "comelec-position.php";
+</script>
+<?php
+      }
+     
+    }
+  
+  }
+
+  public function deletePosition(){
+    $connection = $this->openConnection();
+    if (isset($_POST['delete-position'])) {
+
+      $position_id = $_POST['position_id'];
+      $x = "deleted";
+
+      $stmt = $connection->prepare("UPDATE `position` SET `x` = '$x' WHERE `position_id` = ? ");
+      $stmt->execute([$position_id]);
+      ?>
+<script>
+confirm('Deleted Successfull');
+window.location.href = "comelec-position.php";
+</script>
+<?php
+    }
+  }
+
+  public function editPosition(){
+
+    $connection = $this->openConnection();
+    if (isset($_POST['edit-position'])) {
+
+      $position = $_POST['position'];
+      $position_id = $_POST['position_id'];
+
+      $stmt = $connection->prepare("UPDATE `position` SET `position_title` = '$position' WHERE `position_id` = ? ");
+      $stmt->execute([$position_id]);
+
+      ?>
+      <script>
+      confirm('Updated!');
+      window.location.href = "comelec-position.php";
+      </script>
+      <?php
+
+
+    }
+
+  }
+
 }
+
+
+
+
 
 $vote = new Voting();
 

@@ -4,153 +4,174 @@ include('includes/admin-header.php');
 require_once('class.php');
 $vote->adminSession();
 
+
 ?>
-    <body class="sb-nav-fixed">
+
+<body class="sb-nav-fixed">
     <?php
+    $voters = $vote->getVoters();
+    $vote->deleteVoter();
     include('includes/admin-nav.php');
     ?>
-        <div id="layoutSidenav">
-            <div id="layoutSidenav_nav">
-                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <div class="nav">
-                            <hr class="dropdown-divider bg-dark" />
-                            <a id="nav-hover" class="nav-link mt-4" href="comelec.php">
-                                <div class="sb-nav-link-icon" id="icon"><i class="fas fa-home"></i></div>Home
-                            </a>
-                            <hr class="dropdown-divider bg-dark"/>
-                            <a id="nav-hover" href="comelec-approval.php" class="nav-link"><div class="sb-nav-link-icon"><i 
-                                class="fas fa-check-square fa-spin" id="icon"></i></div>Approval</a>
-                            <hr class="dropdown-divider bg-dark"/>
-                            <a id="nav-hover" href="comelec-disapproved.php" class="nav-link"><div class="sb-nav-link-icon"><i 
-                                class="fa-solid fa-trash" id="icon"></i></div>Disapproved</a>
-                            <hr class="dropdown-divider bg-dark"/>
-                            <a id="nav-hover" href="comelec-voter.php" class="nav-link active"><div class="sb-nav-link-icon"><i 
-                                class="fas fa-user" id="icon"></i></div>Voter</a>
-                            <hr class="dropdown-divider bg-dark"/>
-                            <a id="nav-hover" href="comelec-results.php" class="nav-link "><div class="sb-nav-link-icon"><i 
-                                class="fa-solid fa-square-poll-vertical" id="icon"></i></div>Results</a>
-                            <hr class="dropdown-divider bg-dark"/>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <hr class="dropdown-divider bg-dark" />
+                        <a id="nav-hover" class="nav-link mt-4" href="comelec.php">
+                            <div class="sb-nav-link-icon" id="icon"><i class="fas fa-home"></i></div>Home
+                        </a>
+                        <hr class="dropdown-divider bg-dark" />
+                        <a id="nav-hover" href="comelec-approval.php" class="nav-link">
+                            <div class="sb-nav-link-icon"><i class="fas fa-check-square fa-spin" id="icon"></i></div>Approval
+                        </a>
+                        <hr class="dropdown-divider bg-dark" />
+                        <a id="nav-hover" href="comelec-disapproved.php" class="nav-link">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-trash" id="icon"></i></div>Disapproved
+                        </a>
+                        <hr class="dropdown-divider bg-dark" />
+                        <a id="nav-hover" href="comelec-voter.php" class="nav-link active">
+                            <div class="sb-nav-link-icon"><i class="fas fa-user" id="icon"></i></div>Voter
+                        </a>
+                        <hr class="dropdown-divider bg-dark" />
+                        <a id="nav-hover" href="comelec-results.php" class="nav-link ">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-square-poll-vertical" id="icon"></i></div>Results
+                        </a>
+                        <hr class="dropdown-divider bg-dark" />
 
-                            <a id="nav-hover" href="comelec-position.php" class="nav-link"><div class="sb-nav-link-icon"><i 
-                                class='fas fa-user' id="icon"></i></div>Position</a>
-                            <hr class="dropdown-divider bg-white"/>
+                        <a id="nav-hover" href="comelec-position.php" class="nav-link">
+                            <div class="sb-nav-link-icon"><i class='fas fa-user' id="icon"></i></div>Position
+                        </a>
+                        <hr class="dropdown-divider bg-white" />
 
-                            <a id="nav-hover" href="comelec-requirement.php" class="nav-link"><div class="sb-nav-link-icon"><i 
-                                class="fas fa-asterisk" id="icon"></i></div>Requirement</a>
-                            <hr class="dropdown-divider bg-white"/>
+                        <a id="nav-hover" href="comelec-requirement.php" class="nav-link">
+                            <div class="sb-nav-link-icon"><i class="fas fa-asterisk" id="icon"></i></div>Requirement
+                        </a>
+                        <hr class="dropdown-divider bg-white" />
 
-                            <a id="nav-hover" href="comelec-party.php" class="nav-link"><div class="sb-nav-link-icon"><i 
-                                class="fa-solid fa-hand-fist" id="icon"></i></div>Party</a>
-                            <hr class="dropdown-divider bg-white"/>
-                        
-                        </div>
+                        <a id="nav-hover" href="comelec-party.php" class="nav-link">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-hand-fist" id="icon"></i></div>Party
+                        </a>
+                        <hr class="dropdown-divider bg-white" />
 
                     </div>
-                    <div class="sb-sidenav-footer" id="nav-footer">
-                        <div class="small">Logged in as:</div>
-                    
-                    </div>
-                </nav>
-            </div>
-            <div id="layoutSidenav_content">
-                <main>
-                    <div class="d-flex justify-content-between mt-4 mx-4 my-3">
-                        
-                        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                              <li class="breadcrumb-item"><a href="COMELEC-Disapprove.html" style="text-decoration: none;"> <i class="fa-solid fa-trash"></i> DISAPPROVED</a></li>
-                              <li class="breadcrumb-item active" aria-current="page"> <i 
-                                class="fas fa-user"></i> VOTER</li>
-                            </ol>
-                        </nav>
 
-                        
-                     
-                       
+                </div>
+                <div class="sb-sidenav-footer" id="nav-footer">
+                    <div class="small">Logged in as:</div>
+
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="d-flex justify-content-between mt-4 mx-4 my-3">
+
+                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="COMELEC-Disapprove.html" style="text-decoration: none;"> <i class="fa-solid fa-trash"></i> DISAPPROVED</a></li>
+                            <li class="breadcrumb-item active" aria-current="page"> <i class="fas fa-user"></i> VOTER</li>
+                        </ol>
+                    </nav>
+
+
+
+
+                </div>
+                <hr>
+                <div class="card mx-3 my-3 mt-3 mb-4" id="shadow">
+                    <div class="class-title">
+                        <h3 class="mx-3 my-3"> Import CSV/Excel file</h3>
                     </div>
                     <hr>
-                    <div class="card mx-3 my-3 mt-3 mb-4" id="shadow">
-                        <div class="class-title"> <h3 class="mx-3 my-3"> Import CSV/Excel file</h3></div>
-                        <hr>
-                        <div class="card-body">
-                           <form class="d-flex" action="">
-                                <div class="col-sm-4">
-                                    <input class="form-control form-control-lg" id="formFileLg" type="file">
-                                </div>
-                                <button class="btn btn-lg btn-primary mx-3"> UPLOAD</button>
-                           </form> 
-                            
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between mt-4 mx-4 my-3">
-                     
+                    <div class="card-body">
                         <form class="d-flex" action="">
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected>Select Election</option>
-                                <option value="1">ITE ELECTION</option>
-                                <option value="2">CSSG ELECTION</option>
-                            </select>
-
-                            <select class="form-select mx-3" aria-label="Default select example">
-                                <option selected>Select Voter Type</option>
-                                <option value="1">ITE ELECTION</option>
-                                <option value="2">CSSG ELECTION</option>
-                            </select>
-                            
-                            <button class="btn btn-primary mx-2">GENERATE</button>
+                            <div class="col-sm-4">
+                                <input class="form-control form-control-lg" id="formFileLg" type="file">
+                            </div>
+                            <button class="btn btn-lg btn-primary mx-3"> UPLOAD</button>
                         </form>
 
-                  
-                     
-                        <button class="btn btn-primary mx-2">PRINT</button>
-
                     </div>
-                   
-                    
-                    <div class="card mx-3 my-3 mt-3 mb-4" id="shadow">
-                        <div class="card-body table-responsive">
-                            <table class="table table-hover" id="datatablesSimple">
-                                <thead>
+                </div>
+                <div class="d-flex justify-content-between mt-4 mx-4 my-3">
+
+                    <?php
+                    $election = $vote->getElectionId();
+                    ?>
+
+                    <form class="d-flex" action="">
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected>Select Election</option>
+                            <?php foreach ($election as $elec) { ?>
+                                <option value="<?= $elec['election_name'] ?>" ><?= $elec['election_name'] ?></option>
+
+                            <?php } ?>
+                        </select>
+
+                        <select class="form-select mx-3" aria-label="Default select example">
+                            <option selected>Select Voter Type</option>
+                            <?php foreach ($election as $elec) { ?>
+                                <option value="<?= $elec['election_name'] ?>" ><?= $elec['election_name'] ?></option>
+                            <?php } ?>
+                        </select>
+
+                        <button class="btn btn-primary mx-2">GENERATE</button>
+                    </form>
+
+                    <button class="btn btn-primary mx-2">PRINT</button>
+
+                </div>
+
+
+                <div class="card mx-3 my-3 mt-3 mb-4" id="shadow">
+                    <div class="card-body table-responsive">
+                        <table class="table table-hover" id="datatablesSimple">
+                            <thead>
+                                <tr>
+                                    <th>SCHOOL ID</th>
+                                    <th>FULL NAME</th>
+                                    <th>GENDER</th>
+                                    <th>COURSE</th>
+                                    <th>YEAR LEVEL</th>
+                                    <th>PASSWORD</th>
+                                    <th>ACTION</th>
+                                </tr>
+                            <tbody>
+                                
+                                <?php foreach ($voters as $voter) { ?>
                                     <tr>
-                                        <th>SCHOOL ID</th>
-                                        <th>FULL NAME</th>
-                                        <th>GENDER</th>
-                                        <th>COURSE</th>
-                                        <th>YEAR LEVEL</th>
-                                        <th>PASSWORD</th>
-                                        <th>ACTION</th>
+                                        <td><?= $voter['school_id'] ?></td>
+                                        <td><?= $voter['first_name'] . " " . $voter['middle_name'] . " " . $voter['last_name'] ?></td>
+                                        <td><?= $voter['gender']; ?></td>
+                                        <td><?= $voter['course']; ?></td>
+                                        <td><?= $voter['year_level']; ?></td>
+                                        <td><?= $voter['password']; ?></td>
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+                                                <button class="btn btn-sm btn-outline-danger" tabindex="-1" data-bs-toggle="modal" data-bs-target="#delete-voter<?= $voter['student_id'] ?>"><i class="fas fa-trash"></i> Delete</button>
+                                            </div>
+
+                                        </td>
+
                                     </tr>
-                                    <tbody>
-                                        <tr>
-                                            <td>19-002233</td>
-                                            <td>John Doe</td>
-                                            <td>M</td>
-                                            <td>BSIT</td>
-                                            <td>YEAR LEVEL</td>
-                                            <td>PASSWORD</td>
-                                            <td>
-                                                <div class="d-flex justify-content-center">
-                                                    <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i> Delete</button>
-                                                </div>
-                                               
-                                            </td>
-                                           
-                                        </tr>
+                                    <?php 
+                                        include('includes/modals.php');
+                                        ?>
+                                <?php } ?>
 
-                                      
-                                        
-                                    </tbody>
-                                  
-                                </thead>
+                            </tbody>
 
-                            </table>
-                        
-                        </div>
+                            </thead>
+
+                        </table>
+
                     </div>
-                </main>
+                </div>
+            </main>
 
-                
+
 
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
@@ -161,7 +182,7 @@ $vote->adminSession();
             </footer>
         </div>
         <script>
-            $(document).ready(function () {
+            $(document).ready(function() {
                 $('#datatablesSimple').DataTable();
             });
         </script>
@@ -177,5 +198,6 @@ $vote->adminSession();
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
-    </body>
+</body>
+
 </html>

@@ -10,14 +10,14 @@ $par = $vote->getPartyId();
 
 ?>
 <main>
-  <div class="container mt-4">
-    <h1> OFFICIAL CERTIFICATION OF CANDIDACY </h1>
+  <div class="container mt-4 pt-5">
+    <h1 class="text-center mb-3"> OFFICIAL CERTIFICATION OF CANDIDACY </h1>
     <form action="" method="POST" enctype="multipart/form-data">
       <div class="row">
         <div class="col-md-3 mt-3">
           <div class="form-group">
             <label for="StudentID">Student ID</label>
-            <input type="text" class="form-control" id="exampleInputEmail1" name="student_id" aria-describedby="emailHelp" placeholder="Enter student ID">
+            <input type="text" class="form-control" id="exampleInputEmail1" name="student_id" aria-describedby="" placeholder="Enter student ID">
           </div>
         </div>
 

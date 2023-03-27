@@ -1,19 +1,16 @@
 <?php
 include('includes/admin-header.php');
-require_once('class.php');
 
-$admin = $vote->getAdmins();
-
-
-$vote->addAdmin();
-
-$vote->editAdmin();
-$vote->deleteAdmin();
 
 ?>
 
 <body class="sb-nav-fixed">
     <?php
+    require_once('class.php');
+    $admin = $vote->getAdmins();
+    $vote->addAdmin();
+    $vote->editAdmin();
+    $vote->deleteAdmin();
     include('includes/admin-nav.php');
     ?>
     <div id="layoutSidenav">
