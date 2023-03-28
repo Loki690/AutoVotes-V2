@@ -1,17 +1,21 @@
 <?php
 
 include('includes/admin-header.php');
-require_once('class.php');
 
 
-$vote->adminSession();
+
+
+
 
 ?>
 
 <body class="sb-nav-fixed">
     <?php
-
+    require_once('class.php');
     $applicants = $vote->getApplicants();
+    $requirements = $vote->getRequirements();
+    $vote->submitReq();
+    $vote->adminSession();
 
     include('includes/admin-nav.php');
     ?>
@@ -59,7 +63,7 @@ $vote->adminSession();
                     </div>
                 </div>
                 <div class="sb-sidenav-footer" id="nav-footer">
-                    <div class="small">Logged in as:</div>
+                    <div class="small text-white">Logged in as: <?= $adminDetails['last_name'] ?></div>
 
                 </div>
             </nav>
@@ -71,7 +75,7 @@ $vote->adminSession();
 
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="COMELEC.html" style="text-decoration: none;"> <i class="fa-solid fa-home"></i> HOME</a></li>
+                            <li class="breadcrumb-item"><a href="comelec.php" style="text-decoration: none;"> <i class="fa-solid fa-home"></i> HOME</a></li>
                             <li class="breadcrumb-item active" aria-current="page"> <i class="fas fa-check-square"></i> APPROVAL</li>
                         </ol>
                     </nav>
@@ -92,10 +96,12 @@ $vote->adminSession();
 
                                 </tr>
                             <tbody>
+
                                 <?php foreach ($applicants as $applicant) { ?>
                                     <tr>
                                         <td><?= $applicant['student_id'] ?></td>
                                         <td><?= $applicant['first_name'] . " " . $applicant['middle_name'] . " " . $applicant['last_name']; ?></td>
+
                                         <?php
                                         $position_id = $applicant['position_id'];
                                         $pos = $vote->getPosition($position_id);
@@ -115,31 +121,42 @@ $vote->adminSession();
                                         <?php } else { ?>
                                             <td><?= $elec['election_name'] ?></td>
                                         <?php } ?>
+
+                                       
+
+                                        
                                         <td>
+                                        <?php foreach($requirements as $req) {?>
+                                            
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" name="spr">
+                                                <form action="" method="POST" id="form">
+                                                <input class="form-check-input" type="checkbox" value="<?= $req['requirement_id'] ?>" id="defaultCheck1" name="requirement[]">
                                                 <label class="form-check-label" for="defaultCheck1">
-                                                   SPR
+                                                  <?= $req['requirement'] ?>
                                                 </label>
+                                                <input type="hidden" name="id" value="<?= $applicant['id'] ?>" id="">
+                                                </form>
                                             </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" name="school_id" >
-                                                <label class="form-check-label" for="defaultCheck1">
+                                            <!-- <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" name="school_id" >
+                                                <label class="form-check-label" for="defaultCheck2">
                                                     SCHOOL ID
                                                 </label>
-                                            </div>
+                                            </div> -->
+                                            <?php } ?>
+                                           
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-center">
-                                                <button class="btn btn-sm btn-outline-success mx-3"><i class="fas fa-check"></i> Approve</button>
-
+                                                <input id="submitBtn" onclick="submitForms()" type="submit" class="btn btn-sm btn-outline-success mx-3" name="submit-req">
                                             </div>
-
+                                            
+                                            
                                         </td>
-
+                                       
+                                  
+                                        
                                     </tr>
-
-
 
                                 <?php } ?>
                             </tbody>
@@ -152,58 +169,6 @@ $vote->adminSession();
                 </div>
             </main>
 
-            <div class="modal fade modal-signin" id="add" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-                        <div class="modal-header p-3 pb-3">
-                            <h5 class="modal-title" id="staticBackdropLabel">Adding Admin</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <br>
-                        <form action="" method="POST" enctype="multipart/form-data">
-                            <div class="modal-body p-5 pt-0">
-
-                                <div class="mb-3 row">
-                                    <label for="inputPassword" class="col-sm-3 col-form-label">First Name: </label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" placeholder="First Name" id="">
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 row">
-                                    <label for="MiddleName" class="col-sm-3 col-form-label">Middle Name: </label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" placeholder="Middle Name" id="">
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 row">
-                                    <label for="LastName" class="col-sm-3 col-form-label">Last Name: </label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" placeholder="Last Name" id="">
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 row">
-                                    <label for="Access Code" class="col-sm-3 col-form-label">Access Code: </label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" placeholder="Access Code" id="">
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Add as Admin</button>
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
-
-
-            </div>
-
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-center small">
@@ -212,6 +177,12 @@ $vote->adminSession();
                 </div>
             </footer>
         </div>
+        <script>
+           function submitForm() {
+            const form = document.getElementById('form');
+            form.submit();
+           }
+        </script>
         <script>
             $(document).ready(function() {
                 $('#datatablesSimple').DataTable();

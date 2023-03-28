@@ -3,10 +3,13 @@
 include('includes/admin-header.php');
 require_once('class.php');
 $vote->adminSession();
+$vote->addParty();
+$vote->editParty();
 
 ?>
     <body class="sb-nav-fixed">
     <?php
+    $partys = $vote->getPartyId();
     include('includes/admin-nav.php');
     ?>
         <div id="layoutSidenav">
@@ -48,9 +51,9 @@ $vote->adminSession();
 
                     </div>
                     <div class="sb-sidenav-footer" id="nav-footer">
-                        <div class="small">Logged in as:</div>
-                    
-                    </div>
+                    <div class="small text-white">Logged in as: <?= $adminDetails['last_name'] ?></div>
+
+                </div>
                 </nav>
             </div>
             <div id="layoutSidenav_content">
@@ -59,7 +62,7 @@ $vote->adminSession();
                         
                         <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                              <li class="breadcrumb-item"><a href="COMELEC-Requirement.html" style="text-decoration: none;"> <i class="fa-solid fa-asterisk"></i> REQUIREMENTS</a></li>
+                              <li class="breadcrumb-item"><a href="comelec-requirement.php" style="text-decoration: none;"> <i class="fa-solid fa-asterisk"></i> REQUIREMENTS</a></li>
                               <li class="breadcrumb-item active" aria-current="page"> <i 
                                 class="fas fa-hand-fist"></i> PARTY</li>
                             </ol>
@@ -67,7 +70,7 @@ $vote->adminSession();
 
 
                         <div>
-                            <button type="button" class="btn btn-sm btn-primary mb-3 me-2" tabindex="-1" data-bs-toggle="modal" data-bs-target="#add">
+                            <button type="button" class="btn btn-sm btn-primary mb-3 me-2" tabindex="-1" data-bs-toggle="modal" data-bs-target="#add-party">
                                 <i class="fa fa-plus" aria-hidden="true"></i>
                                     ADD PARTY
                             </button>
@@ -87,19 +90,22 @@ $vote->adminSession();
                                       
                                     </tr>
                                     <tbody>
+                                        <?php foreach($partys as $party) {?>
                                         <tr>
-                                            <td>TEAM DROPBOX</td>
+                                            <td><?= $party['party']; ?></td>
                                             <td>
                                                 <div class="d-flex justify-content-center">
-                                                    <button class="btn btn-sm btn-outline-success mx-3"><i class="fas fa-edit"></i> Edit</button>
-                                                    <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i> Delete</button>
+                                                    <button class="btn btn-sm btn-outline-success mx-3" tabindex="-1" data-bs-toggle="modal" data-bs-target="#edit-party<?= $party['party_id'] ?>"><i class="fas fa-edit"></i> Edit</button>
+                                                    <button class="btn btn-sm btn-outline-danger" tabindex="-1" data-bs-toggle="modal" data-bs-target="#delete-party<?= $party['party_id'] ?>"><i class="fas fa-trash"></i> Delete</button>
                                                 </div>
-                                               
                                             </td>
-                                           
                                         </tr>
 
-                                      
+                                        <?php
+                                    include('includes/modals.php');
+                                    ?>
+
+                                        <?php } ?>
                                         
                                     </tbody>
                                   
@@ -111,39 +117,7 @@ $vote->adminSession();
                     </div>
                 </main>
 
-                <div class="modal fade modal-signin" id="add" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" >
-                        <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-                            <div class="modal-header p-3 pb-3">
-                                <h5 class="modal-title" id="staticBackdropLabel">Adding Admin</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <br>
-                            <form action="" method="POST" enctype="multipart/form-data">
-                                <div class="modal-body p-5 pt-0">
-                            
-                                    <div class="mb-3 row">
-                                        <label for="inputParty" class="col-sm-3 col-form-label">Party: </label>
-                                        <div class="col-sm-8">
-                                        <input type="text" class="form-control" placeholder="Party" id="">
-                                        </div>
-                                    </div>
-
-           
-                              
-                                    
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Add Party</button>
-                                </div>
-                        
-                            </form>
-                        </div>
-                    </div>
-
-                
-                </div>
+               
 
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">

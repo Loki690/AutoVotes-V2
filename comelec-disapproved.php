@@ -5,6 +5,8 @@ require_once('class.php');
 
 
 $vote->adminSession();
+$applicants = $vote->getDeniedApplicants();
+$vote->deleteDeniedCandi();
 
 ?>
     <body class="sb-nav-fixed">
@@ -50,9 +52,9 @@ $vote->adminSession();
 
                     </div>
                     <div class="sb-sidenav-footer" id="nav-footer">
-                        <div class="small">Logged in as:</div>
-                    
-                    </div>
+                    <div class="small text-white">Logged in as: <?= $adminDetails['last_name'] ?></div>
+
+                </div>
                 </nav>
             </div>
             <div id="layoutSidenav_content">
@@ -60,7 +62,7 @@ $vote->adminSession();
                     <div class="d-flex justify-content-between mt-4 mx-4 my-3">
                         <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="COMELEC-Approval.html" style="text-decoration: none;"> <i class="fas fa-check-square"></i> APPROVAL</a></li>
+                                <li class="breadcrumb-item"><a href="comelec-approval.php" style="text-decoration: none;"> <i class="fas fa-check-square"></i> APPROVAL</a></li>
                               <li class="breadcrumb-item active" aria-current="page"> <i class="fas fa-trash"></i> DISAPPROVED</li>
                             </ol>
                         </nav>
@@ -75,7 +77,7 @@ $vote->adminSession();
                             <table class="table table-hover" id="datatablesSimple">
                                 <thead>
                                     <tr>
-                                        <th></th>
+                                        <th>Student ID</th>
                                         <th>FULL NAME</th>
                                         <th>POSITION</th>
                                         <th>PARTY</th>
@@ -84,20 +86,47 @@ $vote->adminSession();
                                       
                                     </tr>
                                     <tbody>
+                                    <?php if(!empty($applicants)) {?>
+                                        <?php foreach ($applicants as $applicant) { 
+                                            
+                                            $party_id = $applicant['party_id'];
+                                            $party = $vote->getParty($party_id);
+        
+                                            $position_id = $applicant['position_id'];
+                                            $pos = $vote->getPosition($position_id);
+        
+                                            $election_id = $applicant['election_id'];
+                                            $elec = $vote->getElection($election_id);
+                                            
+                                            ?>
                                         <tr>
-                                            <td> </td>
-                                            <td>Tiger Nixon</td>
-                                            <td>President</td>
-                                            <td>TDB</td>
-                                            <td>ITE ELECTION</td>
+                                            <td><?= $applicant['student_id'] ?></td>
+                                            <td><?= $applicant['first_name'] . " " . $applicant['middle_name'] . " " . $applicant['last_name'] ?></td>
+                                            <td><?= $pos['position_title']; ?></td>
+                                            <td><?= $party['party'] ?></td>
+                                            <?php if (empty($elec['election_name'])) { ?>
+                                            <td>No data</td>
+                                        <?php } else { ?>
+                                            <td><?= $elec['election_name'] ?></td>
+                                        <?php } ?>
                                             <td>
                                                 <div class="d-flex justify-content-center">
-                                                    <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i> Delete</button>
+                                                    <button class="btn btn-sm btn-outline-danger" tabindex="-1" data-bs-toggle="modal" data-bs-target="#delete-denied<?= $applicant['id'] ?>"><i class="fas fa-trash"></i> Delete</button>
                                                 </div>
                                                
                                             </td>
                                            
                                         </tr>
+
+                                        
+                                    <?php
+                                    include('includes/modals.php');
+                                    ?>
+                                        <?php } ?>
+
+
+
+                                        <?php } ?>
                                         
                                     </tbody>
                                   

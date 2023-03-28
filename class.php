@@ -311,9 +311,7 @@ class Voting
     }
   }
 
-  public function addPartyList()
-  {
-  }
+
 
   public function registerCandidate()
   {
@@ -610,6 +608,48 @@ class Voting
     $connection = $this->openConnection();
 
     $stmt = $connection->prepare("SELECT * FROM `applicants`");
+    $stmt->execute();
+    $applicants = $stmt->fetchAll();
+
+    $total = $stmt->rowCount();
+
+    if ($total > 0) {
+      if (isset($applicants)) {
+        return $applicants;
+      }
+    } else {
+      return $this->show_404();
+      echo $connection->errorInfo();
+    }
+  }
+
+  public function getApplicantsForInterview()
+  {
+
+    $connection = $this->openConnection();
+
+    $stmt = $connection->prepare("SELECT * FROM `applicants` where `application_status` = 'for_interview' ");
+    $stmt->execute();
+    $applicants = $stmt->fetchAll();
+
+    $total = $stmt->rowCount();
+
+    if ($total > 0) {
+      if (isset($applicants)) {
+        return $applicants;
+      }
+    } else {
+      return $this->show_404();
+      echo $connection->errorInfo();
+    }
+  }
+
+  public function getDeniedApplicants()
+  {
+
+    $connection = $this->openConnection();
+
+    $stmt = $connection->prepare("SELECT * FROM `applicants` where `application_status` = 'denied' and `x` != 'deleted' ");
     $stmt->execute();
     $applicants = $stmt->fetchAll();
 
@@ -1102,6 +1142,19 @@ class Voting
     $connection = $this->openConnection();
     if (isset($_POST['edit-requirement'])) {
 
+      $requirement = $_POST['requirement'];
+      $requirement_id = $_POST['requirement_id'];
+
+      $stmt = $connection->prepare("UPDATE `requirements` SET `requirement` = '$requirement' WHERE `requirement_id` = ? ");
+      $stmt->execute([$requirement_id]);
+
+    ?>
+      <script>
+        confirm('Updated!');
+        window.location.href = "comelec-requirement.php";
+      </script>
+<?php
+
     }
 
    
@@ -1120,13 +1173,144 @@ class Voting
       $stmt->execute([$requirement_id]);
       ?>
       <script>
-        confirm('Deleted Successfull');
+        confirm('Successfull');
         window.location.href = "comelec-requirement.php";
       </script>
     <?php
     }
 
   }
+
+  public function addParty()
+  {
+    $connection = $this->openConnection();
+
+    if (isset($_POST['add-party'])) {
+
+      $party = $_POST['party'];
+
+      $stmt = $connection->prepare("INSERT INTO `party` (`party`) VALUES (?) ");
+      $stmt->execute([$party]);
+
+      ?>
+      <script>
+        alert('Added Party');
+        window.location.href = "comelec-party.php";
+      </script>
+    <?php
+ 
+    }
+  }
+  
+  public function editParty(){
+    $connection = $this->openConnection();
+    if (isset($_POST['edit-party'])) {
+
+      $party = $_POST['party'];
+      $party_id = $_POST['party_id'];
+
+      $stmt = $connection->prepare("UPDATE `party` SET `party` = '$party' WHERE `party_id` = ? ");
+      $stmt->execute([$party_id]);
+
+    ?>
+      <script>
+        confirm('Updated!');
+        window.location.href = "comelec-party.php";
+      </script>
+<?php
+
+  }
+}
+
+  public function acceptFinalCandi(){
+
+    $connection = $this->openConnection();
+    if (isset($_POST['accept-candidate'])) {
+
+      $applicant = $_POST['id'];
+      $status = "final";
+
+      $stmt = $connection->prepare("UPDATE `applicants` SET `application_status` = '$status' WHERE `id` = ? ");
+      $stmt->execute([$applicant]);
+
+      ?>
+      <script>
+        confirm('Applicant Accepted');
+        window.location.href = "admin-interview.php";
+      </script>
+<?php
+
+    }
+
+  }
+
+  public function deniedCandi(){
+
+    $connection = $this->openConnection();
+    if (isset($_POST['denied-candidate'])) {
+
+      $applicant = $_POST['id'];
+      $status = "denied";
+
+      $stmt = $connection->prepare("UPDATE `applicants` SET `application_status` = '$status' WHERE `id` = ? ");
+      $stmt->execute([$applicant]);
+
+      ?>
+      <script>
+        confirm('Applicant Denied');
+        window.location.href = "admin-interview.php";
+      </script>
+<?php
+
+    }
+
+  }
+
+  public function deleteDeniedCandi(){
+
+    $connection = $this->openConnection();
+    if (isset($_POST['delete-denied'])) {
+
+      $applicant = $_POST['id'];
+      $x = "deleted";
+
+      $stmt = $connection->prepare("UPDATE `applicants` SET `x` = '$x' WHERE `id` = ? ");
+      $stmt->execute([$applicant]);
+
+      ?>
+      <script>
+        confirm('Applicant Denied');
+        window.location.href = "comelec-disapproved.php";
+      </script>
+<?php
+
+    }
+
+  }
+
+  public function submitReq(){
+
+    $connection = $this->openConnection();
+
+    if (isset($_POST['submit-req'])) {
+
+      $requirement = implode(",", $_POST['requirement']);
+      $id = $_POST['id'];
+
+      $stmt = $connection->prepare("UPDATE `applicants` SET `requirements` = '$requirement', `application_status` = 'for_interview' WHERE `id` = ? ");
+      $stmt->execute([$id]);
+      
+      ?>
+      <script>
+        confirm('Requirement Submitted');
+        window.location.href = "comelec-approval.php";
+      </script>
+    <?php
+
+    }
+
+  }
+
 }
 
 

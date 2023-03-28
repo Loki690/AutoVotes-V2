@@ -25,8 +25,9 @@ $par = $vote->getPartyId();
           <div class="form-group">
             <label for="ElectionID">Election ID</label>
             <select class="form-select" name="election_id" aria-label="Default select example">
+            <option selected>Select Election</option>
               <?php foreach ($elec as $item) { ?>
-                <option value="<?= $item['election_id'] ?>" selected><?= $item['election_name']; ?></option>
+                <option value="<?= $item['election_id'] ?>"><?= $item['election_name']; ?></option>
                 <!-- <option value="">CSSG</option>
                   <option value="">ITE</option> -->
               <?php } ?>
@@ -45,8 +46,9 @@ $par = $vote->getPartyId();
           <div class="form-group">
             <label for="ElectionID">Position ID</label>
             <select class="form-select" name="position_id" aria-label="Default select example">
+              <option selected>Select Available Position</option>
               <?php foreach ($pos as $item) { ?>
-                <option value="<?= $item['position_id'] ?>" selected><?= $item['position_title']; ?></option>
+                <option value="<?= $item['position_id'] ?>"><?= $item['position_title']; ?></option>
               <?php } ?>
             </select>
 
@@ -57,8 +59,9 @@ $par = $vote->getPartyId();
           <div class="form-group">
             <label for="PartyID">Party ID</label>
             <select class="form-select" name="party_id" aria-label="Default select example">
+            <option selected>Select Party</option>
               <?php foreach ($par as $item) { ?>
-                <option value="<?= $item['party_id'] ?>" selected><?= $item['party'] ?></option>
+                <option value="<?= $item['party_id'] ?>"><?= $item['party'] ?></option>
               <?php } ?>
             </select>
           </div>
