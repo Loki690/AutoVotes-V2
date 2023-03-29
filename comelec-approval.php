@@ -12,7 +12,7 @@ include('includes/admin-header.php');
 <body class="sb-nav-fixed">
     <?php
     require_once('class.php');
-    $applicants = $vote->getApplicants();
+    $applicants = $vote->getApplicantsApproval();
     $requirements = $vote->getRequirements();
     $vote->submitReq();
     $vote->adminSession();
@@ -83,6 +83,7 @@ include('includes/admin-header.php');
                 <hr>
                 <div class="card mx-3 my-3 mt-3 mb-4" id="shadow">
                     <div class="card-body table-responsive">
+                        <form action="" method="POST">
                         <table class="table table-hover" id="datatablesSimple">
                             <thead>
                                 <tr>
@@ -93,10 +94,11 @@ include('includes/admin-header.php');
                                     <th>ELECTION</th>
                                     <th>REQUIREMENTS</th>
                                     <th>ACTION</th>
+                                   
 
                                 </tr>
                             <tbody>
-
+                                <?php if(!empty($applicants)) {?>
                                 <?php foreach ($applicants as $applicant) { ?>
                                     <tr>
                                         <td><?= $applicant['student_id'] ?></td>
@@ -126,44 +128,39 @@ include('includes/admin-header.php');
 
                                         
                                         <td>
+                                        <form action="" method="POST">
                                         <?php foreach($requirements as $req) {?>
                                             
                                             <div class="form-check">
-                                                <form action="" method="POST" id="form">
-                                                <input class="form-check-input" type="checkbox" value="<?= $req['requirement_id'] ?>" id="defaultCheck1" name="requirement[]">
+                                                
+                                                <input class="form-check-input" type="checkbox" value="<?= $req['requirement_id'] ?>" id="defaultCheck1" name="requirement[]" required>
                                                 <label class="form-check-label" for="defaultCheck1">
                                                   <?= $req['requirement'] ?>
                                                 </label>
                                                 <input type="hidden" name="id" value="<?= $applicant['id'] ?>" id="">
-                                                </form>
+                                               
                                             </div>
-                                            <!-- <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" name="school_id" >
-                                                <label class="form-check-label" for="defaultCheck2">
-                                                    SCHOOL ID
-                                                </label>
-                                            </div> -->
+                                           
                                             <?php } ?>
                                            
+                                            
                                         </td>
                                         <td>
-                                            <div class="d-flex justify-content-center">
-                                                <input id="submitBtn" onclick="submitForms()" type="submit" class="btn btn-sm btn-outline-success mx-3" name="submit-req">
+                                        <div class="d-flex justify-content-center mt-3">
+                                                <button type="submit" class="btn btn-sm btn-outline-success mx-3" name="submit-req">Submit</button>
                                             </div>
-                                            
-                                            
                                         </td>
-                                       
-                                  
-                                        
+                                   
                                     </tr>
 
+                                <?php } ?>
                                 <?php } ?>
                             </tbody>
 
                             </thead>
 
                         </table>
+                        </form> 
 
                     </div>
                 </div>
@@ -178,10 +175,10 @@ include('includes/admin-header.php');
             </footer>
         </div>
         <script>
-           function submitForm() {
-            const form = document.getElementById('form');
-            form.submit();
-           }
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.addEventListener('click', function(){
+                document.getElementById('form1').submit();
+            });
         </script>
         <script>
             $(document).ready(function() {

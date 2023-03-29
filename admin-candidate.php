@@ -2,7 +2,7 @@
 require_once('class.php');
 include('includes/admin-header.php');
 
-$candidates = $vote->getCandidates();
+$candidates = $vote->getApplicantsForCandidate();
 ?>
 
 <body class="sb-nav-fixed">
@@ -52,11 +52,9 @@ $candidates = $vote->getCandidates();
         <div id="layoutSidenav_content">
             <main>
                 <div class="d-flex justify-content-between mt-4 mx-4 my-3">
-                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
-                        aria-label="breadcrumb">
+                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="admin-interview.php" style="text-decoration: none;"> <i
-                                        class="fa-solid fa-podcast"></i> INTERVIEW</a></li>
+                            <li class="breadcrumb-item"><a href="admin-interview.php" style="text-decoration: none;"> <i class="fa-solid fa-podcast"></i> INTERVIEW</a></li>
                             <li class="breadcrumb-item active" aria-current="page"> <i class="fas fa-users"></i>
                                 CANDIDATES</li>
                         </ol>
@@ -74,56 +72,56 @@ $candidates = $vote->getCandidates();
                                     <th>Positon</th>
                                     <th>Party</th>
                                     <th>Election</th>
-                                   
-                                    <th>Status</th>
+                                    
+
+                                    <th>Action</th>
 
                                 </tr>
                             <tbody>
-                            <?php if(empty($candidates)) {?>
+                                <?php if(!empty($candidates)){ ?>
                                 <?php foreach ($candidates as $candidate) {
 
-                                    $applicant_id = $candidate['applicant_id'];
-                                    $app = $vote->getApplicant($applicant_id);
+                                    $party_id = $candidate['party_id'];
+                                    $party = $vote->getParty($party_id);
+
+                                    $position_id = $candidate['position_id'];
+                                    $pos = $vote->getPosition($position_id);
+
+                                    $election_id = $candidate['election_id'];
+                                    $elec = $vote->getElection($election_id);
 
                                 ?>
-                               
-                                <tr>
-                                    <?php if (empty($app['first_name'])) { ?>
-                                    <td>walay sulod</td>
-                                    <?php } else { ?>
-                                    <td><?= $app['first_name'] ?></td>
-                                    <?php } ?>
-                                    <?php 
-                                    $position_id = $app['position_id'];
-                                    $pos = $vote->getPosition($position_id);
-                                    ?>
-                                    <td><?= $pos['position_title'] ?></td>
-                                    <?php
-                                        $party_id = $app['party_id'];
-                                        $par = $vote->getParty($party_id);
-                                    ?>
-                                    <td><?= $par['party'] ?></td>
-                                    <?php
-                                        $election_id = $app['election_id'];
-                                        $elec = $vote->getElection($election_id);                                   
-                                    ?>
-                                    <td><?= $elec['election_name'] ?></td>
-                                   
-                                    <td>
-                                        <div class="d-flex justify-content-center">
-                                            
-                                            <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i>
-                                                Delete</button>
-                                        </div>
 
-                                    </td>
+                                    <tr>
 
-                                </tr>
-                           
+                                        <td><?= $candidate['first_name'] . " " . $candidate['middle_name'] . " " . $candidate['last_name'] ?></td>
+                                        <td><?= $pos['position_title']; ?></td>
+                                        <td><?= $party['party'] ?></td>
+                                        <?php if (empty($elec['election_name'])) { ?>
+                                            <td>No data</td>
+                                        <?php } else { ?>
+                                            <td><?= $elec['election_name'] ?>
+                                        
+                                        </td>
+                                        <?php } ?>
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+
+                                                <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i>
+                                                    Delete</button>
+                                            </div>
+
+                                        </td>
+
+                                    </tr>
+
                                 <?php } ?>
-                                <?php }else{
-                                    ?>
-                                    <h3>No data</h3>
+
+                                <?php } else {?>
+                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    <strong>No Data</strong>.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
                                     <?php }?>
                             </tbody>
 
@@ -144,20 +142,18 @@ $candidates = $vote->getCandidates();
             </footer>
         </div>
         <script>
-        $(document).ready(function() {
-            $('#datatablesSimple').DataTable();
-        });
+            $(document).ready(function() {
+                $('#datatablesSimple').DataTable();
+            });
         </script>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous">
         </script>
         <script src="assets/demo/chart-area-demo.js"></script>
         <script src="assets/demo/chart-bar-demo.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
 </body>
 

@@ -980,7 +980,7 @@ edit party -->
           <input type="hidden" value="<?= $party['party_id'] ?>" name="party_id">
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-danger" name="delete-requirement">Delete</button>
+          <button type="submit" class="btn btn-danger" name="delete-party">Delete</button>
         </div>
 
       </form>
@@ -1027,6 +1027,12 @@ accept candidate -->
       <br>
       <form action="" method="POST" enctype="multipart/form-data">
         <div class="modal-body p-5 pt-0">
+        <div class="row mb-3">
+            <label for="ElectionName" class="col-sm-3 col-form-label">Note: </label>
+            <div class="col-sm-8">
+            <textarea class="form-control" id="exampleFormControlTextarea1" name="notes" rows="4"></textarea>
+            </div>
+          </div>
           <div class="row">
             <label for="ElectionName" class="col-sm-3 col-form-label">Candidates Name: </label>
             <div class="col-sm-8">

@@ -82,6 +82,7 @@ $vote->deleteDeniedCandi();
                                         <th>POSITION</th>
                                         <th>PARTY</th>
                                         <th>ELECTION</th>
+                                        <th>NOTE</th>
                                         <th>ACTION</th>
                                       
                                     </tr>
@@ -109,6 +110,7 @@ $vote->deleteDeniedCandi();
                                         <?php } else { ?>
                                             <td><?= $elec['election_name'] ?></td>
                                         <?php } ?>
+                                        <td>NOtes</td>
                                             <td>
                                                 <div class="d-flex justify-content-center">
                                                     <button class="btn btn-sm btn-outline-danger" tabindex="-1" data-bs-toggle="modal" data-bs-target="#delete-denied<?= $applicant['id'] ?>"><i class="fas fa-trash"></i> Delete</button>

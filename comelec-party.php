@@ -5,6 +5,7 @@ require_once('class.php');
 $vote->adminSession();
 $vote->addParty();
 $vote->editParty();
+$vote->deleteParty();
 
 ?>
     <body class="sb-nav-fixed">
@@ -116,8 +117,6 @@ $vote->editParty();
                         </div>
                     </div>
                 </main>
-
-               
 
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">

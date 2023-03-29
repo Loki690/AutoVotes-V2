@@ -76,54 +76,62 @@ $vote->deniedCandi();
                                     <th>Position</th>
                                     <th>Party</th>
                                     <th>Election</th>
-                                    <th>Note</th>
+                                    <th>Email</th>
+                                    <th>Contact Number</th>
                                     <th>Action</th>
                                 </tr>
                             <tbody>
-                                <?php if(!empty($applicants)) {?>
-                                <?php foreach ($applicants as $applicant) {
-                                    // fething partys
-                                    $party_id = $applicant['party_id'];
-                                    $party = $vote->getParty($party_id);
+                                <?php if (!empty($applicants)) { ?>
+                                    <?php foreach ($applicants as $applicant) {
+                                        // fething partys
+                                        $party_id = $applicant['party_id'];
+                                        $party = $vote->getParty($party_id);
 
-                                    $position_id = $applicant['position_id'];
-                                    $pos = $vote->getPosition($position_id);
+                                        $position_id = $applicant['position_id'];
+                                        $pos = $vote->getPosition($position_id);
 
-                                    $election_id = $applicant['election_id'];
-                                    $elec = $vote->getElection($election_id);
+                                        $election_id = $applicant['election_id'];
+                                        $elec = $vote->getElection($election_id);
 
-                                ?>
-                                    <tr>
-                                        <td><?= $applicant['first_name'] . " " . $applicant['middle_name'] . " " . $applicant['last_name'] ?>
-                                        </td>
-                                        <td><?= $pos['position_title']; ?></td>
-                                        <td><?= $party['party'] ?></td>
-                                        <?php if (empty($elec['election_name'])) { ?>
-                                            <td>No data</td>
-                                        <?php } else { ?>
-                                            <td><?= $elec['election_name'] ?></td>
-                                        <?php } ?>
-                                        <td>dsfdsfs</td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <div class="dropdown">
-                                                    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        Action
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li><a class="dropdown-item" href="" tabindex="-1" data-bs-toggle="modal" data-bs-target="#accept-applicant<?= $applicant['id'] ?>">Accept as Candidate</a></li>
-                                                        <li><a class="dropdown-item" href="" tabindex="-1" data-bs-toggle="modal" data-bs-target="#denied-applicant<?= $applicant['id'] ?>">Denied</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <?php
-                                    include('includes/modals.php');
                                     ?>
+                                        <tr>
+                                            <td><?= $applicant['first_name'] . " " . $applicant['middle_name'] . " " . $applicant['last_name'] ?>
+                                            </td>
+                                            <td><?= $pos['position_title']; ?></td>
+                                            <td><?= $party['party'] ?></td>
+                                            <?php if (empty($elec['election_name'])) { ?>
+                                                <td>
+                                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                        <strong>No Data</strong>.
+                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                    </div>
+                                                </td>
+                                            <?php } else { ?>
+                                                <td><?= $elec['election_name'] ?>
 
-                                <?php } ?>
+                                                </td>
+                                            <?php } ?>
+                                            <td><?= $applicant['email'] ?></td>
+                                            <td><?= $applicant['contact_num'] ?></td>
+                                            <td>
+                                                <div class="d-flex justify-content-center">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            Action
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a class="dropdown-item" href="" tabindex="-1" data-bs-toggle="modal" data-bs-target="#accept-applicant<?= $applicant['id'] ?>">Accept as Candidate</a></li>
+                                                            <li><a class="dropdown-item" href="" tabindex="-1" data-bs-toggle="modal" data-bs-target="#denied-applicant<?= $applicant['id'] ?>">Denied</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                        include('includes/modals.php');
+                                        ?>
+
+                                    <?php } ?>
 
                                 <?php } ?>
                             </tbody>

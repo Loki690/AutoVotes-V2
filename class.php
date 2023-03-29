@@ -623,6 +623,49 @@ class Voting
     }
   }
 
+  public function getApplicantsForCandidate()
+  {
+
+    $connection = $this->openConnection();
+
+    $stmt = $connection->prepare("SELECT * FROM `applicants` where `application_status` = 'final'");
+    $stmt->execute();
+    $applicants = $stmt->fetchAll();
+
+    $total = $stmt->rowCount();
+
+    if ($total > 0) {
+      if (isset($applicants)) {
+        
+        return $applicants;
+      }
+    } else {
+      return $this->show_404();
+      echo $connection->errorInfo();
+    }
+  }
+
+  public function getApplicantsApproval()
+  {
+
+    $connection = $this->openConnection();
+
+    $stmt = $connection->prepare("SELECT * FROM `applicants` where not `application_status` =  'for_interview' and not `application_status` = 'denied' and not `application_status` = 'final'");
+    $stmt->execute();
+    $applicants = $stmt->fetchAll();
+
+    $total = $stmt->rowCount();
+
+    if ($total > 0) {
+      if (isset($applicants)) {
+        return $applicants;
+      }
+    } else {
+      return $this->show_404();
+      echo $connection->errorInfo();
+    }
+  }
+
   public function getApplicantsForInterview()
   {
 
@@ -1222,6 +1265,26 @@ class Voting
   }
 }
 
+  public function deleteParty(){
+
+    $connection = $this->openConnection();
+    if (isset($_POST['delete-party'])) {
+
+      $party_id = $_POST['party_id'];
+      $x = "deleted";
+
+      $stmt = $connection->prepare("UPDATE `party` SET `x` = '$x' WHERE `party_id` = ? ");
+      $stmt->execute([$party_id]);
+      ?>
+      <script>
+        confirm('Successfull');
+        window.location.href = "comelec-party.php";
+      </script>
+    <?php
+    }
+
+  }
+
   public function acceptFinalCandi(){
 
     $connection = $this->openConnection();
@@ -1251,9 +1314,13 @@ class Voting
 
       $applicant = $_POST['id'];
       $status = "denied";
+      $notes = $_POST['notes'];
 
       $stmt = $connection->prepare("UPDATE `applicants` SET `application_status` = '$status' WHERE `id` = ? ");
       $stmt->execute([$applicant]);
+
+      $stmt = $connection->prepare("INSERT INTO `applicant_logs`(`applicant_id`, `note`, `application_status`) VALUES (?,?,?)");
+      $stmt->execute([$applicant, $notes, $status]);
 
       ?>
       <script>
@@ -1291,7 +1358,6 @@ class Voting
   public function submitReq(){
 
     $connection = $this->openConnection();
-
     if (isset($_POST['submit-req'])) {
 
       $requirement = implode(",", $_POST['requirement']);
