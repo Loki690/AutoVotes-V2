@@ -42,6 +42,9 @@ $par = $vote->getPartyId();
           </div>
         </div>
 
+        <?php
+        ?>
+        
         <div class="col-md-3 mt-3">
           <div class="form-group">
             <label for="ElectionID">Position ID</label>

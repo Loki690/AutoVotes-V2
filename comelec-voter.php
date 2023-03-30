@@ -80,21 +80,25 @@ $vote->adminSession();
 
                 </div>
                 <hr>
+                <?php
+                $vote->insertExcelFile();
+                ?>
                 <div class="card mx-3 my-3 mt-3 mb-4" id="shadow">
                     <div class="class-title">
                         <h3 class="mx-3 my-3"> Import CSV/Excel file</h3>
                     </div>
                     <hr>
                     <div class="card-body">
-                        <form class="d-flex" action="">
+                        <form class="d-flex" action="" method="POST" enctype="multipart/form-data">
                             <div class="col-sm-4">
-                                <input class="form-control form-control-lg" id="formFileLg" type="file">
+                                <input class="form-control form-control-lg" id="formFileLg" type="file" name="formFileLg">
                             </div>
-                            <button class="btn btn-lg btn-primary mx-3"> UPLOAD</button>
+                            <button class="btn btn-lg btn-primary mx-3" name="upload"> UPLOAD</button>
                         </form>
 
                     </div>
                 </div>
+
                 <div class="d-flex justify-content-between mt-4 mx-4 my-3">
 
                     <?php

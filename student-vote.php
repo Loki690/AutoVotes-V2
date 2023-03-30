@@ -1,62 +1,41 @@
 <?php
-
 include('includes/admin-header.php');
+
 require_once('class.php');
-$candidates = $vote->getApplicantsForCandidate();
+
+$elec_id = $_GET['id'];
+
+$election = $vote->getElection($elec_id);
+$positions = $vote->getPositionId();
 
 ?>
 
 <body class="sb-nav-fixed">
-    <?php
-    include('includes/admin-nav.php');
-    ?>
+
+    <?php include('includes/user-nav.php') ?>
+
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <hr class="dropdown-divider bg-dark" />
-                        <a id="nav-hover" class="nav-link mt-4 active" href="comelec.php">
+                        <a id="nav-hover" class="nav-link mt-4 active" href="student-dashboard.php">
                             <div class="sb-nav-link-icon" id="icon"><i class="fas fa-home"></i></div>Home
                         </a>
                         <hr class="dropdown-divider bg-dark" />
-                        <a id="nav-hover" href="comelec-approval.php" class="nav-link">
-                            <div class="sb-nav-link-icon"><i class="fas fa-check-square fa-spin" id="icon"></i></div>Approval
+
+
+
+                        <a id="nav-hover" href="" class="nav-link ">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-square-poll-vertical" id="icon"></i>
+                            </div>Results
                         </a>
                         <hr class="dropdown-divider bg-dark" />
-                        <a id="nav-hover" href="comelec-disapproved.php" class="nav-link">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-trash" id="icon"></i></div>Disapproved
-                        </a>
-                        <hr class="dropdown-divider bg-dark" />
-                        <a id="nav-hover" href="comelec-voter.php" class="nav-link ">
-                            <div class="sb-nav-link-icon"><i class="fas fa-user" id="icon"></i></div>Voter
-                        </a>
-                        <hr class="dropdown-divider bg-dark" />
-                        <a id="nav-hover" href="comelec-results.php" class="nav-link ">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-square-poll-vertical" id="icon"></i></div>Results
-                        </a>
-                        <hr class="dropdown-divider bg-dark" />
-
-                        <a id="nav-hover" href="comelec-position.php" class="nav-link">
-                            <div class="sb-nav-link-icon"><i class='fas fa-user' id="icon"></i></div>Position
-                        </a>
-                        <hr class="dropdown-divider bg-white" />
-
-                        <a id="nav-hover" href="comelec-requirement.php" class="nav-link">
-                            <div class="sb-nav-link-icon"><i class="fas fa-asterisk" id="icon"></i></div>Requirement
-                        </a>
-                        <hr class="dropdown-divider bg-white" />
-
-                        <a id="nav-hover" href="comelec-party.php" class="nav-link">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-hand-fist" id="icon"></i></div>Party
-                        </a>
-                        <hr class="dropdown-divider bg-white" />
-
                     </div>
-
                 </div>
                 <div class="sb-sidenav-footer" id="nav-footer">
-                    <div class="small text-white">Logged in as: <?= $adminDetails['last_name'] ?></div>
+                    <div class="small">Logged in as:</div>
 
                 </div>
             </nav>
@@ -66,78 +45,78 @@ $candidates = $vote->getApplicantsForCandidate();
                 <div class="d-flex justify-content-between mt-4 mx-4 my-3">
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page"> <i class="fas fa-home"></i> CANDIDATE LIST</li>
+                            <li class="breadcrumb-item"><a href="student-dashboard.php" style="text-decoration: none;">
+                                    <i class="fas fa-home"></i> HOME</a></li>
+                            <li class="breadcrumb-item active" aria-current="page"> <i class="fas fa-trash"></i>
+                                <?= $election['election_name'] ?></li>
                         </ol>
                     </nav>
-
-
-
-
                 </div>
+
                 <hr>
-                <div class="card mx-3 my-3 mt-3 mb-4" id="shadow">
-                    <div class="card-body table-responsive">
-                        <table class="table table-hover" id="datatablesSimple">
-                            <thead>
-                                <tr>
-                                    <th>STUDENT ID</th>
-                                    <th>FULL NAME</th>
-                                    <th>POSITION</th>
-                                    <th>PARTY</th>
-                                    <th>ELECTION</th>
-                                    <th>ACTION</th>
+                <div class="container">
 
-                                </tr>
-                            <tbody>
-                                <?php if(!empty($candidates)){ ?>
-                                <?php foreach ($candidates as $candidate) {
+                    <h3 class="mx-3 mt-4"> <?= $election['election_name'] ?></h3>
 
-                                    $party_id = $candidate['party_id'];
-                                    $party = $vote->getParty($party_id);
+                    <?php foreach ($positions as $pos) {
 
-                                    $position_id = $candidate['position_id'];
-                                    $pos = $vote->getPosition($position_id);
+                        $position_id = $pos['position_id'];
+                        $candidates = $vote->getCandidate($elec_id, $position_id);
 
-                                    $election_id = $candidate['election_id'];
-                                    $elec = $vote->getElection($election_id);
-
-                                ?>
-                                    <tr>
-                                        <td><?= $candidate['student_id'] ?></td>
-                                        <td><?= $candidate['first_name'] . " " . $candidate['middle_name'] . " " . $candidate['last_name'] ?></td>
-                                        <td><?= $pos['position_title']; ?></td>
-                                        <td><?= $party['party'] ?></td>
-                                        <?php if (empty($elec['election_name'])) { ?>
-                                            <td>No data</td>
-                                        <?php } else { ?>
-                                            <td><?= $elec['election_name'] ?>
-                                        
-                                        </td>
-                                        <?php } ?>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <button class="btn btn-sm btn-primary mx-3"><i class="fas fa-edit"></i> Edit</button>
-                                                <button class="btn btn-sm btn-primary"><i class="fas fa-eye"></i> View Information</button>
+                    ?>
+                        <div class="row">
+                            <h3 class="mx-3 mt-4"> Candidates for <?= $pos['position_title'] ?> 
+                            </h3>
+                            <h4 class="mx-3 mt-4"> Only Vote <?= $pos['count']." ".$pos['position_title'] ?> 
+                            </h4>
+                                <?php if (!empty($candidates)) { ?>
+                                    <?php foreach ($candidates as $candi) {
+                                    ?>
+                                     <div class="col-sm-4">
+                                        <div class="card mx-3 mt-3">
+                                            <img class="card-img img-fluid" src="uploads/<?= $candi['photo'] ?>" width="200" alt="">
+                                            <h4 class="mx-3 my-3 text-center">
+                                                <?= $candi['first_name'] . " " . $candi['middle_name'] . " " . $candi['last_name'] ?>
+                                            </h4>
+                                            <div class="progress mx-5 mb-3">
+                                                <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25</div>
                                             </div>
-
-                                        </td>
-
-                                    </tr>
-
+                                            <div class="d-flex justify-content-center mb-3">
+                                                <?php 
+                                                $vote->vote();
+                                                $voter = $vote->getVoterVote($voterDetails['studentID'], $candi['id'], $pos['position_id']);
+                                                ?>
+                                                <?php if(empty($voter)){ ?>
+                                                <form action="" method="POST">
+                                                    <input type="hidden" value="<?= $candi['id'] ?>" name="candi_id">
+                                                    <input type="hidden" value="<?= $voterDetails['studentID']  ?>" name="voter_id">
+                                                    <input type="hidden" value="<?= $pos['position_id']  ?>" name="pos_id">
+                                                    <input type="hidden" value="<?= $elec_id  ?>" name="elec_id">
+                                                    <input type="hidden" value=" <?= $pos['count']?>" name="pos-count">
+                                                
+                                                <button class="btn btn-outline-primary flex-grow-1 mx-5" name="vote" type="submit">Vote</button>
+                                                </form>
+                                                <?php }else{ ?>
+                                                    <button class="btn btn-secondary flex-grow-1 mx-5" name="vote" type="submit">Voted</button>
+                                                    <?php } ?>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    <?php } ?>
                                 <?php } ?>
-                                
-                                <?php }?>
+                           
+                        </div>
+                        <hr>
+                    <?php } ?>
 
 
 
-                            </tbody>
 
-                            </thead>
 
-                        </table>
 
-                    </div>
+
                 </div>
+
             </main>
 
             <div class="modal fade modal-signin" id="add" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -192,7 +171,7 @@ $candidates = $vote->getApplicantsForCandidate();
 
             </div>
 
-            <footer class="py-4 bg-light mt-auto">
+            <footer class="py-4 bg-light mt-4">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-center small">
                         <div class="text-muted">Copyright &copy; TEAM DROPBOX 2023</div>
@@ -212,7 +191,8 @@ $candidates = $vote->getApplicantsForCandidate();
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous">
+        </script>
         <script src="assets/demo/chart-area-demo.js"></script>
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>

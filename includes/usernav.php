@@ -17,7 +17,7 @@ $vote->logout();
         <button type="button" class="btn btn-outline-light mx-1" tabindex="-1">
           <?= $voterDetails['first_name'] ?>
         </button>
-        <button type="button" data-bs-toggle="modal" class="btn btn-outline-light" data-bs-target="#store_logout" ">
+        <button type="button" data-bs-toggle="modal" class="btn btn-outline-light" data-bs-target="#store_logout">
          Logout
         </button>
       </div>

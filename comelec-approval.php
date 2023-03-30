@@ -87,6 +87,7 @@ include('includes/admin-header.php');
                         <table class="table table-hover" id="datatablesSimple">
                             <thead>
                                 <tr>
+                                    <th>ID</th>
                                     <th>Student ID</th>
                                     <th>FULL NAME</th>
                                     <th>POSITION</th>
@@ -101,6 +102,7 @@ include('includes/admin-header.php');
                                 <?php if(!empty($applicants)) {?>
                                 <?php foreach ($applicants as $applicant) { ?>
                                     <tr>
+                                    <td><?= $applicant['id'] ?></td>
                                         <td><?= $applicant['student_id'] ?></td>
                                         <td><?= $applicant['first_name'] . " " . $applicant['middle_name'] . " " . $applicant['last_name']; ?></td>
 
@@ -133,7 +135,7 @@ include('includes/admin-header.php');
                                             
                                             <div class="form-check">
                                                 
-                                                <input class="form-check-input" type="checkbox" value="<?= $req['requirement_id'] ?>" id="defaultCheck1" name="requirement[]" required>
+                                                <input class="form-check-input" type="checkbox" value="<?= $req['requirement_id'] ?>" id="defaultCheck1" name="requirement[]">
                                                 <label class="form-check-label" for="defaultCheck1">
                                                   <?= $req['requirement'] ?>
                                                 </label>

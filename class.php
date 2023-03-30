@@ -322,7 +322,7 @@ class Voting
 
       $school_id = $_POST['student_id'];
 
-      $stmt = $connection->prepare("SELECT COUNT(*) FROM `student_id` WHERE `student_id` = ?");
+      $stmt = $connection->prepare("SELECT COUNT(*) FROM `student` WHERE `school_id` = ?");
 
       $stmt->execute([$school_id]);
 
@@ -636,7 +636,7 @@ class Voting
 
     if ($total > 0) {
       if (isset($applicants)) {
-        
+
         return $applicants;
       }
     } else {
@@ -826,6 +826,46 @@ class Voting
     $stmt = $connection->prepare("SELECT * FROM `applicant_logs` WHERE `application_status` = 'final' ");
     $stmt->execute();
     $candidates = $stmt->fetchAll();
+    $total = $stmt->rowCount();
+
+    if ($total > 0) {
+      if (isset($candidates)) {
+
+        return $candidates;
+      }
+    } else {
+
+      return $connection->errorInfo();
+    }
+  }
+
+  public function getCandidate($election_id, $position_id)
+  {
+    $connection = $this->openConnection();
+
+    $stmt = $connection->prepare("SELECT * FROM `applicants` where `application_status` = 'final' AND `election_id` = '$election_id' AND `position_id` = '$position_id' ");
+    $stmt->execute();
+    $applicants = $stmt->fetchAll();
+
+    $total = $stmt->rowCount();
+
+    if ($total > 0) {
+      if (isset($applicants)) {
+
+        return $applicants;
+      }
+    } else {
+    }
+  }
+
+
+  public function getPositonCandidate($election_id, $position_id, $id)
+  {
+
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT * FROM `applicants` WHERE `election_id` = '$election_id' and `position_id` = '$position_id' where `id` = ? ");
+    $stmt->execute([$id]);
+    $candidates = $stmt->fetch();
     $total = $stmt->rowCount();
 
     if ($total > 0) {
@@ -1136,13 +1176,14 @@ class Voting
         confirm('Updated!');
         window.location.href = "comelec-position.php";
       </script>
-<?php
+    <?php
 
     }
   }
 
-  public function getRequirements(){
-    
+  public function getRequirements()
+  {
+
     $connection = $this->openConnection();
     $stmt = $connection->prepare("SELECT * FROM `requirements` where `x` != 'deleted' ");
     $stmt->execute();
@@ -1159,7 +1200,8 @@ class Voting
     }
   }
 
-  public function addRequirement(){
+  public function addRequirement()
+  {
 
     $connection = $this->openConnection();
 
@@ -1169,18 +1211,18 @@ class Voting
       $stmt = $connection->prepare("INSERT INTO `requirements`    (`requirement`) VALUES (?) ");
       $stmt->execute([$requirement]);
 
-      ?>
+    ?>
       <script>
         alert('Added Requirement');
         window.location.href = "comelec-requirement.php";
       </script>
     <?php
- 
-    }
 
+    }
   }
 
-  public function editRequirement(){
+  public function editRequirement()
+  {
 
     $connection = $this->openConnection();
     if (isset($_POST['edit-requirement'])) {
@@ -1196,15 +1238,13 @@ class Voting
         confirm('Updated!');
         window.location.href = "comelec-requirement.php";
       </script>
-<?php
+    <?php
 
     }
-
-   
-
   }
 
-  public function deleteRequirement(){
+  public function deleteRequirement()
+  {
 
     $connection = $this->openConnection();
     if (isset($_POST['delete-requirement'])) {
@@ -1214,14 +1254,13 @@ class Voting
 
       $stmt = $connection->prepare("UPDATE `requirements` SET `x` = '$x' WHERE `requirement_id` = ? ");
       $stmt->execute([$requirement_id]);
-      ?>
+    ?>
       <script>
         confirm('Successfull');
         window.location.href = "comelec-requirement.php";
       </script>
     <?php
     }
-
   }
 
   public function addParty()
@@ -1235,17 +1274,18 @@ class Voting
       $stmt = $connection->prepare("INSERT INTO `party` (`party`) VALUES (?) ");
       $stmt->execute([$party]);
 
-      ?>
+    ?>
       <script>
         alert('Added Party');
         window.location.href = "comelec-party.php";
       </script>
     <?php
- 
+
     }
   }
-  
-  public function editParty(){
+
+  public function editParty()
+  {
     $connection = $this->openConnection();
     if (isset($_POST['edit-party'])) {
 
@@ -1260,12 +1300,13 @@ class Voting
         confirm('Updated!');
         window.location.href = "comelec-party.php";
       </script>
-<?php
+    <?php
 
+    }
   }
-}
 
-  public function deleteParty(){
+  public function deleteParty()
+  {
 
     $connection = $this->openConnection();
     if (isset($_POST['delete-party'])) {
@@ -1275,17 +1316,17 @@ class Voting
 
       $stmt = $connection->prepare("UPDATE `party` SET `x` = '$x' WHERE `party_id` = ? ");
       $stmt->execute([$party_id]);
-      ?>
+    ?>
       <script>
         confirm('Successfull');
         window.location.href = "comelec-party.php";
       </script>
     <?php
     }
-
   }
 
-  public function acceptFinalCandi(){
+  public function acceptFinalCandi()
+  {
 
     $connection = $this->openConnection();
     if (isset($_POST['accept-candidate'])) {
@@ -1296,18 +1337,18 @@ class Voting
       $stmt = $connection->prepare("UPDATE `applicants` SET `application_status` = '$status' WHERE `id` = ? ");
       $stmt->execute([$applicant]);
 
-      ?>
+    ?>
       <script>
         confirm('Applicant Accepted');
         window.location.href = "admin-interview.php";
       </script>
-<?php
+    <?php
 
     }
-
   }
 
-  public function deniedCandi(){
+  public function deniedCandi()
+  {
 
     $connection = $this->openConnection();
     if (isset($_POST['denied-candidate'])) {
@@ -1322,18 +1363,18 @@ class Voting
       $stmt = $connection->prepare("INSERT INTO `applicant_logs`(`applicant_id`, `note`, `application_status`) VALUES (?,?,?)");
       $stmt->execute([$applicant, $notes, $status]);
 
-      ?>
+    ?>
       <script>
         confirm('Applicant Denied');
         window.location.href = "admin-interview.php";
       </script>
-<?php
+    <?php
 
     }
-
   }
 
-  public function deleteDeniedCandi(){
+  public function deleteDeniedCandi()
+  {
 
     $connection = $this->openConnection();
     if (isset($_POST['delete-denied'])) {
@@ -1344,18 +1385,18 @@ class Voting
       $stmt = $connection->prepare("UPDATE `applicants` SET `x` = '$x' WHERE `id` = ? ");
       $stmt->execute([$applicant]);
 
-      ?>
+    ?>
       <script>
         confirm('Applicant Denied');
         window.location.href = "comelec-disapproved.php";
       </script>
-<?php
+    <?php
 
     }
-
   }
 
-  public function submitReq(){
+  public function submitReq()
+  {
 
     $connection = $this->openConnection();
     if (isset($_POST['submit-req'])) {
@@ -1365,22 +1406,190 @@ class Voting
 
       $stmt = $connection->prepare("UPDATE `applicants` SET `requirements` = '$requirement', `application_status` = 'for_interview' WHERE `id` = ? ");
       $stmt->execute([$id]);
-      
-      ?>
+
+    ?>
       <script>
         confirm('Requirement Submitted');
         window.location.href = "comelec-approval.php";
       </script>
-    <?php
+      <?php
 
     }
-
   }
 
+  public function insertExcelFile()
+  {
+    $connection = $this->openConnection();
+    // Check if form is submitted
+
+    if (isset($_POST["upload"])) {
+
+      $filename = $_FILES["formFileLg"]["tmp_name"];
+
+      if ($_FILES["formFileLg"]["size"] > 0) {
+
+        $file = fopen($filename, "r");
+
+        while (($emapData = fgetcsv($file, 10000, ",")) !== FALSE) {
+
+          $pass = "1234";
+          $stmt = $connection->prepare("INSERT IGNORE into `student`(`student_id`, `school_id`, `last_name`, `first_name`, `middle_name`, `gender`, `course`, `year_level`, `password`, `x`) values(?,?,?,?,?,?,?,?,?,?)");
+          ([$emapData[0], $emapData[1], $emapData[2], $emapData[3], $emapData[4], $emapData[5], $emapData[6], $emapData[7], $emapData[8], $emapData[9]]);
+
+          if ($stmt) {
+      ?>
+            <script>
+              confirm('Students Submitted');
+              window.location.href = "comelec-voter.php";
+            </script>
+        <?php
+          } else {
+            return $connection->errorInfo();
+          }
+        }
+      }
+    }
+  }
+
+  public function vote()
+  {
+
+    $connection = $this->openConnection();
+
+
+    if (isset($_POST["vote"])) {
+
+
+      $voter_id = $_POST['voter_id'];
+      $elec_id = $_POST['elec_id'];
+      $pos_count = $_POST['pos-count'];
+   
+
+      $stmt = $connection->prepare("SELECT COUNT(*) FROM `votes` WHERE `student_id` = ? AND `position_id` = '1'");
+
+      $stmt = $connection->prepare("SELECT COUNT(*) FROM `votes` WHERE `student_id` = ? AND `position_id` = '2'");
+
+      $stmt->execute([$voter_id]);
+
+      $count_president = $stmt->fetchColumn();
+      $count_vice = $stmt->fetchColumn();
+
+     
+
+      if ( $count_president  == 1) {
+
+        // If student ID doesn't exist, show error message and exit
+      ?>
+        <script>
+          alert('You already Voted for president');
+          window.location.href = "student-vote.php?id=<?= $elec_id ?>";
+        </script>
+        <?php
+        exit;
+      }else{
+
+        $candi_id = $_POST['candi_id'];
+        $voter_id = $_POST['voter_id'];
+        $pos_id = $_POST['pos_id'];
+        $elec_id = $_POST['elec_id'];
+        $x = "active";
+        
+        $stmt = $connection->prepare("INSERT INTO `votes`(`student_id`, `applicant_id`, `position_id`, `election_id`, `x`) VALUES (?,?,?,?,?)");
+  
+        $stmt->execute([$voter_id, $candi_id, $pos_id, $elec_id, $x]);
+  
+        if ($stmt) {
+          ?>
+          <script>
+            confirm('Vote Counted');
+            window.location.href = "student-vote.php?id=<?= $elec_id ?>";
+          </script>
+  <?php
+        }
+      }
+
+
+    }
+  }
+
+  public function getVoterVote($voter_id, $candi_id, $pos_id)
+  {
+
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT * FROM `votes` WHERE `student_id` = ? AND `applicant_id` = ? AND `position_id` = ?");
+
+    $stmt->execute([$voter_id, $candi_id, $pos_id]);
+    $voters = $stmt->fetch();
+
+    $total = $stmt->rowCount();
+
+    if ($total > 0) {
+
+      if (isset($voters)) {
+        return $voters;
+      }
+    } else {
+    }
+  }
+
+  public function insertPosition($position_name, $available_count, $party_name)
+  {
+
+
+    if (isset($_POST['register-candidate'])) {
+
+      $pdo = new PDO("mysql:host=localhost;dbname=myDatabase", "myUsername", "myPassword");
+
+      // Check if party has reached position limit
+      $stmt = $pdo->prepare("SELECT COUNT(*) AS party_count FROM party WHERE party_name = :party_name");
+      $stmt->execute(['party_name' => $party_name]);
+      $result = $stmt->fetch(PDO::FETCH_ASSOC);
+      $party_count = $result['party_count'];
+
+      $stmt = $pdo->prepare("SELECT SUM(acount) AS total_count FROM positions WHERE party_name = :party_name");
+      $stmt->execute(['party_name' => $party_name]);
+      $result = $stmt->fetch(PDO::FETCH_ASSOC);
+      $total_count = $result['total_count'] ? $result['total_count'] : 0;
+
+      if ($total_count + $available_count > $party_count) {
+        echo "Cannot add position, party has reached position limit";
+        return;
+      }
+
+      // Insert the position
+      $stmt = $pdo->prepare("INSERT INTO positions (position_name, count) VALUES (:position_name, :available_count, :party_name)");
+      $stmt->execute(['position_name' => $position_name, 'available_count' => $available_count]);
+
+      echo "Position added successfully";
+    }
+  }
+
+  public function selectPosition($position_title)
+  {
+
+    $connection = $this->openConnection();
+
+    $stmt = $connection->prepare("SELECT
+    FROM position p
+    JOIN (
+      SELECT party_title, COUNT(*) as party_count
+      FROM party
+      GROUP BY party_title
+    ) pc ON p.count > pc.party_count
+    JOIN party pa ON pa.party_title = pc.party_title
+    WHERE pa.party_count < p.count AND p.position_title = :position_title");
+    
+    $stmt->bindParam(":position_title", $position_title);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $result;
+  }
+
+ 
 }
 
 
-$vote = new Voting();
 
+$vote = new Voting();
 
 ?>

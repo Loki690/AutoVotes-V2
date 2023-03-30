@@ -1,13 +1,8 @@
 <?php
   include('includes/header.php');
-  
   require_once('class.php');
-  
   $voterDetails = $vote->getUserData();
-
-  // $vote->logout();
   $vote->session();
-  
 
 ?>
 
@@ -24,7 +19,7 @@
           <div class="col-lg-6 mx-auto">
             <p class="lead mb-4">CSSG ELECTION</p>
             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
-              <a href="store-myproducts.php?id=<?= $voterDetails['studentID']; ?>"><button type="button"
+              <a href="student-dashboard.php"><button type="button"
                   class="btn btn-primary btn-lg px-4 me-sm-3 text-white" id="loginbutton">VOTE</button>
               </a>
              
