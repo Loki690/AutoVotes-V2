@@ -78,10 +78,10 @@ $elections = $vote->getElectionId();
     <h5 class="title-app mt-5">ELECTION TYPES</h5>
   </div>
   <!--Candidates-->
-  <div class="container ">
+  <div class="container">
     <div class="row">
       <?php foreach($elections as $election) {?>
-      <div class="col-lg-3 col-sm-3 pt-2" data-aos="fade-right">
+      <div class="col-sm-4 pt-2" data-aos="fade-right">
         <div class="card text-start hvr-grow" id="shadow">
           <img class="card-img-top" src="uploads/<?= $election['election_poster']; ?>" alt="Title" />
           

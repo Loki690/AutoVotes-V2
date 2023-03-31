@@ -11253,3 +11253,7 @@ body {
   background-color: #00095a; 
   color: white;
 }
+
+input[type=radio] ,input[type=checkbox] {
+  transform: scale(2);
+}

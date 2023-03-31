@@ -1453,40 +1453,9 @@ class Voting
 
   public function vote()
   {
-
     $connection = $this->openConnection();
 
-
     if (isset($_POST["vote"])) {
-
-
-      $voter_id = $_POST['voter_id'];
-      $elec_id = $_POST['elec_id'];
-      $pos_count = $_POST['pos-count'];
-   
-
-      $stmt = $connection->prepare("SELECT COUNT(*) FROM `votes` WHERE `student_id` = ? AND `position_id` = '1'");
-
-      $stmt = $connection->prepare("SELECT COUNT(*) FROM `votes` WHERE `student_id` = ? AND `position_id` = '2'");
-
-      $stmt->execute([$voter_id]);
-
-      $count_president = $stmt->fetchColumn();
-      $count_vice = $stmt->fetchColumn();
-
-     
-
-      if ( $count_president  == 1) {
-
-        // If student ID doesn't exist, show error message and exit
-      ?>
-        <script>
-          alert('You already Voted for president');
-          window.location.href = "student-vote.php?id=<?= $elec_id ?>";
-        </script>
-        <?php
-        exit;
-      }else{
 
         $candi_id = $_POST['candi_id'];
         $voter_id = $_POST['voter_id'];
@@ -1506,11 +1475,41 @@ class Voting
           </script>
   <?php
         }
-      }
-
 
     }
   }
+
+  public function vote2()
+  {
+    $connection = $this->openConnection();
+  
+    if (isset($_POST["vote"])) {
+  
+        $candi_ids = $_POST['candi_id'];
+        $voter_id = $_POST['voter_id'];
+        $elec_id = $_POST['elec_id'];
+        $x = "active";
+        
+        foreach ($candi_ids as $candi_id) {
+            $pos_id = $_POST['pos_id'][$candi_id];
+            $stmt = $connection->prepare("INSERT INTO `votes`(`student_id`, `applicant_id`, `position_id`, `election_id`, `x`) VALUES (?,?,?,?,?)");
+  
+            $stmt->execute([$voter_id, $candi_id, $pos_id, $elec_id, $x]);
+        }
+  
+        if ($stmt) {
+          ?>
+          <script>
+            confirm('Vote Counted');
+            window.location.href = "student-vote.php?id=<?= $elec_id ?>";
+          </script>
+        <?php
+        }
+  
+    }
+  }
+  
+
 
   public function getVoterVote($voter_id, $candi_id, $pos_id)
   {
@@ -1585,10 +1584,10 @@ class Voting
     return $result;
   }
 
- 
+  public function filterVotes($position_id, $student_id){
+        
+  }
 }
-
-
 
 $vote = new Voting();
 

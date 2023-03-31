@@ -54,76 +54,70 @@ $positions = $vote->getPositionId();
                 </div>
 
                 <hr>
-               
-                <?php
-                         
-                         $vote->vote2();
-                         ?>
-                <form action="" method="POST">
-                    <div class="container">
+                <div class="container">
 
-                        <h3 class="mx-3 mt-4"> <?= $election['election_name'] ?></h3>
+                    <h3 class="mx-3 mt-4"> <?= $election['election_name'] ?></h3>
 
-                        <?php foreach ($positions as $pos) {
+                    <?php foreach ($positions as $pos) {
 
-                            $position_id = $pos['position_id'];
-                            $candidates = $vote->getCandidate($elec_id, $position_id);
+                        $position_id = $pos['position_id'];
+                        $candidates = $vote->getCandidate($elec_id, $position_id);
 
-                        ?>
-                         
-                            <?php if (!empty($candidates)) { ?>
-                                <div class="row">
-                                    <h3 class="mx-3 mt-4"> Candidates for <?= $pos['position_title'] ?>
-                                    </h3>
-                                    <h4 class="mx-3 mt-4"> Only Vote <?= $pos['count'] . " " . $pos['position_title'] ?>
-                                    </h4>
-
-
+                    ?>
+                    
+                        <div class="row">
+                            <h3 class="mx-3 mt-4"> Candidates for <?= $pos['position_title'] ?> 
+                            </h3>
+                            <h4 class="mx-3 mt-4"> Only Vote <?= $pos['count']." ".$pos['position_title'] ?> 
+                            </h4>
+                                <?php if (!empty($candidates)) { ?>
                                     <?php foreach ($candidates as $candi) {
                                     ?>
+                                     <div class="col-sm-4">
+                                        <div class="card mx-3 mt-3">
+                                            <img class="card-img img-fluid" src="uploads/<?= $candi['photo'] ?>" width="200" alt="">
+                                            <h4 class="mx-3 my-3 text-center">
+                                                <?= $candi['first_name'] . " " . $candi['middle_name'] . " " . $candi['last_name'] ?>
+                                            </h4>
+                                            <div class="progress mx-5 mb-3">
+                                                <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25</div>
+                                            </div>
+                                            <div class="d-flex justify-content-center mb-3">
+                                                <?php 
+                                                $vote->vote();
+                                                $voter = $vote->getVoterVote($voterDetails['studentID'], $candi['id'], $pos['position_id']);
+                                                ?>
+                                                <?php if(empty($voter)){ ?>
 
-                                        <div class="col-sm-4">
-
-                                            <div class="card mx-3 mt-3">
-                                                <img class="card-img img-fluid" src="uploads/<?= $candi['photo'] ?>" width="200" alt="">
-                                                <h4 class="mx-3 my-3 text-center">
-                                                    <?= $candi['first_name'] . " " . $candi['middle_name'] . " " . $candi['last_name'] ?>
-                                                </h4>
-
-                                                <div class="progress mx-5 mb-3">
-                                                    <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25</div>
-                                                </div>
-                                                <div class="d-flex justify-content-center mb-3">
-                                                    <input type="hidden" value="<?= $voterDetails['studentID'] ?>" name="voter_id">
-                                                    <input type="text" value="<?= $candi['position_id'] ?>" name="pos_id[<?= $candi['id'] ?>]">
-                                                    <input type="hidden" value="<?= $elec_id ?>" name="elec_id">
-                                                    <?php if ($pos['count'] == 1) { ?>
-                                                        <div class="d-flex justify-content-center">
-                                                            <input class="mx-3" type="radio" id="myRadioButton" name="candi_id[]" value="<?= $candi['id'] ?>">
-                                                            <label for="myRadioButton">Vote</label>
-                                                        </div>
-                                                    <?php } else { ?>
-                                                        <div class="d-flex justify-content-center">
-                                                            <input class="mx-3" type="checkbox" id="checkbox1" name="candi_id[]" value="<?= $candi['id'] ?>">
-                                                            <label for="checkbox1">Vote</label>
-                                                        </div>
+                                                <form action="" method="POST">
+                                                    <input type="hidden" value="<?= $candi['id'] ?>" name="candi_id">
+                                                    <input type="hidden" value="<?= $voterDetails['studentID']  ?>" name="voter_id">
+                                                    <input type="hidden" value="<?= $pos['position_id']  ?>" name="pos_id">
+                                                    <input type="hidden" value="<?= $elec_id  ?>" name="elec_id">
+                                                    <input type="hidden" value=" <?= $pos['count']?>" name="pos-count">
+                                                
+                                                <button class="btn btn-outline-primary flex-grow-1 mx-5" name="vote" type="submit">Vote</button>
+                                                </form>
+                                                <?php }else{ ?>
+                                                    <button class="btn btn-secondary flex-grow-1 mx-5" name="vote" type="submit">Voted</button>
                                                     <?php } ?>
-                                                </div>
                                             </div>
                                         </div>
-
+                                        </div>
                                     <?php } ?>
+                                <?php } ?>
+                           
+                        </div>
+                        <hr>
+                    <?php } ?>
 
-                                </div>
-                                <hr>
-                            <?php } ?>
 
-                            
-                        <?php } ?>
-                        <button type="submit" name="vote">Submit My Votes</button>
-                    </div>
-                   
-                </form>
+
+
+
+
+
+                </div>
 
             </main>
 
