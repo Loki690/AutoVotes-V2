@@ -575,7 +575,7 @@ class Voting
         confirm('Deleted Successfull');
         window.location.href = "admin-add-com.php";
       </script>
-      <?php
+    <?php
     }
   }
 
@@ -821,40 +821,58 @@ class Voting
 
   public function getCandidates()
   {
-
     $connection = $this->openConnection();
-    $stmt = $connection->prepare("SELECT * FROM `applicant_logs` WHERE `application_status` = 'final' ");
-    $stmt->execute();
-    $candidates = $stmt->fetchAll();
-    $total = $stmt->rowCount();
+    $candidates = [];
+
+    if (isset($_POST['search-election'])) {
+      $election_id = $_POST['election'];
+      $stmt = $connection->prepare("SELECT * FROM `applicants` WHERE `application_status` = 'final' AND `election_id` = :election_id");
+      $stmt->bindParam(':election_id', $election_id);
+      $stmt->execute();
+      $candidates = $stmt->fetchAll();
+    } else {
+      $stmt = $connection->prepare("SELECT * FROM `applicants` WHERE `application_status` = 'final'");
+      $stmt->execute();
+      $candidates = $stmt->fetchAll();
+    }
+
+    $total = count($candidates);
 
     if ($total > 0) {
-      if (isset($candidates)) {
-
-        return $candidates;
-      }
+      return $candidates;
     } else {
-
       return $connection->errorInfo();
     }
   }
 
-  public function getCandidate($election_id, $position_id)
+  public function getCandidate($election_id, $position_id, $school_id)
   {
     $connection = $this->openConnection();
 
-    $stmt = $connection->prepare("SELECT * FROM `applicants` where `application_status` = 'final' AND `election_id` = '$election_id' AND `position_id` = '$position_id' ");
-    $stmt->execute();
-    $applicants = $stmt->fetchAll();
+    $stmt = $connection->prepare("SELECT COUNT(*) FROM `votes` WHERE `student_id` = ?");
+    $stmt->execute([$school_id]);
+    $count = $stmt->fetchColumn();
 
-    $total = $stmt->rowCount();
+    if ($count == 0) {
+      // If student ID doesn't exist
+      $stmt = $connection->prepare("SELECT * FROM `applicants` where `application_status` = 'final' AND `election_id` = '$election_id' AND `position_id` = '$position_id' ");
+      $stmt->execute();
+      $applicants = $stmt->fetchAll();
 
-    if ($total > 0) {
-      if (isset($applicants)) {
+      $total = $stmt->rowCount();
 
-        return $applicants;
+      if ($total > 0) {
+        if (isset($applicants)) {
+          return $applicants;
+        }
       }
     } else {
+    ?>
+      <script>
+        confirm('You already Voted');
+        window.location.href = "student-dashboard.php";
+      </script>
+      <?php
     }
   }
 
@@ -1066,18 +1084,25 @@ class Voting
 
   public function getVoters()
   {
-
     $connection = $this->openConnection();
-    $stmt = $connection->prepare("SELECT * FROM `student` where `x` != 'deleted'");
-    $stmt->execute();
-    $applicants = $stmt->fetchAll();
+    $applicants = [];
 
-    $total = $stmt->rowCount();
+    if (isset($_GET['search-course'])) {
+      $course = $_GET['course'];
+      $stmt = $connection->prepare("SELECT * FROM `student` WHERE `x` != 'deleted' AND `course` = :course");
+      $stmt->bindParam(':course', $course);
+      $stmt->execute();
+      $applicants = $stmt->fetchAll();
+    } else {
+      $stmt = $connection->prepare("SELECT * FROM `student` WHERE `x` != 'deleted'");
+      $stmt->execute();
+      $applicants = $stmt->fetchAll();
+    }
+
+    $total = count($applicants);
 
     if ($total > 0) {
-      if (isset($applicants)) {
-        return $applicants;
-      }
+      return $applicants;
     } else {
       return $this->show_404();
       echo $connection->errorInfo();
@@ -1457,58 +1482,58 @@ class Voting
 
     if (isset($_POST["vote"])) {
 
-        $candi_id = $_POST['candi_id'];
-        $voter_id = $_POST['voter_id'];
-        $pos_id = $_POST['pos_id'];
-        $elec_id = $_POST['elec_id'];
-        $x = "active";
-        
-        $stmt = $connection->prepare("INSERT INTO `votes`(`student_id`, `applicant_id`, `position_id`, `election_id`, `x`) VALUES (?,?,?,?,?)");
-  
-        $stmt->execute([$voter_id, $candi_id, $pos_id, $elec_id, $x]);
-  
-        if ($stmt) {
-          ?>
-          <script>
-            confirm('Vote Counted');
-            window.location.href = "student-vote.php?id=<?= $elec_id ?>";
-          </script>
-  <?php
-        }
+      $candi_id = $_POST['candi_id'];
+      $voter_id = $_POST['voter_id'];
+      $pos_id = $_POST['pos_id'];
+      $elec_id = $_POST['elec_id'];
+      $x = "active";
 
+      $stmt = $connection->prepare("INSERT INTO `votes`(`student_id`, `applicant_id`, `position_id`, `election_id`, `x`) VALUES (?,?,?,?,?)");
+
+      $stmt->execute([$voter_id, $candi_id, $pos_id, $elec_id, $x]);
+
+      if ($stmt) {
+        ?>
+        <script>
+          confirm('Vote Counted');
+          window.location.href = "student-vote.php?id=<?= $elec_id ?>";
+        </script>
+      <?php
+      }
     }
   }
 
   public function vote2()
   {
     $connection = $this->openConnection();
-  
+
     if (isset($_POST["vote"])) {
-  
-        $candi_ids = $_POST['candi_id'];
-        $voter_id = $_POST['voter_id'];
-        $elec_id = $_POST['elec_id'];
-        $x = "active";
-        
-        foreach ($candi_ids as $candi_id) {
-            $pos_id = $_POST['pos_id'][$candi_id];
-            $stmt = $connection->prepare("INSERT INTO `votes`(`student_id`, `applicant_id`, `position_id`, `election_id`, `x`) VALUES (?,?,?,?,?)");
-  
-            $stmt->execute([$voter_id, $candi_id, $pos_id, $elec_id, $x]);
-        }
-  
-        if ($stmt) {
-          ?>
-          <script>
-            confirm('Vote Counted');
-            window.location.href = "student-vote.php?id=<?= $elec_id ?>";
-          </script>
-        <?php
-        }
-  
+
+      $candi_ids = $_POST['candi_id'];
+      $voter_id = $_POST['voter_id'];
+      $elec_id = $_POST['elec_id'];
+      $x = "active";
+      $pos_count = $_POST['pos_count'];
+
+
+      foreach ($candi_ids as $candi_id) {
+        $pos_id = $_POST['pos_id'][$candi_id];
+        $stmt = $connection->prepare("INSERT INTO `votes`(`student_id`, `applicant_id`, `position_id`, `election_id`, `x`) VALUES (?,?,?,?,?)");
+
+        $stmt->execute([$voter_id, $candi_id, $pos_id, $elec_id, $x]);
+      }
+
+      if ($stmt) {
+      ?>
+        <script>
+          confirm('Vote Counted');
+          window.location.href = "student-dashboard.php";
+        </script>
+<?php
+      }
     }
   }
-  
+
 
 
   public function getVoterVote($voter_id, $candi_id, $pos_id)
@@ -1577,15 +1602,55 @@ class Voting
     ) pc ON p.count > pc.party_count
     JOIN party pa ON pa.party_title = pc.party_title
     WHERE pa.party_count < p.count AND p.position_title = :position_title");
-    
+
     $stmt->bindParam(":position_title", $position_title);
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     return $result;
   }
 
-  public function filterVotes($position_id, $student_id){
-        
+  public function getVoterVotes($student_id, $position_id)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT a.last_name, a.first_name, a.middle_name
+    FROM votes v
+    JOIN applicants a ON v.applicant_id = a.id WHERE v.student_id = '$student_id' AND v.position_id = '$position_id'
+    ");
+    $stmt->execute();
+    $votes = $stmt->fetchAll();
+
+    $total = $stmt->rowCount();
+
+    if ($total > 0) {
+
+      if (isset($votes)) {
+
+        return $votes;
+      }
+    } else {
+    }
+  }
+
+  public function getVoteResults($applicant_id)
+  {
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT COUNT(*) FROM votes WHERE applicant_id = :applicant_id");
+    $stmt->bindParam(':applicant_id', $applicant_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $result = $stmt->fetchColumn();
+    
+    if($result){
+      return $result;
+    }else{
+    
+    }
+   
+  }
+
+
+
+  public function filterVotes($position_id, $student_id)
+  {
   }
 }
 

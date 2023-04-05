@@ -81,17 +81,17 @@ $elections = $vote->getElectionId();
   <div class="container">
     <div class="row">
       <?php foreach($elections as $election) {?>
-      <div class="col-sm-4 pt-2" data-aos="fade-right">
+      <div class="col-sm-4 pt-2 mt-5" data-aos="fade-right">
         <div class="card text-start hvr-grow" id="shadow">
-          <img class="card-img-top" src="uploads/<?= $election['election_poster']; ?>" alt="Title" />
+          <img class="card-img img-fluid" style="width:500px; height: 350px;" src="uploads/<?= $election['election_poster']; ?>" alt="Title"/>
           
           <div class="card-body">
           <h4 class="card-title"><?= $election['election_name'] ?></h4>
             <div>
-            <small class="fw-bold">Election Starts : <?= date('F d, Y g:i A',strtotime($election['start_date'] ))?></small>
+            <small class="fw-bold text-muted">Election Starts : <?= date('F d, Y g:i A',strtotime($election['start_date'] ))?></small>
             </div>
             <div class="mt-2">
-            <small class="fw-bold">Election Ends : <?= date('F d, Y g:i A',strtotime($election['end_date'] ))?></small>
+            <small class="fw-bold text-muted">Election Ends : <?= date('F d, Y g:i A',strtotime($election['end_date'] ))?></small>
             </div>
             <button type="button" class="btn btn-outline-primary mt-5" tabindex="-1" data-bs-toggle="modal" data-bs-target="#login">
               View Elections

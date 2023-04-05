@@ -75,9 +75,6 @@ $vote->adminSession();
                         </ol>
                     </nav>
 
-
-
-
                 </div>
                 <hr>
                 <?php
@@ -104,24 +101,16 @@ $vote->adminSession();
                     <?php
                     $election = $vote->getElectionId();
                     ?>
-
-                    <form class="d-flex" action="">
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>Select Election</option>
-                            <?php foreach ($election as $elec) { ?>
-                                <option value="<?= $elec['election_name'] ?>" ><?= $elec['election_name'] ?></option>
-
-                            <?php } ?>
+                    <form class="d-flex" method="get" action="">
+                        <select class="form-select" name="course" aria-label="Default select example">
+                            <option selected>Select Course</option>
+                            <option value="BSIT">BSIT</option>
+                            <option value="BSBA">BSBA</option>
+                            <option value="BSED">BSED</option>
+                            <option value="BSHRM">BSHRM</option>
+                            <option value="BSCRIM">BSCRIM</option>
                         </select>
-
-                        <select class="form-select mx-3" aria-label="Default select example">
-                            <option selected>Select Voter Type</option>
-                            <?php foreach ($election as $elec) { ?>
-                                <option value="<?= $elec['election_name'] ?>" ><?= $elec['election_name'] ?></option>
-                            <?php } ?>
-                        </select>
-
-                        <button class="btn btn-primary mx-2">GENERATE</button>
+                        <button type="submit" class="btn btn-primary mx-2" name="search-course">GENERATE</button>
                     </form>
 
                     <button class="btn btn-primary mx-2">PRINT</button>
@@ -143,7 +132,9 @@ $vote->adminSession();
                                     <th>ACTION</th>
                                 </tr>
                             <tbody>
-                                
+
+                            <?php if(!empty($voters)) { ?>
+
                                 <?php foreach ($voters as $voter) { ?>
                                     <tr>
                                         <td><?= $voter['school_id'] ?></td>
@@ -151,7 +142,7 @@ $vote->adminSession();
                                         <td><?= $voter['gender']; ?></td>
                                         <td><?= $voter['course']; ?></td>
                                         <td><?= $voter['year_level']; ?></td>
-                                        <td><?= $voter['password']; ?></td>
+                                        <td><?= md5($voter['password']); ?></td>
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 <button class="btn btn-sm btn-outline-danger" tabindex="-1" data-bs-toggle="modal" data-bs-target="#delete-voter<?= $voter['student_id'] ?>"><i class="fas fa-trash"></i> Delete</button>
@@ -160,9 +151,11 @@ $vote->adminSession();
                                         </td>
 
                                     </tr>
-                                    <?php 
-                                        include('includes/modals.php');
-                                        ?>
+                                    <?php
+                                    include('includes/modals.php');
+                                    ?>
+                                <?php } ?>
+
                                 <?php } ?>
 
                             </tbody>
@@ -185,6 +178,7 @@ $vote->adminSession();
                 </div>
             </footer>
         </div>
+        
         <script>
             $(document).ready(function() {
                 $('#datatablesSimple').DataTable();

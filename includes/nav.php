@@ -21,9 +21,9 @@
           Login
         </button>
 
-        <button type="button" class="btn btn-outline-light" tabindex="-1" data-bs-toggle="modal" data-bs-target="#Register">
+        <!-- <button type="button" class="btn btn-outline-light" tabindex="-1" data-bs-toggle="modal" data-bs-target="#Register">
           Register
-        </button>
+        </button> -->
       </div>
     </div>
   </div>

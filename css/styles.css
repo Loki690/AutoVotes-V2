@@ -11257,3 +11257,15 @@ body {
 input[type=radio] ,input[type=checkbox] {
   transform: scale(2);
 }
+
+#shadow{
+  -webkit-box-shadow: -2px 3px 8.5008px -0.5008px #000000;
+  -moz-box-shadow: -2px 3px 8.5008px -0.5008px #000000;
+  box-shadow: -2px 3px 8.5008px -0.5008px #000000;
+}
+
+#dashcard{
+  background: #6fa5ed;
+  background: -webkit-linear-gradient(82deg, #6fa5ed 0%, #475aff 100%);
+  background: linear-gradient(82deg, #6fa5ed 0%, #475aff 100%);
+}

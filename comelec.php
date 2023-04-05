@@ -6,6 +6,7 @@ $candidates = $vote->getApplicantsForCandidate();
 
 ?>
 
+
 <body class="sb-nav-fixed">
     <?php
     include('includes/admin-nav.php');
@@ -21,7 +22,8 @@ $candidates = $vote->getApplicantsForCandidate();
                         </a>
                         <hr class="dropdown-divider bg-dark" />
                         <a id="nav-hover" href="comelec-approval.php" class="nav-link">
-                            <div class="sb-nav-link-icon"><i class="fas fa-check-square fa-spin" id="icon"></i></div>Approval
+                            <div class="sb-nav-link-icon"><i class="fas fa-check-square fa-spin" id="icon"></i></div>
+                            Approval
                         </a>
                         <hr class="dropdown-divider bg-dark" />
                         <a id="nav-hover" href="comelec-disapproved.php" class="nav-link">
@@ -33,7 +35,8 @@ $candidates = $vote->getApplicantsForCandidate();
                         </a>
                         <hr class="dropdown-divider bg-dark" />
                         <a id="nav-hover" href="comelec-results.php" class="nav-link ">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-square-poll-vertical" id="icon"></i></div>Results
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-square-poll-vertical" id="icon"></i>
+                            </div>Results
                         </a>
                         <hr class="dropdown-divider bg-dark" />
 
@@ -66,7 +69,8 @@ $candidates = $vote->getApplicantsForCandidate();
                 <div class="d-flex justify-content-between mt-4 mx-4 my-3">
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page"> <i class="fas fa-home"></i> CANDIDATE LIST</li>
+                            <li class="breadcrumb-item active" aria-current="page"> <i class="fas fa-home"></i>
+                                CANDIDATE LIST</li>
                         </ol>
                     </nav>
 
@@ -74,7 +78,50 @@ $candidates = $vote->getApplicantsForCandidate();
 
 
                 </div>
+
+
                 <hr>
+                <div class="row">
+                    <div class="col-sm-3 mt-2">
+
+                        <div class="card mx-3 text-white" id="dashcard">
+                            <div class="d-flex justify-content-center">
+                                <h5 class="mx-3 mt-2">Final Candidates</h5>
+
+                            </div>
+                            <h4 class="d-flex justify-content-center mx-3 mt-2">93</h4>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-3 mt-2">
+                        <div class="card mx-3 text-white" id="dashcard">
+                            <div class="d-flex justify-content-center">
+                                <h4 class="mx-3 mt-2">Voters</h4>
+
+                            </div>
+                            <h4 class="d-flex justify-content-center mx-3 mt-2">93</h4>
+
+                        </div>
+
+                    </div>
+                    <div class="col-sm-3 mt-2">
+                        <div class="card mx-3 text-white" id="dashcard">
+                            <div class="d-flex justify-content-center">
+                                <h4 class="mx-3 mt-2">Applicants</h4>
+
+                            </div>
+                            <h4 class="d-flex justify-content-center mx-3 mt-2">93</h4>
+
+                        </div>
+
+                    </div>
+
+
+
+
+
+                </div>
+        
                 <div class="card mx-3 my-3 mt-3 mb-4" id="shadow">
                     <div class="card-body table-responsive">
                         <table class="table table-hover" id="datatablesSimple">
@@ -89,44 +136,52 @@ $candidates = $vote->getApplicantsForCandidate();
 
                                 </tr>
                             <tbody>
-                                <?php if(!empty($candidates)){ ?>
-                                <?php foreach ($candidates as $candidate) {
+                                <?php if (!empty($candidates)) { ?>
+                                    <?php foreach ($candidates as $candidate) {
 
-                                    $party_id = $candidate['party_id'];
-                                    $party = $vote->getParty($party_id);
+                                        $party_id = $candidate['party_id'];
+                                        $party = $vote->getParty($party_id);
 
-                                    $position_id = $candidate['position_id'];
-                                    $pos = $vote->getPosition($position_id);
+                                        $position_id = $candidate['position_id'];
+                                        $pos = $vote->getPosition($position_id);
 
-                                    $election_id = $candidate['election_id'];
-                                    $elec = $vote->getElection($election_id);
+                                        $election_id = $candidate['election_id'];
+                                        $elec = $vote->getElection($election_id);
 
-                                ?>
-                                    <tr>
-                                        <td><?= $candidate['student_id'] ?></td>
-                                        <td><?= $candidate['first_name'] . " " . $candidate['middle_name'] . " " . $candidate['last_name'] ?></td>
-                                        <td><?= $pos['position_title']; ?></td>
-                                        <td><?= $party['party'] ?></td>
-                                        <?php if (empty($elec['election_name'])) { ?>
-                                            <td>No data</td>
-                                        <?php } else { ?>
-                                            <td><?= $elec['election_name'] ?>
-                                        
-                                        </td>
-                                        <?php } ?>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <button class="btn btn-sm btn-primary mx-3"><i class="fas fa-edit"></i> Edit</button>
-                                                <button class="btn btn-sm btn-primary"><i class="fas fa-eye"></i> View Information</button>
-                                            </div>
+                                    ?>
+                                   
+                                        <tr>
+                                       
+                                            <td><?= $candidate['student_id'] ?></td>
+                                            <td><?= $candidate['first_name'] . " " . $candidate['middle_name'] . " " . $candidate['last_name'] ?>
+                                            </td>
+                                            <td><?= $pos['position_title']; ?></td>
+                                            <td><?= $party['party'] ?></td>
+                                            <?php if (empty($elec['election_name'])) { ?>
+                                                <td>No data</td>
+                                            <?php } else { ?>
+                                                <td><?= $elec['election_name'] ?>
 
-                                        </td>
+                                                </td>
+                                            <?php } ?>
+                                            <td>
+                                                <div class="d-flex justify-content-center">
+                                                    <button class="btn btn-sm btn-primary mx-3"><i class="fas fa-edit"></i>
+                                                        Edit</button>
+                                                    <button class="btn btn-sm btn-primary" tabindex="-1" data-bs-toggle="modal" data-bs-target="#view-candidate<?= $candidate['id'] ?>"><i class="fas fa-eye"></i> View
+                                                        Information</button>
+                                                </div>
 
-                                    </tr>
+                                            </td>
+                                            
+                                        </tr>
+                                        <?php
+                                    include('includes/modals.php');
+                                    ?>
+
+                                    <?php } ?>
 
                                 <?php } ?>
-                                
-                                <?php }?>
 
 
 
@@ -200,6 +255,8 @@ $candidates = $vote->getApplicantsForCandidate();
                 </div>
             </footer>
         </div>
+        
+
         <script>
             $(document).ready(function() {
                 $('#datatablesSimple').DataTable();
@@ -212,11 +269,13 @@ $candidates = $vote->getApplicantsForCandidate();
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous">
+        </script>
         <script src="assets/demo/chart-area-demo.js"></script>
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
 </body>
+
 
 </html>

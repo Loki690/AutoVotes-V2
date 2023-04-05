@@ -15,34 +15,40 @@ $positions = $vote->getPositionId();
     <?php include('includes/user-nav.php') ?>
 
     <div id="layoutSidenav">
-        <div id="layoutSidenav_nav">
-            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                <div class="sb-sidenav-menu">
-                    <div class="nav">
-                        <hr class="dropdown-divider bg-dark" />
-                        <a id="nav-hover" class="nav-link mt-4 active" href="student-dashboard.php">
-                            <div class="sb-nav-link-icon" id="icon"><i class="fas fa-home"></i></div>Home
-                        </a>
-                        <hr class="dropdown-divider bg-dark" />
+    <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <hr class="dropdown-divider bg-dark" />
+                            <a id="nav-hover" class="nav-link mt-4 active" href="">
+                                <div class="sb-nav-link-icon" id="icon"><i class="fas fa-home"></i></div>Home
+                            </a>
+                            <hr class="dropdown-divider bg-dark"/>
+                    
+                            <a id="nav-hover" href="" class="nav-link"><div class="sb-nav-link-icon"><i 
+                                class="fa-solid fa-square-poll-vertical" id="icon"></i></div>Results</a>
+                            <hr class="dropdown-divider bg-dark"/>
 
 
+                            <a id="nav-hover" href="" class="nav-link"><div class="sb-nav-link-icon"><i 
+                                class="fa-solid fa-list" id="icon"></i></div>My Votes</a>
+                            <hr class="dropdown-divider bg-dark"/>
 
-                        <a id="nav-hover" href="" class="nav-link ">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-square-poll-vertical" id="icon"></i>
-                            </div>Results
-                        </a>
-                        <hr class="dropdown-divider bg-dark" />
+                          
+                        
+                        </div>
+
                     </div>
-                </div>
-                <div class="sb-sidenav-footer" id="nav-footer">
-                    <div class="small">Logged in as:</div>
-
-                </div>
-            </nav>
-        </div>
+                    <div class="sb-sidenav-footer" id="nav-footer">
+                        <div class="small">Logged in as:</div>
+                    
+                    </div>
+                </nav>
+            </div>
         <div id="layoutSidenav_content">
             <main>
                 <div class="d-flex justify-content-between mt-4 mx-4 my-3">
+                <h3 class="">Home</h3>
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="student-dashboard.php" style="text-decoration: none;">
@@ -54,11 +60,11 @@ $positions = $vote->getPositionId();
                 </div>
 
                 <hr>
-               
+
                 <?php
-                         
-                         $vote->vote2();
-                         ?>
+
+                $vote->vote2();
+                ?>
                 <form action="" method="POST">
                     <div class="container">
 
@@ -67,50 +73,72 @@ $positions = $vote->getPositionId();
                         <?php foreach ($positions as $pos) {
 
                             $position_id = $pos['position_id'];
-                            $candidates = $vote->getCandidate($elec_id, $position_id);
+                            $candidates = $vote->getCandidate($elec_id, $position_id, $voterDetails['school_id'] );
 
                         ?>
-                         
+
                             <?php if (!empty($candidates)) { ?>
                                 <div class="row">
                                     <h3 class="mx-3 mt-4"> Candidates for <?= $pos['position_title'] ?>
                                     </h3>
                                     <h4 class="mx-3 mt-4"> Only Vote <?= $pos['count'] . " " . $pos['position_title'] ?>
                                     </h4>
-
-
+                                    <input type="hidden" value="<?= $pos['count'] ?>" name="pos_count">
                                     <?php foreach ($candidates as $candi) {
                                     ?>
 
                                         <div class="col-sm-4">
 
                                             <div class="card mx-3 mt-3">
-                                                <img class="card-img img-fluid" src="uploads/<?= $candi['photo'] ?>" width="200" alt="">
+
+                                                <img class="card-img img-fluid" src="img/donaldmc.jpg" width="100" height="100" alt="">
                                                 <h4 class="mx-3 my-3 text-center">
                                                     <?= $candi['first_name'] . " " . $candi['middle_name'] . " " . $candi['last_name'] ?>
                                                 </h4>
+                                                <h5 class="mx-3 my-3 text-center">
+                                                    <?= $pos['position_title'] ?>
+                                                </h5>
 
-                                                <div class="progress mx-5 mb-3">
-                                                    <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25</div>
-                                                </div>
                                                 <div class="d-flex justify-content-center mb-3">
-                                                    <input type="hidden" value="<?= $voterDetails['studentID'] ?>" name="voter_id">
-                                                    <input type="text" value="<?= $candi['position_id'] ?>" name="pos_id[<?= $candi['id'] ?>]">
+                                                    <input type="hidden" value="<?= $voterDetails['school_id'] ?>" name="voter_id">
+                                                    <input type="hidden" value="<?= $candi['position_id'] ?>" name="pos_id[<?= $candi['id'] ?>]">
                                                     <input type="hidden" value="<?= $elec_id ?>" name="elec_id">
                                                     <?php if ($pos['count'] == 1) { ?>
                                                         <div class="d-flex justify-content-center">
-                                                            <input class="mx-3" type="radio" id="myRadioButton" name="candi_id[]" value="<?= $candi['id'] ?>">
+                                                            <input class="mx-3" type="radio" id="myRadioButton" name="candi_id[]" value="<?= $candi['id'] ?>" required>
                                                             <label for="myRadioButton">Vote</label>
                                                         </div>
                                                     <?php } else { ?>
                                                         <div class="d-flex justify-content-center">
-                                                            <input class="mx-3" type="checkbox" id="checkbox1" name="candi_id[]" value="<?= $candi['id'] ?>">
-                                                            <label for="checkbox1">Vote</label>
+                                                            <input class="mx-3 candi-checkbox" type="checkbox" id="checkbox<?= $candi['position_id'] ?><?= $candi['id'] ?>" name="candi_id[]" value="<?= $candi['id'] ?>" data-position-count="<?= $pos['count'] ?>" required>
+                                                            <label for="checkbox<?= $candi['position_id'] ?><?= $candi['id'] ?>">Vote</label>
                                                         </div>
+
+                                                        <script>
+                                                            var checkboxes<?= $candi['position_id'] ?> = document.querySelectorAll('.candi-checkbox[data-position-count="<?= $pos['count'] ?>"]');
+                                                            checkboxes<?= $candi['position_id'] ?>.forEach(function(checkbox) {
+                                                                checkbox.addEventListener('change', function() {
+                                                                    var checkedCount = document.querySelectorAll('.candi-checkbox[data-position-count="<?= $pos['count'] ?>"]:checked').length;
+                                                                    if (checkedCount >= <?= $pos['count'] ?>) {
+                                                                        checkboxes<?= $candi['position_id'] ?>.forEach(function(uncheckedCheckbox) {
+                                                                            if (!uncheckedCheckbox.checked) {
+                                                                                uncheckedCheckbox.disabled = true;
+                                                                            }
+                                                                        });
+
+                                                                    } else {
+                                                                        checkboxes<?= $candi['position_id'] ?>.forEach(function(checkbox) {
+                                                                            checkbox.disabled = false;
+                                                                        });
+                                                                    }
+                                                                });
+                                                            });
+                                                        </script>
                                                     <?php } ?>
                                                 </div>
                                             </div>
                                         </div>
+
 
                                     <?php } ?>
 
@@ -118,93 +146,44 @@ $positions = $vote->getPositionId();
                                 <hr>
                             <?php } ?>
 
-                            
+
                         <?php } ?>
+                        
+                        <input type="reset" value="Reset">
                         <button type="submit" name="vote">Submit My Votes</button>
+                        
                     </div>
-                   
-                </form>
 
-            </main>
+      
 
-            <div class="modal fade modal-signin" id="add" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-                        <div class="modal-header p-3 pb-3">
-                            <h5 class="modal-title" id="staticBackdropLabel">Adding Admin</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <br>
-                        <form action="" method="POST" enctype="multipart/form-data">
-                            <div class="modal-body p-5 pt-0">
-
-                                <div class="mb-3 row">
-                                    <label for="inputPassword" class="col-sm-3 col-form-label">First Name: </label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" placeholder="First Name" id="">
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 row">
-                                    <label for="MiddleName" class="col-sm-3 col-form-label">Middle Name: </label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" placeholder="Middle Name" id="">
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 row">
-                                    <label for="LastName" class="col-sm-3 col-form-label">Last Name: </label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" placeholder="Last Name" id="">
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 row">
-                                    <label for="Access Code" class="col-sm-3 col-form-label">Access Code: </label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" placeholder="Access Code" id="">
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Add as Admin</button>
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
+    </main>
 
 
-            </div>
 
-            <footer class="py-4 bg-light mt-4">
-                <div class="container-fluid px-4">
-                    <div class="d-flex align-items-center justify-content-center small">
-                        <div class="text-muted">Copyright &copy; TEAM DROPBOX 2023</div>
-                    </div>
-                </div>
-            </footer>
-        </div>
-        <script>
-            $(document).ready(function() {
-                $('#datatablesSimple').DataTable();
-            });
-        </script>
-        <script src="https://cdn.jsdelivr.net/npm/smooth-scroll/dist/smooth-scroll.min.js"></script>
-        <script>
-            var scroll = new SmoothScroll('a[href*="Add_Comelec.html"]');
-        </script>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="js/scripts.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous">
-        </script>
-        <script src="assets/demo/chart-area-demo.js"></script>
-        <script src="assets/demo/chart-bar-demo.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <script src="js/datatables-simple-demo.js"></script>
+
+
+    <!--Footer-->
+    <footer class="py-3 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item">
+                <div class="text-muted">Copyright &copy; TEAM DROPBOX 2023</div>
+            </li>
+        </ul>
+    </footer>
+    </div>
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 </body>
 
 </html>
