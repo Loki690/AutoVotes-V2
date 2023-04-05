@@ -1077,29 +1077,5 @@ accept candidate -->
 </div>
 
 <!-- view candidates -->
-<div class="modal fade modal-signin" id="view-candidate<?= $candidate['id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-    <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-      <div class="modal-header p-3 pb-3">
-        <h5 class="modal-title" id="staticBackdropLabel">Candidates Information</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <br>
-     
-        <div class="modal-body p-5 pt-0">
-          <div class="row d-flex justify-content-center">
-            
-            <div class="col-md-12 text-center">
-             <p>Name: <?= $candidate['first_name'] . " " . $candidate['middle_name'] . " " . $candidate['last_name'] ?></p>
-            </div>
-          </div>
-          <input type="hidden" value="<?= $applicant['id'] ?>" name="id">
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-danger" name="delete-denied">Delete</button>
-        </div>
-     
-    </div>
-  </div>
-</div>
+
 <!--Modals-->
