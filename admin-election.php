@@ -116,7 +116,8 @@ $time_lists = create_time_range('7:00', '24:00', '1 hour');
                                             <td>
                                                 <div class="d-flex justify-content-center">
                                                     <button class="btn btn-sm btn-success mx-3" tabindex="-1" data-bs-toggle="modal" data-bs-target="#edit-election<?= $elec['election_id'] ?>" ><i class="fas fa-edit"> </i> Edit</button>
-                                                    <button class="btn btn-sm btn-danger" tabindex="-1" data-bs-toggle="modal" data-bs-target="#delete-election<?= $elec['election_id'] ?>"><i class="fas fa-trash"></i> Delete</button>
+                                                    <button class="btn btn-sm btn-danger mx-3" tabindex="-1" data-bs-toggle="modal" data-bs-target="#delete-election<?= $elec['election_id'] ?>"><i class="fas fa-trash"></i> Delete</button>
+                                                    <button class="btn btn-sm btn-danger" tabindex="-1" data-bs-toggle="modal" data-bs-target="#create-qr<?= $elec['election_id'] ?>"> QR Code</button>
                                                 </div>
                                             </td>
                                            

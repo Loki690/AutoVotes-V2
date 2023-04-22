@@ -7,7 +7,7 @@ $vote->logoutAdmin();
 ?>
 <nav class="sb-topnav navbar navbar-expand navbar-dark" id="nav-color">
         <!-- Navbar Brand-->
-        <a class="navbar-brand mx-2" href="#">
+        <a class="navbar-brand mx-2" href="index.php">
             <img src="img/DCC2.png" width="50" height="50" alt="" /> DCC AUTOVOTES
         </a>
         <!-- Sidebar Toggle-->

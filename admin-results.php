@@ -2,13 +2,19 @@
 require_once('class.php');
 include('includes/admin-header.php');
 
-$elections = $vote->getElectionId();
+$vote->adminSession();
+$voteResults = $vote->getCandidates();
+$getElection = $vote->getElectionId();
+$vote->resultPrint();
+
+
 
 
 ?>
 
 <body class="sb-nav-fixed">
-<?php
+
+    <?php
     include('includes/admin-nav.php');
     ?>
     <div id="layoutSidenav">
@@ -34,7 +40,8 @@ $elections = $vote->getElectionId();
                         </a>
                         <hr class="dropdown-divider bg-dark" />
                         <a id="nav-hover" href="admin-results.php" class="nav-link active">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-square-poll-vertical" id="icon"></i></div>Results
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-square-poll-vertical" id="icon"></i>
+                            </div>Results
                         </a>
                         <hr class="dropdown-divider bg-dark" />
 
@@ -58,7 +65,8 @@ $elections = $vote->getElectionId();
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="admin-candidate.php" style="text-decoration: none;"> <i class="fas fa-users"></i> CANDIDATES</a></li>
-                            <li class="breadcrumb-item active" aria-current="page"> <i class="fas fa-users"></i> RESULTS</li>
+                            <li class="breadcrumb-item active" aria-current="page"> <i class="fas fa-users"></i> RESULTS
+                            </li>
                         </ol>
                     </nav>
 
@@ -66,16 +74,24 @@ $elections = $vote->getElectionId();
                 <hr>
                 <div class="d-flex justify-content-between mt-4 mx-4 my-3">
 
-                    <form class="d-flex" action="">
-                        <select class="form-select" aria-label="Default select example">
-                            <?php foreach($elections as $elec ){ ?>
-                            <option value="<?= $elec['election_id'] ?>" selected ><?= $elec['election_name'] ?></option>
+                    <form class="d-flex" method="post" action="">
+                        <select class="form-select" name="election" aria-label="Default select example">
+                            <option selected>Select Election</option>
+                            <?php foreach ($getElection as $elec) { ?>
+                                <option value="<?= $elec['election_id'] ?>"><?= $elec['election_name'] ?></option>
+                                
+
                             <?php } ?>
+                           
                         </select>
-                        <button class="btn btn-primary mx-2">GENERATE</button>
+                        <button type="submit" class="btn btn-primary mx-2" name="search-election">GENERATE</button>
+                        
+                        <button type="submit" name="print-result" class="btn btn-primary mx-2">PRINT</button>
                     </form>
 
-                    <button class="btn btn-primary mx-2">PRINT</button>
+                    <form action="" method="post">
+                        <button type="submit" name="print-result" class="btn btn-primary mx-2">PRINT</button>
+                    </form>
 
                 </div>
 
@@ -84,14 +100,35 @@ $elections = $vote->getElectionId();
                         <table class="table table-hover" id="datatablesSimple">
                             <thead>
                                 <tr>
-                                    <th></th>
+                                    <th>Student ID</th>
                                     <th>NAME</th>
+                                    <th>ELECTION</th>
                                     <th>POSITION</th>
                                     <th>VOTE COUNT</th>
 
 
                                 </tr>
                             <tbody>
+                                <?php if (!empty($voteResults)) { ?>
+
+                                    <?php foreach ($voteResults as $result) {
+                                        $voteResult = $vote->getVoteResults($result['id']);
+                                        $position = $vote->getPosition($result['position_id']);
+                                        $election = $vote->getElection($result['election_id']);
+                                    ?>
+                                        <tr>
+
+                                            <td><?= $result['student_id'] ?></td>
+                                            <td><?= $result['first_name'] . " " . $result['middle_name'] . " " . $result['last_name'] ?>
+                                            </td>
+                                            <td><?= $election['election_name'] ?></td>
+                                            <td><?= $position['position_title'] ?></td>
+                                            <td><?= $voteResult ?></td>
+
+                                        </tr>
+
+                                    <?php } ?>
+                                <?php } ?>
 
 
 
@@ -121,7 +158,8 @@ $elections = $vote->getElectionId();
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous">
+        </script>
         <script src="assets/demo/chart-area-demo.js"></script>
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>

@@ -674,6 +674,36 @@
     </div>
   </div>
 </div>
+<!-- generate qr code for election  -->
+<div class="modal fade modal-signin" id="create-qr<?= $elec['election_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
+      <div class="modal-header p-3 pb-3">
+        <h5 class="modal-title" id="staticBackdropLabel">Edit Election</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <br>
+      <form action="" method="POST" enctype="multipart/form-data">
+        <div class="modal-body p-5 pt-0">
+          <div class="row">
+            <div>
+              <div class="col-md-8">
+                <input type="text" class="form-control w-100" value="<?= 'http://localhost/AutoVotes-V2/student-dashboard.php?='.$elec['election_id'] ?>" style="width: max-content;" >
+              </div>
+              <div class="col-md-4">
+              <button type="" class="btn btn-primary" name="generate-qr">Generate QR Code</button>
+              </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success" name="create-qr">Download</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
 
 <!-- delete voter -->
 <div class="modal fade modal-signin" id="delete-voter<?= $voter['student_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

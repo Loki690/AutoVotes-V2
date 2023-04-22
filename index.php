@@ -1,5 +1,4 @@
 <?php
-
 require_once('class.php');
 
 $vote->Login();
@@ -8,33 +7,12 @@ $vote->loginAdmin();
 
 include('includes/header.php');
 
-if($vote->getUserData() == true){
+if ($vote->getUserData() == true) {
   include('includes/usernav.php');
-}else{
+} else {
   include('includes/nav.php');
 }
-
 $elections = $vote->getElectionId();
-
-// $vote->session();
-
-
-// // Set the end date and time for the countdown
-// $end_date = "2023-03-17 00:00:00"; // YYYY-MM-DD HH:MM:SS
-
-// // Calculate the remaining time in seconds
-// $remaining_time = strtotime($end_date) - time();
-
-// // Calculate the remaining days, hours, minutes, and seconds
-// $days = floor($remaining_time / (60 * 60 * 24));
-// $hours = floor(($remaining_time % (60 * 60 * 24)) / (60 * 60));
-// $minutes = floor(($remaining_time % (60 * 60)) / 60);
-// $seconds = $remaining_time % 60;
-
-// $days = "March 30, 2030 00:00:00"
-
-
-
 ?>
 
 <script type="text/javascript">
@@ -64,7 +42,6 @@ $elections = $vote->getElectionId();
     document.getElementById("seconds").innerHTML = seconds;
     setTimeout(countdown, 1000);
 
-
   }
 </script>
 
@@ -80,38 +57,62 @@ $elections = $vote->getElectionId();
   <!--Candidates-->
   <div class="container">
     <div class="row">
-      <?php foreach($elections as $election) {?>
-      <div class="col-sm-4 pt-2 mt-5" data-aos="fade-right">
-        <div class="card text-start hvr-grow" id="shadow">
-          <img class="card-img img-fluid" style="width:500px; height: 350px;" src="uploads/<?= $election['election_poster']; ?>" alt="Title"/>
-          
-          <div class="card-body">
-          <h4 class="card-title"><?= $election['election_name'] ?></h4>
-            <div>
-            <small class="fw-bold text-muted">Election Starts : <?= date('F d, Y g:i A',strtotime($election['start_date'] ))?></small>
+      <?php foreach ($elections as $election) { ?>
+        <div class="col-sm-4 pt-2 mt-5" data-aos="fade-right">
+          <div class="card text-start hvr-grow" id="shadow">
+            <img class="card-img img-fluid" style="width:500px; height: 350px;" src="uploads/<?= $election['election_poster']; ?>" alt="Title" />
+
+            <div class="card-body">
+              <h4 class="card-title"><?= $election['election_name'] ?></h4>
+              <div>
+                <small class="fw-bold text-muted">Election Starts : <?= date('F d, Y g:i A', strtotime($election['start_date'])) ?></small>
+              </div>
+              <div class="mt-2">
+                <small class="fw-bold text-muted">Election Ends : <?= date('F d, Y g:i A', strtotime($election['end_date'])) ?></small>
+              </div>
+              <button type="button" class="btn btn-outline-primary mt-5" tabindex="-1" data-bs-toggle="modal" data-bs-target="#login">
+                View Elections
+              </button>
             </div>
-            <div class="mt-2">
-            <small class="fw-bold text-muted">Election Ends : <?= date('F d, Y g:i A',strtotime($election['end_date'] ))?></small>
-            </div>
-            <button type="button" class="btn btn-outline-primary mt-5" tabindex="-1" data-bs-toggle="modal" data-bs-target="#login">
-              View Elections
-            </button>
           </div>
         </div>
-      </div>
-        <?php } ?>
-
-    
+      <?php } ?>
     </div>
   </div>
   <!--Candidates-->
 </main>
 
+<!-- modal admin login -->
+<div class="modal fade modal-signin" id="login-admin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+    <div class="modal-content rounded-5 shadow" style="border-radius: 30px">
+      <div class="modal-header p-3 pb-3">
+        <h5 class="modal-title text-white" id="staticBackdropLabel">
+          Admin Login
+        </h5>
+        <button type="button" class="btn-close-white" data-bs-dismiss="modal" aria-label="Close">
+          x
+        </button>
+      </div>
+      <br />
+      <div class="modal-body p-5 pt-0">
+        <form action="" method="POST" enctype="multipart/form-data">
+          <div class="form-group mt-2">
+            <label for="exampleInputPassword1" class="form-label">Access Code</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" name="accesscode" placeholder="Password" required />
+            <a href="#" class="mt-2"><small>Forgot Access Code? </small> </a>
+          </div>
+          <div class="d-flex pt-1">
+            <button type="submit" id="loginbutton" name="login-admin" class="btn btn-primary mt-2 flex-grow-1">
+              Login
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
-<!-- Login and register modals  -->
-<?php
-  include('includes/modals.php');
-?>
 <div class="container d-flex justify-content-center mt-lg-5">
   <h5 class="title-app display-1 mb-5">Filing of Candidacy</h5>
 </div>
@@ -119,13 +120,13 @@ $elections = $vote->getElectionId();
 <div class="container">
   <div class="row text-center">
     <div class="col-md-4">
-    <h3>
-       <a href="register-candi.php" class="btn btn-primary btn-lg"> Candidacy Form</a>
+      <h3>
+        <a href="register-candi.php" class="btn btn-primary btn-lg"> Candidacy Form</a>
       </h3>
     </div>
     <div class="col-md-4">
       <h3>
-       <a href="register-candi.php" class="btn btn-outline-primary btn-lg"> Candidacy Form</a>
+        <a href="register-candi.php" class="btn btn-outline-primary btn-lg"> Candidacy Form</a>
       </h3>
     </div>
     <div class="col-md-4">
@@ -135,6 +136,16 @@ $elections = $vote->getElectionId();
     </div>
   </div>
 </div>
+
+<?php
+include('includes/footer.php');
+?>
+<?php
+include('includes/modals.php');
+?>
+<!-- Login and register modals  -->
+
+
 
 <div class="container mt-5 pt-5 d-flex justify-content-center">
   <div class="row ">
@@ -166,49 +177,5 @@ $elections = $vote->getElectionId();
   </div>
 </div>
 <?php
- 
-?>
-<!-- modal admin login -->
-<div class="modal fade modal-signin" id="login-admin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-md modal-dialog-centered" role="document">
-    <div class="modal-content rounded-5 shadow" style="border-radius: 30px">
-      <div class="modal-header p-3 pb-3">
-        <h5 class="modal-title text-white" id="staticBackdropLabel">
-          Admin Login
-        </h5>
-        <button type="button" class="btn-close-white" data-bs-dismiss="modal" aria-label="Close">
-          x
-        </button>
-      </div>
-      <br />
-      <div class="modal-body p-5 pt-0">
-        <form action="" method="POST" enctype="multipart/form-data">
-          <!-- <div class="form-group">
-            <label for="exampleInputEmail1" class="form-label">Last Name </label>
-            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="last_name" placeholder="" required/>
-            <small id="emailHelp" class="form-text text-muted"></small>
-          </div> -->
-          <div class="form-group mt-2">
-            <label for="exampleInputPassword1" class="form-label">Access Code</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" name="accesscode" placeholder="Password" required/>
-            <a href="#" class="mt-2"><small>Forgot Access Code? </small> </a>
-          </div>
-          <div class="d-flex pt-1">
-            <button type="submit" id="loginbutton" name="login-admin" class="btn btn-primary mt-2 flex-grow-1">
-              Login
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
 
-
-<?php
-// echo "Countdown to {$end_date}: {$days} days, {$hours} hours, {$minutes} minutes, {$seconds} seconds remaining.";
-// $studentid['student_id']
-?>
-<?php
-include('includes/footer.php');
 ?>
