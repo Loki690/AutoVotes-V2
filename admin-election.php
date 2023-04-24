@@ -7,6 +7,7 @@ $vote->addElecion();
 $vote->editElection();
 
 $vote->deleteElection();
+// $vote->generateQR();
 
 ?>
 <?php
@@ -29,6 +30,15 @@ function create_time_range($start, $end, $interval = '1 mins', $format = '12')
   return $time_lists;
 }
 $time_lists = create_time_range('7:00', '24:00', '1 hour');
+
+
+if(isset($_POST['generate-qr'])){
+    $data = $_POST['myqrcode'];
+    $width = '50';
+    $height = '50';
+    $url = "https://chart.googleapis.com/chart?cht=qr&chs={$width}x{$height}&chl={$data}";
+    $result['img'] = $url;
+  }
 ?>
 
     <body class="sb-nav-fixed">

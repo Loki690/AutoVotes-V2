@@ -1855,10 +1855,12 @@ class Voting
     ob_end_clean();
   }
 
-  public function generateQR(){
+  public function generateQR() {
+
     
-    $connection = $this->openConnection();
-  }
+    
+}
+
 }
 
 $vote = new Voting();

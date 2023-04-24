@@ -686,20 +686,26 @@
       <form action="" method="POST" enctype="multipart/form-data">
         <div class="modal-body p-5 pt-0">
           <div class="row">
+            <?php if (isset($result)) { ?>
+              <div class="mb-1">
+                <img src="<?php echo $result['img']; ?>" alt="OR Code" width="300px" height="300px">
+                <!-- <p class="text-center"><?php //echo $data; 
+                                            ?></p> -->
+              </div>
+            <?php } ?>
             <div>
               <div class="col-md-8">
-                <input type="text" class="form-control w-100" value="<?= 'http://localhost/AutoVotes-V2/student-dashboard.php?='.$elec['election_id'] ?>" style="width: max-content;" >
+                <input type="hidden" class="form-control w-100" name="myqrcode" value="<?= 'http://localhost/AutoVotes-V2/student-dashboard.php?='.$elec['election_id'] ?>">
               </div>
               <div class="col-md-4">
-              <button type="" class="btn btn-primary" name="generate-qr">Generate QR Code</button>
+                <button type="submit" class="btn btn-primary" name="generate-qr">Generate QR Code</button>
               </div>
             </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-success" name="create-qr">Download</button>
-        </div>
-
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-success" name="create-qr">Download</button>
+          </div>
       </form>
     </div>
   </div>
@@ -991,7 +997,7 @@ edit party -->
 </div>
 
 <!-- delete party -->
-<div class="modal fade modal-signin" id="delete-party<?= $party['party_id'] ?>"data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade modal-signin" id="delete-party<?= $party['party_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
       <div class="modal-header p-3 pb-3">
@@ -1004,7 +1010,7 @@ edit party -->
           <div class="row">
             <label for="ElectionName" class="col-sm-3 col-form-label">Party Name: </label>
             <div class="col-sm-8">
-            <input type="text" class="form-control" value="<?= $party['party'] ?>" name="party" id="" readonly>
+              <input type="text" class="form-control" value="<?= $party['party'] ?>" name="party" id="" readonly>
             </div>
           </div>
           <input type="hidden" value="<?= $party['party_id'] ?>" name="party_id">
@@ -1033,7 +1039,7 @@ accept candidate -->
           <div class="row">
             <label for="ElectionName" class="col-sm-3 col-form-label">Candidates Name: </label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" value="<?= $applicant['first_name']." ".$applicant['middle_name']." ".$applicant['last_name']; ?>" name="applicant_name" id="" readonly>
+              <input type="text" class="form-control" value="<?= $applicant['first_name'] . " " . $applicant['middle_name'] . " " . $applicant['last_name']; ?>" name="applicant_name" id="" readonly>
             </div>
           </div>
           <input type="hidden" value="<?= $applicant['id'] ?>" name="id">
@@ -1057,16 +1063,16 @@ accept candidate -->
       <br>
       <form action="" method="POST" enctype="multipart/form-data">
         <div class="modal-body p-5 pt-0">
-        <div class="row mb-3">
+          <div class="row mb-3">
             <label for="ElectionName" class="col-sm-3 col-form-label">Note: </label>
             <div class="col-sm-8">
-            <textarea class="form-control" id="exampleFormControlTextarea1" name="notes" rows="4"></textarea>
+              <textarea class="form-control" id="exampleFormControlTextarea1" name="notes" rows="4"></textarea>
             </div>
           </div>
           <div class="row">
             <label for="ElectionName" class="col-sm-3 col-form-label">Candidates Name: </label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" value="<?= $applicant['first_name']." ".$applicant['middle_name']." ".$applicant['last_name']; ?>" name="applicant_name" id="" readonly>
+              <input type="text" class="form-control" value="<?= $applicant['first_name'] . " " . $applicant['middle_name'] . " " . $applicant['last_name']; ?>" name="applicant_name" id="" readonly>
             </div>
           </div>
           <input type="hidden" value="<?= $applicant['id'] ?>" name="id">
@@ -1093,7 +1099,7 @@ accept candidate -->
           <div class="row">
             <label for="ElectionName" class="col-sm-3 col-form-label">Applicant Name: </label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" value="<?= $applicant['first_name']." ".$applicant['middle_name']." ".$applicant['last_name']; ?>" name="applicant_name" id="" readonly>
+              <input type="text" class="form-control" value="<?= $applicant['first_name'] . " " . $applicant['middle_name'] . " " . $applicant['last_name']; ?>" name="applicant_name" id="" readonly>
             </div>
           </div>
           <input type="hidden" value="<?= $applicant['id'] ?>" name="id">
