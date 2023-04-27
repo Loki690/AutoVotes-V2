@@ -95,7 +95,7 @@ $vote->resultPrint();
 
                 </div>
 
-                <div class="card mx-3 my-3 mt-3 mb-4" id="shadow" style="border-radius: 15px;">
+                <div class="card mx-3 my-3 mt-3 mb-4" id="shadow2" style="border-radius: 15px;">
                     <div class="card-body table-responsive">
                         <table class="table table-hover" id="datatablesSimple">
                             <thead>

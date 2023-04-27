@@ -7,6 +7,7 @@ $vote->addElecion();
 $vote->editElection();
 
 $vote->deleteElection();
+$vote->saveQRCode();
 // $vote->generateQR();
 
 ?>
@@ -103,7 +104,7 @@ if(isset($_POST['generate-qr'])){
                        
                     </div>
                     <hr>
-                    <div class="card mx-3 my-3 mt-3 mb-4" id="shadow" style="border-radius: 15px;">
+                    <div class="card mx-3 my-3 mt-3 mb-4" id="shadow2" style="border-radius: 15px;">
                         <div class="card-body table-responsive">
                             <table class="table table-hover" id="datatablesSimple">
                                 <thead>
@@ -126,15 +127,15 @@ if(isset($_POST['generate-qr'])){
                                             <td>
                                                 <div class="d-flex justify-content-center">
                                                     <button class="btn btn-sm btn-success mx-3" tabindex="-1" data-bs-toggle="modal" data-bs-target="#edit-election<?= $elec['election_id'] ?>" ><i class="fas fa-edit"> </i> Edit</button>
+                                                    <button class="btn btn-sm btn-primary" tabindex="-1" data-bs-toggle="modal" data-bs-target="#create-qr<?= $elec['election_id'] ?>"><i class="fa-solid fa-qrcode"></i> QR Code</button>
                                                     <button class="btn btn-sm btn-danger mx-3" tabindex="-1" data-bs-toggle="modal" data-bs-target="#delete-election<?= $elec['election_id'] ?>"><i class="fas fa-trash"></i> Delete</button>
-                                                    <button class="btn btn-sm btn-danger" tabindex="-1" data-bs-toggle="modal" data-bs-target="#create-qr<?= $elec['election_id'] ?>"> QR Code</button>
                                                 </div>
                                             </td>
                                            
                                         </tr>
-
                                         <?php 
                                         include('includes/modals.php');
+                                      
                                         ?>
                                       <?php } ?>
                                         

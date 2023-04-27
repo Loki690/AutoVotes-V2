@@ -91,7 +91,7 @@ $vote->editRequirement();
 
                 </div>
                 <hr>
-                <div class="card mx-3 my-3 mt-3 mb-4" id="shadow">
+                <div class="card mx-3 my-3 mt-3 mb-4" id="shadow2">
                     <div class="card-body table-responsive">
                         <table class="table table-hover" id="datatablesSimple">
                             <thead>

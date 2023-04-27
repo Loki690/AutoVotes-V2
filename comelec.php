@@ -83,7 +83,7 @@ $countVoters = $vote->countVoters();
 
                 <hr>
                 <div class="row">
-                    <div class="col-sm-3 mt-2">
+                    <div class="col-sm-3 mt-2" id="shadow2">
 
                         <div class="card mx-3 text-white" id="dashcard">
                             <div class="d-flex justify-content-center">
@@ -94,7 +94,7 @@ $countVoters = $vote->countVoters();
                         </div>
 
                     </div>
-                    <div class="col-sm-3 mt-2">
+                    <div class="col-sm-3 mt-2" id="shadow2">
                         <div class="card mx-3 text-white" id="dashcard">
                             <div class="d-flex justify-content-center">
                                 <h4 class="mx-3 mt-2">Voters</h4>
@@ -105,7 +105,7 @@ $countVoters = $vote->countVoters();
                         </div>
 
                     </div>
-                    <div class="col-sm-3 mt-2">
+                    <div class="col-sm-3 mt-2" id="shadow2">
                         <div class="card mx-3 text-white" id="dashcard">
                             <div class="d-flex justify-content-center">
                                 <h4 class="mx-3 mt-2">Applicants</h4>
@@ -117,7 +117,7 @@ $countVoters = $vote->countVoters();
 
                     </div>
 
-                    <div class="col-sm-3 mt-2">
+                    <div class="col-sm-3 mt-2" id="shadow2">
                             <div class="card mx-3 text-white" id="dashcard">
                                 <div class="d-flex justify-content-center">
                                     <h4 class="mx-3 mt-2">Elections</h4>
@@ -131,7 +131,7 @@ $countVoters = $vote->countVoters();
 
                 </div>
 
-                <div class="card mx-3 my-3 mt-3 mb-4" id="shadow">
+                <div class="card mx-3 my-3 mt-3 mb-4" id="shadow2">
                     <div class="card-body table-responsive">
                         <table class="table table-hover" id="datatablesSimple">
                             <thead>

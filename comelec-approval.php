@@ -88,7 +88,7 @@ include('includes/admin-header.php');
                 <hr>
          
 
-                <div class="card mx-3 my-3 mt-3 mb-4" id="shadow">
+                <div class="card mx-3 my-3 mt-3 mb-4" id="shadow2">
                     <div class="card-body table-responsive">
                         <form action="" method="POST">
                             <table class="table table-hover" id="datatablesSimple">

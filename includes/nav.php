@@ -16,7 +16,7 @@
           <a class="nav-link" href="#">About</a>
         </li>
       </ul>
-      <div class="d-flex">
+      <div class="d-flex justify-content-center">
         <button type="button" class="btn btn-outline-light mx-2" tabindex="-1" data-bs-toggle="modal" data-bs-target="#login">
           Login
         </button>

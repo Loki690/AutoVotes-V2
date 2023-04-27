@@ -6,14 +6,14 @@ $vote->logout();
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top" id="navbar">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
-      <img src="img/dcc.png" width="350" height="60" alt="">
+      <img src="img/dcc.png" width="300" height="60" alt="">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon" style="color: white"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
-      <div class="d-flex">
+      <div class="d-flex justify-content-center">
         <button type="button" class="btn btn-outline-light mx-1" tabindex="-1">
           <?= $voterDetails['first_name'] ?>
         </button>

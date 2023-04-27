@@ -1803,11 +1803,7 @@ class Voting
     ob_start();
     // initialize TCPDF
     if (isset($_POST['print-result'])) {
-
-
       $elec_id = $_POST['elec_id'];
-
-
       $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
       $pdf->SetCreator('Your Name');
       $pdf->SetAuthor('Your Name');
@@ -1855,10 +1851,40 @@ class Voting
     ob_end_clean();
   }
 
-  public function generateQR() {
+  public function saveQRCode() {
+    
+    $connection = $this->openConnection();
+    if(isset($_POST['save-qr'])){
 
-    
-    
+      $election_id = $_POST['election_id'];
+
+      $election_qr = rand(1000, 1000000) . "-" . $_FILES['qr-code']['name'];
+      $image_loc = $_FILES['qr-code']['tmp_name'];
+      $folder = "uploads/";
+
+      $new_file_name = strtolower($election_qr);
+      $final_file = str_replace(' ', '-', $new_file_name);
+
+      if (move_uploaded_file($image_loc, $folder . $final_file)) {
+        $stmt = $connection->prepare("UPDATE `election` SET `election_qr`= '$final_file' WHERE `election_id` = '$election_id'");
+        $stmt->execute();
+        if ($stmt == true) {
+        ?>
+          <script>
+            alert('Election Updated!');
+            window.location.href = "admin-election.php";
+          </script>
+        <?php
+        } else {
+          return $this->show_404();
+          echo $connection->errorInfo();
+        }
+
+      }
+      
+
+    }
+
 }
 
 }

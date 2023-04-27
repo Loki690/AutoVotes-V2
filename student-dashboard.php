@@ -25,12 +25,6 @@ $vote->session();
                         </a>
                         <hr class="dropdown-divider bg-dark" />
 
-                        <a id="nav-hover" href="" class="nav-link ">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-square-poll-vertical" id="icon"></i></div>Results
-                        </a>
-                        <hr class="dropdown-divider bg-dark" />
-
-
                         <a id="nav-hover" href="student-myvotes.php" class="nav-link ">
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-list" id="icon"></i></div>My Votes
                         </a>
@@ -50,12 +44,8 @@ $vote->session();
         <div id="layoutSidenav_content">
             <main>
                 <div class="d-flex justify-content-between mt-4 mx-4 my-3">
-                <h3 class="">Home</h3>
-                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page"> <i class="fas fa-home"></i> Elections</li>
-                        </ol>
-                    </nav>
+                <h3 class=""> <i class="fas fa-home mx-3"></i>Home</h3>
+                  
 
                 </div>
                 <hr>
@@ -68,9 +58,9 @@ $vote->session();
                     <?php foreach ($elections as $elec) { ?>
                         <div class="col-sm-4 mt-2">
 
-                            <div class="card">
-                                <h3 class="mx-3 my-3"><?= $elec['election_name'] ?></h3>
-                                <img class="img-fluid mx-3 my-3" src="uploads/<?= $elec['election_poster']; ?>" alt="">
+                            <div class="card" style="border-radius:25px;" id="shadow2">
+                                <h4 class="elec-name mx-3 my-3 text-truncate"><?= $elec['election_name'] ?></h4>
+                                <img  class="card-img img-fluid" style="width:500px; height: 300px;"  src="uploads/<?= $elec['election_poster']; ?>" alt="">
                                 <a type="button" class="btn btn-primary mx-4 my-4" href="student-vote.php?id=<?= $elec['election_id'] ?>">Vote here</a>
                             </div>
                         </div>

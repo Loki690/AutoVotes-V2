@@ -24,13 +24,8 @@ $positions = $vote->getPositionId();
                                 <div class="sb-nav-link-icon" id="icon"><i class="fas fa-home"></i></div>Home
                             </a>
                             <hr class="dropdown-divider bg-dark"/>
-                    
-                            <a id="nav-hover" href="" class="nav-link"><div class="sb-nav-link-icon"><i 
-                                class="fa-solid fa-square-poll-vertical" id="icon"></i></div>Results</a>
-                            <hr class="dropdown-divider bg-dark"/>
 
-
-                            <a id="nav-hover" href="" class="nav-link"><div class="sb-nav-link-icon"><i 
+                            <a id="nav-hover" href="student-myvotes.php" class="nav-link"><div class="sb-nav-link-icon"><i 
                                 class="fa-solid fa-list" id="icon"></i></div>My Votes</a>
                             <hr class="dropdown-divider bg-dark"/>
 
@@ -48,12 +43,17 @@ $positions = $vote->getPositionId();
         <div id="layoutSidenav_content">
             <main>
                 <div class="d-flex justify-content-between mt-4 mx-4 my-3">
-                <h3 class="">Home</h3>
-                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                <h3 class="elec-name"> 
+                    <a class="navbar-brand mx-2" href="#">
+                        <img  src="uploads/<?= $elec['election_poster']; ?>" width="50" height="50" alt="" />
+                    </a>
+                    <?= $election['election_name'] ?>
+                </h3>
+                    <nav class="mt-2" style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="student-dashboard.php" style="text-decoration: none;">
                                     <i class="fas fa-home"></i> HOME</a></li>
-                            <li class="breadcrumb-item active" aria-current="page"> <i class="fas fa-trash"></i>
+                            <li class="breadcrumb-item active" aria-current="page"> <i class="fas fa-vote-yea"></i>
                                 <?= $election['election_name'] ?></li>
                         </ol>
                     </nav>
@@ -67,8 +67,6 @@ $positions = $vote->getPositionId();
                 ?>
                 <form action="" method="POST">
                     <div class="container">
-
-                        <h3 class="mx-3 mt-4"> <?= $election['election_name'] ?></h3>
 
                         <?php foreach ($positions as $pos) {
 
@@ -89,14 +87,14 @@ $positions = $vote->getPositionId();
 
                                         <div class="col-sm-4">
 
-                                            <div class="card mx-3 mt-3">
+                                            <div class="card mx-3 mt-3" style="border-radius:25px;" id="shadow2">
 
-                                                <img class="card-img img-fluid" src="img/donaldmc.jpg" width="100" height="100" alt="">
-                                                <h4 class="mx-3 my-3 text-center">
+                                                <img class="card-img img-fluid" style="width:500px; height: 200px; border-top-left-radius:25px; border-top-right-radius:25px;" src="img/donaldmc.jpg" alt="">
+                                                <h5 class="name mx-3 my-3 text-center">
                                                     <?= $candi['first_name'] . " " . $candi['middle_name'] . " " . $candi['last_name'] ?>
-                                                </h4>
-                                                <h5 class="mx-3 my-3 text-center">
-                                                    <?= $pos['position_title'] ?>
+                                                </h5>
+                                                <h5 class="position mx-3 my-3 text-center">
+                                                    Running for <?= $pos['position_title'] ?>
                                                 </h5>
 
                                                 <div class="d-flex justify-content-center mb-3">
@@ -149,8 +147,13 @@ $positions = $vote->getPositionId();
 
                         <?php } ?>
                         
-                        <input type="reset" value="Reset">
-                        <button type="submit" name="vote">Submit My Votes</button>
+                        <div class="d-flex justify-content-center">
+                            <input class="btn btn-lg btn-primary"  type="reset" value="Reset">
+                            <button  class="btn btn-lg btn-primary mx-3"  type="submit" name="vote">Submit My Votes</button>
+                        </div>
+                        
+                     
+                     
                         
                     </div>
 
@@ -177,13 +180,13 @@ $positions = $vote->getPositionId();
 
 
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init();
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="js/scripts.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="assets/demo/chart-area-demo.js"></script>
+        <script src="assets/demo/chart-bar-demo.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+        <script src="js/datatables-simple-demo.js"></script>
 </body>
 
 </html>

@@ -37,9 +37,8 @@ body{
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
 }
-#shadow{
-    -webkit-box-shadow: 3px 3px 16px 5px #7d7d7d;
-    -moz-box-shadow: 3px 3px 16px 5px #7d7d7d;
-    box-shadow: 3px 3px 16px 5px #7d7d7d;
+#shadow2{
+    -webkit-box-shadow: 0 0 13px 5.5px #e3e3e3;
+  -moz-box-shadow: 0 0 13px 5.5px #e3e3e3;
+  box-shadow: 0 0 13px 5.5px #e3e3e3;
 }
-

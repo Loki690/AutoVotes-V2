@@ -48,19 +48,19 @@ $elections = $vote->getElectionId();
 <main>
   <!-- Dcc Logo-->
   <div class="container-fuid cover d-flex justify-content-center">
-    <img class="img-fluid" id="cover" src="img/cover.png" width="1400" height="450" alt="" />
+    <img class="img-fluid" id="cover" src="img/cover.png"  style="width:100%; height:450;" alt="" />
   </div>
 
   <div class="container d-flex justify-content-center">
-    <h5 class="title-app mt-5">ELECTION TYPES</h5>
+    <h5 class="title-app mt-5">UPCOMING ELECTION</h5>
   </div>
   <!--Candidates-->
   <div class="container">
     <div class="row">
       <?php foreach ($elections as $election) { ?>
         <div class="col-sm-4 pt-2 mt-5" data-aos="fade-right">
-          <div class="card text-start hvr-grow" id="shadow">
-            <img class="card-img img-fluid" style="width:500px; height: 350px;" src="uploads/<?= $election['election_poster']; ?>" alt="Title" />
+          <div class="card text-start hvr-grow" style="border-radius:25px;" id="shadow2">
+            <img class="card-img img-fluid" style="width:500px; height: 350px; border-top-left-radius:25px; border-top-right-radius:25px;" src="uploads/<?= $election['election_poster']; ?>" alt="ELECTION POSTER" />
 
             <div class="card-body">
               <h4 class="card-title"><?= $election['election_name'] ?></h4>
@@ -70,9 +70,13 @@ $elections = $vote->getElectionId();
               <div class="mt-2">
                 <small class="fw-bold text-muted">Election Ends : <?= date('F d, Y g:i A', strtotime($election['end_date'])) ?></small>
               </div>
-              <button type="button" class="btn btn-outline-primary mt-5" tabindex="-1" data-bs-toggle="modal" data-bs-target="#login">
-                View Elections
-              </button>
+              <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-outline-primary mt-5" tabindex="-1" data-bs-toggle="modal" data-bs-target="#login">
+                  View Elections
+                </button>
+
+              </div>
+            
             </div>
           </div>
         </div>

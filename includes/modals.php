@@ -218,13 +218,10 @@
           <div class="form-group">
             <label for="exampleInputEmail1">Student ID</label>
             <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="school_id" placeholder="Student ID" required />
-            <small id="emailHelp" class="form-text text-muted">We'll never share your student id with anyone
-              else.</small>
           </div>
-          <div class="form-group">
+          <div class="form-group mt-2">
             <label for="exampleInputPassword1">Password</label>
             <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password" required />
-            <a href="#" class="mt-2"><small>Forgot Password? </small> </a>
           </div>
           <div class="d-flex pt-1">
             <button type="submit" id="loginbutton" name="login-voter" class="btn btn-primary mt-2 flex-grow-1">
@@ -679,36 +676,66 @@
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
       <div class="modal-header p-3 pb-3">
-        <h5 class="modal-title" id="staticBackdropLabel">Edit Election</h5>
+        <h5 class="modal-title" id="staticBackdropLabel">GENERATE QR CODE</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <br>
       <form action="" method="POST" enctype="multipart/form-data">
         <div class="modal-body p-5 pt-0">
-          <div class="row">
-            <?php if (isset($result)) { ?>
-              <div class="mb-1">
-                <img src="<?php echo $result['img']; ?>" alt="OR Code" width="300px" height="300px">
-                <!-- <p class="text-center"><?php //echo $data; 
-                                            ?></p> -->
-              </div>
-            <?php } ?>
-            <div>
-              <div class="col-md-8">
-                <input type="hidden" class="form-control w-100" name="myqrcode" value="<?= 'http://localhost/AutoVotes-V2/student-dashboard.php?='.$elec['election_id'] ?>">
-              </div>
-              <div class="col-md-4">
-                <button type="submit" class="btn btn-primary" name="generate-qr">Generate QR Code</button>
-              </div>
+          <div class="d-flex justify-content-center mb-4" id="qrcode<?= $elec['election_id']?>">
+            <img class="" src="" alt="">
+          </div>
+          
+          <div class="mb-3 row">
+            <label for="input<?= $elec['election_id'] ?>" class="col-sm-2 col-form-label">Url:</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="input<?= $elec['election_id'] ?>" name="input" value="<?= 'http://192.168.0.114/AutoVotes-V2/student-vote.php?id=' . $elec['election_id'] ?>">
+            </div>
+            <div class="d-flex justify-content-end">
+              <button type="button" class="btn btn-primary mt-3 mx-3" onclick="generateQR('<?= $elec['election_id'] ?>')" id="generate-btn<?= $elec['election_id'] ?>">Generate QR Code</button>
+              <button type="button" class="btn btn-primary mt-3" onclick="downloadQR('<?= $elec['election_id'] ?>')" id="download-btn<?= $elec['election_id'] ?>" disabled>Download QR Code</button>
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-success" name="create-qr">Download</button>
-          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" name="save-qr">Save QR</button>
+        </div>
+
       </form>
     </div>
   </div>
+
+  <script>
+    var qrcode;
+
+    function generateQR(election_id) {
+      var input = document.getElementById("input" + election_id).value;
+      if (input.trim() === "") {
+        alert("Please enter some text to encode.");
+        return;
+      }
+      var qrcode = new QRCode(document.getElementById("qrcode" + election_id), {
+        text: input,
+        width: 256,
+        height: 256,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+      document.getElementById("generate-btn" + election_id).disabled = true;
+      document.getElementById("download-btn" + election_id).disabled = false;
+    }
+
+    function downloadQR(election_id) {
+      var canvas = document.getElementById("qrcode" + election_id).getElementsByTagName("canvas")[0];
+      var img = canvas.toDataURL("image/png");
+      var link = document.createElement("a");
+      link.download = "qrcode.png";
+      link.href = img;
+      link.click();
+    }
+  </script>
 </div>
 
 <!-- delete voter -->
