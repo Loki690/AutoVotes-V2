@@ -92,7 +92,7 @@ $vote->deleteComelec();
                                 <tr>
                                     <td><?= $comelec['first_name'] . " " . $comelec['middle_name'] . " " . $comelec['last_name'] ?>
                                     </td>
-                                    <td><?= $comelec['accesscode']." ".$comelec['admin_id'] ?></td>
+                                    <td><?= $comelec['accesscode'] ?></td>
                                     <td>
                                         <div class="d-flex justify-content-center">
                                             <button class="btn btn-sm btn-success mx-3" tabindex="-1" data-bs-toggle="modal" data-bs-target="#edit-comelec<?= $comelec['admin_id'];?>"><i class="fas fa-edit"></i>

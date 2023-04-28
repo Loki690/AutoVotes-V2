@@ -1,13 +1,8 @@
 <?php
 include('includes/admin-header.php');
-
 require_once('class.php');
 $elections = $vote->getElectionId();
 $vote->session();
-
-
-
-
 ?>
 
 <body class="sb-nav-fixed">

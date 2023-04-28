@@ -1,14 +1,6 @@
 <?php
-
 include('includes/admin-header.php');
-
-
-
-
-
-
 ?>
-
 <body class="sb-nav-fixed">
     <?php
     require_once('class.php');
@@ -16,7 +8,6 @@ include('includes/admin-header.php');
     $requirements = $vote->getRequirements();
     $vote->submitReq();
     $vote->adminSession();
-
     include('includes/admin-nav.php');
     ?>
     <div id="layoutSidenav">

@@ -9,10 +9,7 @@ $countElections = $vote->countElections();
 $countVoters = $vote->countVoters();
 
 ?>
-
-
 <body class="sb-nav-fixed">
-
     <?php
     include('includes/admin-nav.php');
     ?>

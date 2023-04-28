@@ -1,12 +1,10 @@
 <?php
 require_once('class.php');
-
 $vote->Login();
 $vote->voterRegister();
 $vote->loginAdmin();
-
+$vote->comelecLogin();
 include('includes/header.php');
-
 if ($vote->getUserData() == true) {
   include('includes/usernav.php');
 } else {
@@ -14,7 +12,6 @@ if ($vote->getUserData() == true) {
 }
 $elections = $vote->getElectionId();
 ?>
-
 <script type="text/javascript">
   function countdown() {
 
@@ -116,6 +113,38 @@ $elections = $vote->getElectionId();
     </div>
   </div>
 </div>
+
+<!-- modal comelec login -->
+<div class="modal fade modal-signin" id="login-comelec" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+    <div class="modal-content rounded-5 shadow" style="border-radius: 30px">
+      <div class="modal-header p-3 pb-3">
+        <h5 class="modal-title text-white" id="staticBackdropLabel">
+          Comelec Login
+        </h5>
+        <button type="button" class="btn-close-white" data-bs-dismiss="modal" aria-label="Close">
+          x
+        </button>
+      </div>
+      <br />
+      <div class="modal-body p-5 pt-0">
+        <form action="" method="POST" enctype="multipart/form-data">
+          <div class="form-group mt-2">
+            <label for="exampleInputPassword1" class="form-label">Access Code</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" name="accesscode" placeholder="Password" required />
+            <a href="#" class="mt-2"><small>Forgot Access Code? </small> </a>
+          </div>
+          <div class="d-flex pt-1">
+            <button type="submit" id="loginbutton" name="login-comelec" class="btn btn-primary mt-2 flex-grow-1">
+              Login
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <div class="container d-flex justify-content-center mt-lg-5">
   <h5 class="title-app display-1 mb-5">Filing of Candidacy</h5>

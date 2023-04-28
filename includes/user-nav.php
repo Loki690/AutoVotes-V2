@@ -1,10 +1,7 @@
 <?php
-
 $voterDetails = $vote->getUserData();
 $vote->logout();
-
 ?>
-
 <nav class="sb-topnav navbar navbar-expand navbar-dark" id="nav-color">
             <!-- Navbar Brand-->
             <a class="navbar-brand mx-2" href="#">

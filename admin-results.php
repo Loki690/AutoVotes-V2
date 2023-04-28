@@ -5,6 +5,7 @@ include('includes/admin-header.php');
 $vote->adminSession();
 $voteResults = $vote->getCandidates();
 $getElection = $vote->getElectionId();
+$getPosition = $vote->getPositionId();
 $vote->resultPrint();
 
 
@@ -75,18 +76,19 @@ $vote->resultPrint();
                 <div class="d-flex justify-content-between mt-4 mx-4 my-3">
 
                     <form class="d-flex" method="post" action="">
-                        <select class="form-select" name="election" aria-label="Default select example">
+                        <select class="form-select" name="election" aria-label="Default select example" required>
                             <option selected>Select Election</option>
                             <?php foreach ($getElection as $elec) { ?>
                                 <option value="<?= $elec['election_id'] ?>"><?= $elec['election_name'] ?></option>
-                                
-
                             <?php } ?>
-                           
+                        </select>
+                        <select class="form-select" name="position" aria-label="Default select example" required>
+                            <option selected>Select Position</option>
+                            <?php foreach ($getPosition as $pos) { ?>
+                                <option value="<?= $pos['position_id'] ?>"><?= $pos['position_title'] ?></option>
+                            <?php } ?>
                         </select>
                         <button type="submit" class="btn btn-primary mx-2" name="search-election">GENERATE</button>
-                        
-                        <button type="submit" name="print-result" class="btn btn-primary mx-2">PRINT</button>
                     </form>
 
                     <form action="" method="post">

@@ -3,6 +3,7 @@ require_once('class.php');
 include('includes/admin-header.php');
 
 $candidates = $vote->getApplicantsForCandidate();
+$getElection = $vote->getElectionId();
 ?>
 
 <body class="sb-nav-fixed">
@@ -62,6 +63,17 @@ $candidates = $vote->getApplicantsForCandidate();
 
                 </div>
                 <hr>
+                <div class="d-flex justify-content-between mt-4 mx-4 my-3">
+                    <form class="d-flex" method="post" action="">
+                        <select class="form-select" name="election" aria-label="Default select example" required>
+                            <option selected>Select Election</option>
+                            <?php foreach ($getElection as $elec) { ?>
+                                <option value="<?= $elec['election_id'] ?>"><?= $elec['election_name'] ?></option>
+                            <?php } ?>
+                        </select>
+                        <button type="submit" class="btn btn-primary mx-2" name="search-election">GENERATE</button>
+                    </form>
+                </div>
                 <div class="card mx-3 my-3 mt-3 mb-4" id="shadow2" style="border-radius: 15px;">
                     <div class="card-body table-responsive">
                         <table class="table table-hover" id="datatablesSimple">
@@ -72,57 +84,53 @@ $candidates = $vote->getApplicantsForCandidate();
                                     <th>Positon</th>
                                     <th>Party</th>
                                     <th>Election</th>
-                                    
+
 
                                     <th>Action</th>
 
                                 </tr>
                             <tbody>
-                                <?php if(!empty($candidates)){ ?>
-                                <?php foreach ($candidates as $candidate) {
+                                <?php if (!empty($candidates)) { ?>
+                                    <?php foreach ($candidates as $candidate) {
+                                        $party_id = $candidate['party_id'];
+                                        $party = $vote->getParty($party_id);
+                                        $position_id = $candidate['position_id'];
+                                        $pos = $vote->getPosition($position_id);
+                                        $election_id = $candidate['election_id'];
+                                        $elec = $vote->getElection($election_id);
 
-                                    $party_id = $candidate['party_id'];
-                                    $party = $vote->getParty($party_id);
+                                    ?>
 
-                                    $position_id = $candidate['position_id'];
-                                    $pos = $vote->getPosition($position_id);
+                                        <tr>
 
-                                    $election_id = $candidate['election_id'];
-                                    $elec = $vote->getElection($election_id);
+                                            <td><?= $candidate['first_name'] . " " . $candidate['middle_name'] . " " . $candidate['last_name'] ?></td>
+                                            <td><?= $pos['position_title']; ?></td>
+                                            <td><?= $party['party'] ?></td>
+                                            <?php if (empty($elec['election_name'])) { ?>
+                                                <td>No data</td>
+                                            <?php } else { ?>
+                                                <td><?= $elec['election_name'] ?>
+                                                </td>
+                                            <?php } ?>
+                                            <td>
+                                                <div class="d-flex justify-content-center">
 
-                                ?>
+                                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i>
+                                                        Delete</button>
+                                                </div>
 
-                                    <tr>
+                                            </td>
 
-                                        <td><?= $candidate['first_name'] . " " . $candidate['middle_name'] . " " . $candidate['last_name'] ?></td>
-                                        <td><?= $pos['position_title']; ?></td>
-                                        <td><?= $party['party'] ?></td>
-                                        <?php if (empty($elec['election_name'])) { ?>
-                                            <td>No data</td>
-                                        <?php } else { ?>
-                                            <td><?= $elec['election_name'] ?>
-                                        
-                                        </td>
-                                        <?php } ?>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
+                                        </tr>
 
-                                                <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i>
-                                                    Delete</button>
-                                            </div>
+                                    <?php } ?>
 
-                                        </td>
-
-                                    </tr>
-
-                                <?php } ?>
-
-                                <?php } else {?>
+                                <?php } else { ?>
                                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                    <strong>No Data</strong>.
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        <strong>No Data</strong>.
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                     </div>
-                                    <?php }?>
+                                <?php } ?>
                             </tbody>
 
                             </thead>
@@ -156,4 +164,5 @@ $candidates = $vote->getApplicantsForCandidate();
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
 </body>
+
 </html>

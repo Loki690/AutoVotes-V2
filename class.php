@@ -1,8 +1,9 @@
 <?php
-       use Dompdf\Dompdf;
+
+use Dompdf\Dompdf;
 
 class Voting
-{ 
+{
   private $server = "mysql:host=localhost;dbname=vote3";
   private $user = "root";
   private $pass = "";
@@ -155,7 +156,6 @@ class Voting
     if (isset($_SESSION['admindata'])) {
       return $_SESSION['admindata'];
     } else {
-
       return header("Location: index.php");
     }
   }
@@ -169,12 +169,6 @@ class Voting
       return header("Location: index.php");
     }
   }
-
-
-  public function checkUsers()
-  {
-  }
-
   public function loginAdmin()
   {
 
@@ -219,6 +213,65 @@ class Voting
       unset($_SESSION['admindata']);
 
       header("Location: index.php");
+    }
+  }
+
+  public function setComelecData($array)
+  {
+
+    if (!isset($_SESSION)) {
+      session_start();
+    }
+    $_SESSION['comelecdata'] = array(
+      "last_name" => $array['lastname'],
+      "first_name" => $array['last_name'],
+      "accesscode" => $array['accesscode'],
+      "type" => $array['type'],
+    );
+
+    return $_SESSION['comelecdata'];
+  }
+
+  public function getComelecData()
+  {
+    if (!isset($_SESSION)) {
+      session_start();
+    }
+    if (isset($_SESSION['comelecdata'])) {
+
+      return $_SESSION['comelecdata'];
+    } else {
+      return header("Location: index.php");
+    }
+  }
+
+  public function comelecSession(){
+    if($this->getComelecData()){
+      return $this->getComelecData();
+    }else{
+      return header("Location: index.php");
+    }
+  }
+
+  public function comelecLogin(){
+    $connection = $this->openConnection();
+    if(isset($_POST['login-comelec'])){
+
+      $accesscode = $_POST['accesscode'];
+      $type = 'comelec';
+
+      $stmt = $connection->prepare("SELECT * FROM `admin` WHERE `accesscode` = '$accesscode' AND `type` = '$type'");
+      $stmt->execute();
+
+      $comelec = $stmt->fetch();
+      $total = $stmt->rowCount();
+      
+      if($total > 0){
+        $this->setComelecData($comelec);
+        header("Location: comelec.php");
+      }else{
+        return $connection->errorInfo();
+      }
     }
   }
 
@@ -625,11 +678,18 @@ class Voting
   {
 
     $connection = $this->openConnection();
-
-    $stmt = $connection->prepare("SELECT * FROM `applicants` where `application_status` = 'final'");
+    $applicants = [];
+    if(isset($_POST['search-election'])){
+      $election_id = $_POST['election'];
+      $stmt = $connection->prepare("SELECT * FROM `applicants` WHERE `application_status` = 'final' AND `election_id` = '$election_id'");
+      $stmt->execute();
+      $applicants = $stmt->fetchAll();
+    }else{
+      $stmt = $connection->prepare("SELECT * FROM `applicants` where `application_status` = 'final'");
     $stmt->execute();
     $applicants = $stmt->fetchAll();
-
+    }
+    
     $total = $stmt->rowCount();
 
     if ($total > 0) {
@@ -823,9 +883,10 @@ class Voting
     $candidates = [];
 
     if (isset($_POST['search-election'])) {
+
       $election_id = $_POST['election'];
-      $stmt = $connection->prepare("SELECT * FROM `applicants` WHERE `application_status` = 'final' AND `election_id` = :election_id");
-      $stmt->bindParam(':election_id', $election_id);
+      $position_id = $_POST['position'];
+      $stmt = $connection->prepare("SELECT * FROM `applicants` WHERE `application_status` = 'final' AND `election_id` = '$election_id' AND  `position_id` = '$position_id'");
       $stmt->execute();
       $candidates = $stmt->fetchAll();
     } else {
@@ -839,7 +900,7 @@ class Voting
     if ($total > 0) {
       return $candidates;
     } else {
-      return $connection->errorInfo();
+     
     }
   }
 
@@ -1553,7 +1614,7 @@ class Voting
           confirm('Vote Counted');
           window.location.href = "student-dashboard.php";
         </script>
-<?php
+        <?php
       }
     }
   }
@@ -1738,62 +1799,62 @@ class Voting
 
   public function printResults()
   {
-      $connection = $this->openConnection();
-  
-      if (isset($_POST['print-result'])) {
-          // Get vote results data from the database
-          $stmt = $connection->prepare("SELECT * FROM `applicants` WHERE `application_status` = 'final'");
-          $stmt->execute();
-          $voteResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  
-          // Generate HTML table from the vote results data
-          $html = '<table>';
-          $html .= '<thead>';
-          $html .= '<tr>';
-          $html .= '<th>Student ID</th>';
-          $html .= '<th>Name</th>';
-          $html .= '<th>Election</th>';
-          $html .= '<th>Position</th>';
-          $html .= '<th>Vote Count</th>';
-          $html .= '</tr>';
-          $html .= '</thead>';
-          $html .= '<tbody>';
-  
-          foreach ($voteResults as $result) {
-              $voteResult = $this->getVoteResults($result['id']);
-              $position = $this->getPosition($result['position_id']);
-              $election = $this->getElection($result['election_id']);
-  
-              $html .= '<tr>';
-              $html .= '<td>' . $result['student_id'] . '</td>';
-              $html .= '<td>' . $result['first_name'] . ' ' . $result['middle_name'] . ' ' . $result['last_name'] . '</td>';
-              $html .= '<td>' . $election['election_name'] . '</td>';
-              $html .= '<td>' . $position['position_title'] . '</td>';
-              $html .= '<td>' . $voteResult . '</td>';
-              $html .= '</tr>';
-          }
-  
-          $html .= '</tbody>';
-          $html .= '</table>';
-  
-          // Generate PDF file using dompdf library
-   
+    $connection = $this->openConnection();
 
-          require_once 'vendor2/vendor/autoload.php';
-          
-  
-          $dompdf = new Dompdf();
-          $dompdf->loadHtml($html);
-          $dompdf->setPaper('A4', 'landscape');
-          $dompdf->render();
-  
-          // Output the PDF file for download
-          header('Content-Type: application/pdf');
-          header('Content-Disposition: attachment; filename="vote_results.pdf"');
-          echo $dompdf->output();
+    if (isset($_POST['print-result'])) {
+      // Get vote results data from the database
+      $stmt = $connection->prepare("SELECT * FROM `applicants` WHERE `application_status` = 'final'");
+      $stmt->execute();
+      $voteResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+      // Generate HTML table from the vote results data
+      $html = '<table>';
+      $html .= '<thead>';
+      $html .= '<tr>';
+      $html .= '<th>Student ID</th>';
+      $html .= '<th>Name</th>';
+      $html .= '<th>Election</th>';
+      $html .= '<th>Position</th>';
+      $html .= '<th>Vote Count</th>';
+      $html .= '</tr>';
+      $html .= '</thead>';
+      $html .= '<tbody>';
+
+      foreach ($voteResults as $result) {
+        $voteResult = $this->getVoteResults($result['id']);
+        $position = $this->getPosition($result['position_id']);
+        $election = $this->getElection($result['election_id']);
+
+        $html .= '<tr>';
+        $html .= '<td>' . $result['student_id'] . '</td>';
+        $html .= '<td>' . $result['first_name'] . ' ' . $result['middle_name'] . ' ' . $result['last_name'] . '</td>';
+        $html .= '<td>' . $election['election_name'] . '</td>';
+        $html .= '<td>' . $position['position_title'] . '</td>';
+        $html .= '<td>' . $voteResult . '</td>';
+        $html .= '</tr>';
       }
+
+      $html .= '</tbody>';
+      $html .= '</table>';
+
+      // Generate PDF file using dompdf library
+
+
+      require_once 'vendor2/vendor/autoload.php';
+
+
+      $dompdf = new Dompdf();
+      $dompdf->loadHtml($html);
+      $dompdf->setPaper('A4', 'landscape');
+      $dompdf->render();
+
+      // Output the PDF file for download
+      header('Content-Type: application/pdf');
+      header('Content-Disposition: attachment; filename="vote_results.pdf"');
+      echo $dompdf->output();
+    }
   }
-  
+
 
   public function resultPrint()
   {
@@ -1803,7 +1864,7 @@ class Voting
     ob_start();
     // initialize TCPDF
     if (isset($_POST['print-result'])) {
-      $elec_id = $_POST['elec_id'];
+      // $elec_id = $_POST['elec_id'];
       $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
       $pdf->SetCreator('Your Name');
       $pdf->SetAuthor('Your Name');
@@ -1811,7 +1872,7 @@ class Voting
       $pdf->AddPage();
 
       // get vote results data
-      $stmt = $connection->prepare("SELECT * FROM `applicants` WHERE `application_status` = 'final' AND `election_id` = '$elec_id'");
+      $stmt = $connection->prepare("SELECT * FROM `applicants` WHERE `application_status` = 'final'");
       $stmt->execute();
       $voteResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -1846,15 +1907,15 @@ class Voting
       $pdf->Output('election_results.pdf', 'I');
       exit;
     }
-
     // end output buffering and clean the buffer
     ob_end_clean();
   }
 
-  public function saveQRCode() {
-    
+  public function saveQRCode()
+  {
+
     $connection = $this->openConnection();
-    if(isset($_POST['save-qr'])){
+    if (isset($_POST['save-qr'])) {
 
       $election_id = $_POST['election_id'];
 
@@ -1874,19 +1935,14 @@ class Voting
             alert('Election Updated!');
             window.location.href = "admin-election.php";
           </script>
-        <?php
+<?php
         } else {
           return $this->show_404();
           echo $connection->errorInfo();
         }
-
       }
-      
-
     }
-
-}
-
+  }
 }
 
 $vote = new Voting();

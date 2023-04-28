@@ -1,6 +1,5 @@
 <?php
-$adminDetails = $vote->getAdminData();
-$vote->logoutAdmin();
+$adminDetails = $vote->getComelecData();
 ?>
 <nav class="sb-topnav navbar navbar-expand navbar-dark" id="nav-color">
         <!-- Navbar Brand-->
