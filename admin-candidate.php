@@ -57,7 +57,7 @@ $getElection = $vote->getElectionId();
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="admin-interview.php" style="text-decoration: none;"> <i class="fa-solid fa-podcast"></i> INTERVIEW</a></li>
                             <li class="breadcrumb-item active" aria-current="page"> <i class="fas fa-users"></i>
-                                CANDIDATES</li>
+                                CANDIDATES OF ELECTION</li>
                         </ol>
                     </nav>
 
