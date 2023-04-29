@@ -784,6 +784,8 @@ class Voting
       echo $connection->errorInfo();
     }
   }
+
+  
   public function getPositionId()
   {
     $connection = $this->openConnection();
