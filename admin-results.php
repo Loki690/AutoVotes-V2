@@ -107,42 +107,68 @@ $vote->resultPrint();
                                     <th>ELECTION</th>
                                     <th>POSITION</th>
                                     <th>VOTE COUNT</th>
-
-
                                 </tr>
+                            </thead>
                             <tbody>
-                                <?php if (!empty($voteResults)) { ?>
+                                <?php if (!empty($voteResults)) {
+                                    // Sort the $voteResults array based on the $voteResult value
+                                    usort($voteResults, function ($a, $b) use ($vote) {
+                                        $voteResultA = $vote->getVoteResults($a['id']);
+                                        $voteResultB = $vote->getVoteResults($b['id']);
+                                        $posCountA = $vote->getPosition($a['position_id'])['count'];
+                                        $posCountB = $vote->getPosition($b['position_id'])['count'];
 
-                                    <?php foreach ($voteResults as $result) {
+                                        // Compare by vote result first
+                                        if ($voteResultB != $voteResultA) {
+                                            return $voteResultB - $voteResultA;
+                                        }
+
+                                        // If vote results are tied, compare by position count
+                                        return $posCountB - $posCountA;
+                                    });
+
+                                    // Get the winners for each position
+                                    $winners = [];
+                                    foreach ($voteResults as $result) {
+                                        $positionId = $result['position_id'];
+                                        if (!isset($winners[$positionId])) {
+                                            $winners[$positionId] = [];
+                                        }
+
                                         $voteResult = $vote->getVoteResults($result['id']);
+                                        $posCount = $vote->getPosition($positionId)['count'];
+                                        if (count($winners[$positionId]) < $posCount) {
+                                            $winners[$positionId][] = $result;
+                                        }
+                                    }
+
+                                    foreach ($voteResults as $result) {
                                         $position = $vote->getPosition($result['position_id']);
                                         $election = $vote->getElection($result['election_id']);
-                                    ?>
-                                        <tr>
+                                        $isWinner = in_array($result, $winners[$result['position_id']]);
+                                        $voteResult = $vote->getVoteResults($result['id']);
 
+                                ?>
+                                        <tr>
                                             <td><?= $result['student_id'] ?></td>
-                                            <td><?= $result['first_name'] . " " . $result['middle_name'] . " " . $result['last_name'] ?>
-                                            </td>
+                                            <td><?= $result['first_name'] . " " . $result['middle_name'] . " " . $result['last_name'] ?></td>
                                             <td><?= $election['election_name'] ?></td>
                                             <td><?= $position['position_title'] ?></td>
-                                            <td><?= $voteResult ?></td>
-
+                                            <?php if(!empty($voteResult)) {?>
+                                            <td><span class="badge rounded-pill bg-success"><?= $voteResult ?> <?= $isWinner ? 'Wins' : '' ?></span></td>
+                                            <?php }else{ ?>
+                                                <td><span class="badge rounded-pill bg-info text-dark">No Votes</span></td>
+                                                <?php } ?>
                                         </tr>
-
                                     <?php } ?>
                                 <?php } ?>
-
-
-
                             </tbody>
-
-                            </thead>
-
                         </table>
-
                     </div>
                 </div>
+
             </main>
+
 
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">

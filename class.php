@@ -385,7 +385,7 @@ class Voting
       ?>
         <script>
           alert('Invalid Student ID<?= " " . $school_id ?>');
-          window.location.href = "register-candi.php";
+          window.location.href = "index.php";
         </script>
         <?php
         exit;
@@ -674,6 +674,8 @@ class Voting
     }
   }
 
+
+
   public function getApplicantsForCandidate()
   {
 
@@ -769,7 +771,7 @@ class Voting
   public function getElectionId()
   {
     $connection = $this->openConnection();
-    $stmt = $connection->prepare("SELECT * FROM `election` where `x` != 'deleted' ORDER BY `election_id` DESC ");
+    $stmt = $connection->prepare("SELECT * FROM `election` where `x` = 'active' ORDER BY `election_id` DESC ");
     $stmt->execute();
     $elections = $stmt->fetchAll();
 
@@ -890,9 +892,9 @@ class Voting
       $stmt->execute();
       $candidates = $stmt->fetchAll();
     } else {
-      $stmt = $connection->prepare("SELECT * FROM `applicants` WHERE `application_status` = 'final'");
-      $stmt->execute();
-      $candidates = $stmt->fetchAll();
+      // $stmt = $connection->prepare("SELECT * FROM `applicants` WHERE `application_status` = 'final'");
+      // $stmt->execute();
+      // $candidates = $stmt->fetchAll();
     }
 
     $total = count($candidates);
@@ -908,12 +910,12 @@ class Voting
   {
     $connection = $this->openConnection();
 
-    $stmt = $connection->prepare("SELECT COUNT(*) FROM `votes` WHERE `student_id` = ?");
-    $stmt->execute([$school_id]);
+    $stmt = $connection->prepare("SELECT COUNT(*) FROM `votes` WHERE `student_id` = ? AND `election_id` = ?");
+    $stmt->execute([$school_id, $election_id]);
     $count = $stmt->fetchColumn();
 
     if ($count == 0) {
-      // If student ID doesn't exist
+      
       $stmt = $connection->prepare("SELECT * FROM `applicants` where `application_status` = 'final' AND `election_id` = '$election_id' AND `position_id` = '$position_id' ");
       $stmt->execute();
       $applicants = $stmt->fetchAll();
@@ -1071,14 +1073,12 @@ class Voting
     if (isset($_POST['edit-election'])) {
 
       $election_name = $_POST['election_name'];
-      $election_date = $_POST['election_date'];
       $election_start = $_POST['election_start'];
       $election_end = $_POST['election_end'];
       $status = $_POST['status'];
       $election_id = $_POST['election_id'];
-
-      $startdate = date('Y-m-d H:i:s', strtotime($election_date . " " . $election_start . ":00:00"));
-      $enddate = date('Y-m-d H:i:s', strtotime($election_date . " " . $election_end . ":00:00"));
+      $startdate = $election_start ;
+      $enddate = $election_end;
 
 
       $election_poster = rand(1000, 1000000) . "-" . $_FILES['election_poster']['name'];
@@ -1580,7 +1580,7 @@ class Voting
       if ($stmt) {
         ?>
         <script>
-          confirm('Vote Counted');
+          confirm('Votes Counted!');
           window.location.href = "student-vote.php?id=<?= $elec_id ?>";
         </script>
       <?php
@@ -1611,7 +1611,7 @@ class Voting
       if ($stmt) {
       ?>
         <script>
-          confirm('Vote Counted');
+          confirm('Votes Counted');
           window.location.href = "student-dashboard.php";
         </script>
         <?php
@@ -1942,6 +1942,25 @@ class Voting
         }
       }
     }
+  }
+
+
+
+
+  public function isStudentVoted($student_id, $election_id){
+  
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT * FROM `votes` WHERE `student_id` = '$student_id' AND `election_id` = '$election_id' ");
+    $stmt->execute();
+    $votes = $stmt->fetch();
+
+    if($votes){
+      return $votes;
+
+    }else{
+      return false;
+    }
+
   }
 }
 

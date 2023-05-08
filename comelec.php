@@ -9,6 +9,7 @@ $countElections = $vote->countElections();
 $countVoters = $vote->countVoters();
 
 ?>
+
 <body class="sb-nav-fixed">
     <?php
     include('includes/admin-nav.php');
@@ -80,21 +81,20 @@ $countVoters = $vote->countVoters();
 
                 <hr>
                 <div class="row">
-                    <div class="col-sm-3 mt-2" id="shadow2">
+                    <div class="col-sm-3 mt-2">
 
                         <div class="card mx-3 text-white" id="dashcard">
                             <div class="d-flex justify-content-center">
-                                <h5 class="mx-3 mt-2">Final Candidates</h5>
-
+                                <h5 class="mx-3 mt-2"><i class="fa-solid fa-users-line mx-1"></i> Final Candidates</h5>
                             </div>
                             <h4 class="d-flex justify-content-center mx-3 mt-2"><?= $countCandidate ?></h4>
                         </div>
 
                     </div>
-                    <div class="col-sm-3 mt-2" id="shadow2">
+                    <div class="col-sm-3 mt-2">
                         <div class="card mx-3 text-white" id="dashcard">
                             <div class="d-flex justify-content-center">
-                                <h4 class="mx-3 mt-2">Voters</h4>
+                                <h4 class="mx-3 mt-2"><i class="fa-solid fa-check-to-slot mx-1"></i>Voters</h4>
 
                             </div>
                             <h4 class="d-flex justify-content-center mx-3 mt-2"><?= $countVoters ?></h4>
@@ -102,10 +102,10 @@ $countVoters = $vote->countVoters();
                         </div>
 
                     </div>
-                    <div class="col-sm-3 mt-2" id="shadow2">
+                    <div class="col-sm-3 mt-2">
                         <div class="card mx-3 text-white" id="dashcard">
                             <div class="d-flex justify-content-center">
-                                <h4 class="mx-3 mt-2">Applicants</h4>
+                                <h4 class="mx-3 mt-2"><i class="fa-solid fa-users-line mx-1"></i>Applicants</h4>
 
                             </div>
                             <h4 class="d-flex justify-content-center mx-3 mt-2"><?= $countApplicant ?></h4>
@@ -114,17 +114,16 @@ $countVoters = $vote->countVoters();
 
                     </div>
 
-                    <div class="col-sm-3 mt-2" id="shadow2">
+                    <div class="col-sm-3 mt-2">
+                        <a href="" tabindex="-1" data-bs-toggle="modal" data-bs-target="#elections">
                             <div class="card mx-3 text-white" id="dashcard">
                                 <div class="d-flex justify-content-center">
-                                    <h4 class="mx-3 mt-2">Elections</h4>
+                                    <h4 class="mx-3 mt-2"><i class="fa-solid fa-landmark mx-1"></i>Elections</h4>
                                 </div>
-                             
                                 <h4 class="d-flex justify-content-center mx-3 mt-2"><?= $countElections ?></h4>
-
                             </div>
-
-                        </div>
+                        </a>
+                    </div>
 
                 </div>
 
@@ -209,7 +208,7 @@ $countVoters = $vote->countVoters();
                                                                     <p class="text-muted"> Name :</p>
                                                                 </div>
                                                                 <div class="col-md-4  mt-2">
-                                                                    <p class="text-center"> <?= $candidate['first_name']." ". $candidate['middle_name']." ". $candidate['last_name'] ?></p>
+                                                                    <p class="text-center"> <?= $candidate['first_name'] . " " . $candidate['middle_name'] . " " . $candidate['last_name'] ?></p>
                                                                 </div>
                                                                 <hr>
 
@@ -217,10 +216,10 @@ $countVoters = $vote->countVoters();
                                                                     <p class="text-muted"> Age :</p>
                                                                 </div>
                                                                 <div class="col-md-4  mt-2">
-                                                                    <?php 
+                                                                    <?php
                                                                     $age = $vote->calculateAge($candidate['id'], $candidate['date_birth']);
                                                                     ?>
-                                                                    <p class="text-center"> <?= $age." years old" ?> </p>
+                                                                    <p class="text-center"> <?= $age . " years old" ?> </p>
                                                                 </div>
 
                                                                 <hr>
@@ -293,6 +292,35 @@ $countVoters = $vote->countVoters();
 
 
             </main>
+            <!-- elections modal -->
+            <div class="modal fade modal-signin" id="elections" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                    <div class="modal-content rounded-5 shadow" style="border-radius: 30px">
+                        <div class="modal-header p-3 pb-3">
+                            <h5 class="modal-title text-black" id="staticBackdropLabel">
+                                Elections Results
+                            </h5>
+                            <button type="button" class="btn-close-white" data-bs-dismiss="modal" aria-label="Close">
+                                x
+                            </button>
+                        </div>
+                        <br />
+                        <?php $elections = $vote->getElectionId() ?>
+                        <div class="modal-body p-5 pt-0">
+                            <div class="row">
+                                <?php foreach ($elections as $election) { ?>
+                                    <div class="col-md-4">
+                                        <a href="election-result.php?id=<?= $election['election_id'] ?>"><button class="btn btn-md btn-primary"><?= $election['election_name'] ?></button></a>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+          
 
 
             <footer class="py-4 bg-light mt-auto">

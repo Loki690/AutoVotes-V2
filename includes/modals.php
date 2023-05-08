@@ -47,6 +47,7 @@
     </div>
   </div>
 </div>
+
 <!-- edit admin info -->
 <div class="modal fade modal-signin" id="edit-admin<?= $item['admin_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
@@ -541,71 +542,23 @@
               <input type="text" class="form-control" value="<?= $elec['election_name'] ?>" name="election_name" id="" required>
             </div>
           </div>
-
-          <div class="mb-3 row">
+          <!-- <div class="mb-3 row">
             <label for="ElectionDate" class="col-sm-3 col-form-label">Election Date: </label>
             <div class="col-sm-8">
-              <input type="date" class="form-control" name="election_date" id="">
+              <input type="datetime-local" class="form-control" name="election_date" id="" value="<?=$date = date("y-m-d", strtotime( $elec['start_date']));?>" required>
             </div>
-          </div>
+          </div> -->
           <div class="mb-3 row">
-            <label for="Access Code" class="col-sm-3 col-form-label">Start Time: </label>
+          <label for="ElectionDate" class="col-sm-3 col-form-label">Election Date: </label>
             <div class="col-sm-4">
-              <select class="form-select" aria-label="Default select example" name="election_start">
-                <option selected>Select Time</option>
-                <option value="6">6 AM</option>
-                <option value="7">7 AM</option>
-                <option value="8">8 AM</option>
-                <option value="9">9 AM</option>
-                <option value="10">10 AM</option>
-                <option value="11">11 AM</option>
-                <option value="12">12 PM</option>
-                <option value="13">1 PM</option>
-                <option value="14">2 PM</option>
-                <option value="15">3 PM</option>
-                <option value="16">4 PM</option>
-                <option value="17">5 PM</option>
-                <option value="18">6 PM</option>
-                <option value="19">7 PM</option>
-                <option value="20">8 PM</option>
-                <option value="21">9 PM</option>
-                <option value="22">10 PM</option>
-                <option value="23">11 PM</option>
-              </select>
-            </div>
-            <div class="col-sm-4">
-              <input type="text" class="form-control" value="<?= date('F d, Y g:i A', strtotime($elec['start_date'])) ?>" readonly>
-
+            <input type="datetime-local" class="form-control" id="birthdaytime" name="election_start" required>
             </div>
           </div>
 
           <div class="mb-3 row">
-            <label for="Access Code" class="col-sm-3 col-form-label">End Time: </label>
+            <label for="Access Code" class="col-sm-3 col-form-label">Election End: </label>
             <div class="col-sm-4">
-              <select class="form-select" aria-label="Default select example" name="election_end">
-                <option selected>Select Time</option>
-                <option value="6">6 AM</option>
-                <option value="7">7 AM</option>
-                <option value="8">8 AM</option>
-                <option value="9">9 AM</option>
-                <option value="10">10 AM</option>
-                <option value="11">11 AM</option>
-                <option value="12">12 PM</option>
-                <option value="13">1 PM</option>
-                <option value="14">2 PM</option>
-                <option value="15">3 PM</option>
-                <option value="16">4 PM</option>
-                <option value="17">5 PM</option>
-                <option value="18">6 PM</option>
-                <option value="19">7 PM</option>
-                <option value="20">8 PM</option>
-                <option value="21">9 PM</option>
-                <option value="22">10 PM</option>
-                <option value="23">11 PM</option>
-              </select>
-            </div>
-            <div class="col-sm-4">
-              <input type="text" class="form-control" value="<?= date('F d, Y g:i A', strtotime($elec['end_date'])) ?>" readonly>
+            <input type="datetime-local" class="form-control" id="birthdaytime" name="election_end" required>
             </div>
           </div>
           <div class="mb-3 row">
@@ -699,9 +652,8 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary" name="save-qr">Save QR</button>
+          <!-- <button type="submit" class="btn btn-primary" name="save-qr">Save QR</button> -->
         </div>
-
       </form>
     </div>
   </div>
@@ -731,7 +683,7 @@
       var canvas = document.getElementById("qrcode" + election_id).getElementsByTagName("canvas")[0];
       var img = canvas.toDataURL("image/png");
       var link = document.createElement("a");
-      link.download = "qrcode.png";
+      link.download = "<?= $elec['election_name'] ?>.png";
       link.href = img;
       link.click();
     }
@@ -833,7 +785,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-danger" name="delete-position">Delete Election</button>
+          <button type="submit" class="btn btn-danger" name="delete-position">Delete Position</button>
         </div>
 
       </form>

@@ -79,7 +79,7 @@ $getElection = $vote->getElectionId();
                         <table class="table table-hover" id="datatablesSimple">
                             <thead>
                                 <tr>
-
+                                    <th>Student ID</th>
                                     <th>Full Name</th>
                                     <th>Positon</th>
                                     <th>Party</th>
@@ -102,6 +102,7 @@ $getElection = $vote->getElectionId();
                                     ?>
 
                                         <tr>
+                                            <td><?= $candidate['student_id'] ?></td>
 
                                             <td><?= $candidate['first_name'] . " " . $candidate['middle_name'] . " " . $candidate['last_name'] ?></td>
                                             <td><?= $pos['position_title']; ?></td>

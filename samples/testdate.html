@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Date and Time Picker Example</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+  <script>
+    $( function() {
+      $( "#datetimepicker" ).datetimepicker({
+        dateFormat: 'yy-mm-dd',
+        timeFormat: 'HH:mm:ss',
+        onSelect: function(dateTime) {
+          $("#selected_datetime").text(dateTime);
+        }
+      });
+    } );
+  </script>
+</head> 
+<body>
+  <form method="post" action="">
+    <label for="datetimepicker">Select Date and Time:</label>
+    <input type="text" id="datetimepicker" name="datetime" />
+    <input type="submit" value="Submit" />
+  </form>
+  <p>You have selected: <span id="selected_datetime"></span></p>
+</body>
+</html>
+
+
+<!-- <div class="container">
+                <?php foreach ($positions as $position) {
+                    $position_id = $position['position_id'];
+                    $candidates = $vote->getCandidate($eid, $position_id, $adminDetails['last_name']);
+                    $labels = array();
+                    $data = array();
+                    if (!empty($candidates)) {
+                        foreach ($candidates as $candidate) {
+                            $voteResult = $vote->getVoteResults($candidate['id']);
+                            array_push($labels, $candidate['first_name'] . ' ' . $candidate['last_name']);
+                            array_push($data, $voteResult);
+                        }
+                    }
+                    $canvas_id = 'myChart' . $position['position_id']; // generate unique ID for canvas element
+                ?>
+                    <div class="row">
+                        <h3><?= $position['position_title'] ?></h3>
+                        <div class="col-md-6">
+                            <canvas id="<?= $canvas_id ?>"></canvas> <!-- use the unique ID here -->
+                          </div>
+                        </div>
+                        <script>
+                            const ctx = document.getElementById('<?= $canvas_id ?>'); // use the unique ID here as well
+                            new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: <?= json_encode($labels) ?>,
+                                    datasets: [{
+                                        label: 'Number of Votes',
+                                        data: <?= json_encode($data) ?>,
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                        </script>
+                    <?php } ?>
+                </div> -->
+    

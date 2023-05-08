@@ -26,14 +26,10 @@ $positions = $vote->getPositionId();
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-list" id="icon"></i></div>My Votes
                         </a>
                         <hr class="dropdown-divider bg-dark" />
-
-
-
                     </div>
-
                 </div>
                 <div class="sb-sidenav-footer" id="nav-footer">
-                    <div class="small">Logged in as:</div>
+                <div class="small">Logged in as: Student</div>
 
                 </div>
             </nav>
@@ -46,8 +42,8 @@ $positions = $vote->getPositionId();
                     <h3 class="">My Votes</h3>
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="Student-dasboard.html" style="text-decoration: none;">
-                                    <i class="fas fa-square-poll-vertical"></i> RESULTS</a></li>
+                            <li class="breadcrumb-item"><a href="student-dashboard.php" style="text-decoration: none;">
+                                    <i class="fas fa-square-poll-vertical"></i> HOME</a></li>
                             <li class="breadcrumb-item active" aria-current="page"> <i class="fas fa-list"></i> MY VOTES
                             </li>
                         </ol>
@@ -62,7 +58,7 @@ $positions = $vote->getPositionId();
                             <tr>
 
                                 <th scope="col">Position</th>
-                                <th scope="col">Cadidates</th>
+                                <th scope="col">Candidates</th>
 
                             </tr>
                         </thead>
@@ -80,12 +76,12 @@ $positions = $vote->getPositionId();
                                         <?php if (!empty($myvotes)) { ?>
                                             <?php foreach ($myvotes as $myvote) { ?>
                                                 <li>
-                                                    <?= $myvote['first_name']." ".$myvote['middle_name']." ".$myvote['last_name'] ?>
+                                                <span class="badge rounded-pill bg-success text-white"><?= $myvote['first_name']." ".$myvote['middle_name']." ".$myvote['last_name'] ?></span>
                                                 </li>
                                             <?php } ?>
                                         <?php } else { ?>
                                             <li>
-                                                No data
+                                            <span class="badge rounded-pill bg-info text-dark">No Data</span>
                                             </li>
                                         <?php } ?>
 

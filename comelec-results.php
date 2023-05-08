@@ -1,15 +1,17 @@
 <?php
-
-include('includes/admin-header.php');
 require_once('class.php');
+include('includes/admin-header.php');
+
 $vote->adminSession();
 $voteResults = $vote->getCandidates();
-$getElection = $vote->getElectionId()
-
+$getElection = $vote->getElectionId();
+$getPosition = $vote->getPositionId();
+$vote->resultPrint();
 
 ?>
 
 <body class="sb-nav-fixed">
+
     <?php
     include('includes/admin-nav.php');
     ?>
@@ -18,13 +20,14 @@ $getElection = $vote->getElectionId()
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <hr class="dropdown-divider bg-dark" />
+                    <hr class="dropdown-divider bg-dark" />
                         <a id="nav-hover" class="nav-link mt-4" href="comelec.php">
                             <div class="sb-nav-link-icon" id="icon"><i class="fas fa-home"></i></div>Home
                         </a>
                         <hr class="dropdown-divider bg-dark" />
                         <a id="nav-hover" href="comelec-approval.php" class="nav-link">
-                            <div class="sb-nav-link-icon"><i class="fas fa-check-square fa-spin" id="icon"></i></div>Approval
+                            <div class="sb-nav-link-icon"><i class="fas fa-check-square fa-spin" id="icon"></i></div>
+                            Approval
                         </a>
                         <hr class="dropdown-divider bg-dark" />
                         <a id="nav-hover" href="comelec-disapproved.php" class="nav-link">
@@ -36,10 +39,12 @@ $getElection = $vote->getElectionId()
                         </a>
                         <hr class="dropdown-divider bg-dark" />
                         <a id="nav-hover" href="comelec-results.php" class="nav-link active">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-square-poll-vertical" id="icon"></i></div>Results
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-square-poll-vertical" id="icon"></i>
+                            </div>Results
                         </a>
                         <hr class="dropdown-divider bg-dark" />
 
+                        
                         <a id="nav-hover" href="comelec-position.php" class="nav-link">
                             <div class="sb-nav-link-icon"><i class='fas fa-user' id="icon"></i></div>Position
                         </a>
@@ -53,7 +58,6 @@ $getElection = $vote->getElectionId()
                         <a id="nav-hover" href="comelec-party.php" class="nav-link">
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-hand-fist" id="icon"></i></div>Party
                         </a>
-                        <hr class="dropdown-divider bg-white" />
 
                     </div>
 
@@ -67,13 +71,11 @@ $getElection = $vote->getElectionId()
         <div id="layoutSidenav_content">
             <main>
                 <div class="d-flex justify-content-between mt-4 mx-4 my-3">
-
-
-
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="comelec-voter.php" style="text-decoration: none;"> <i class="fa-solid fa-user"></i> VOTER</a></li>
-                            <li class="breadcrumb-item active" aria-current="page"> <i class="fa-solid fa-square-poll-vertical"></i> RESULTS</li>
+                            <li class="breadcrumb-item"><a href="admin-candidate.php" style="text-decoration: none;"> <i class="fas fa-users"></i> CANDIDATES</a></li>
+                            <li class="breadcrumb-item active" aria-current="page"> <i class="fas fa-users"></i> RESULTS
+                            </li>
                         </ol>
                     </nav>
 
@@ -82,17 +84,24 @@ $getElection = $vote->getElectionId()
                 <div class="d-flex justify-content-between mt-4 mx-4 my-3">
 
                     <form class="d-flex" method="post" action="">
-                        <select class="form-select" name="election" aria-label="Default select example">
+                        <select class="form-select" name="election" aria-label="Default select example" required>
                             <option selected>Select Election</option>
                             <?php foreach ($getElection as $elec) { ?>
                                 <option value="<?= $elec['election_id'] ?>"><?= $elec['election_name'] ?></option>
                             <?php } ?>
                         </select>
+                        <select class="form-select" name="position" aria-label="Default select example" required>
+                            <option selected>Select Position</option>
+                            <?php foreach ($getPosition as $pos) { ?>
+                                <option value="<?= $pos['position_id'] ?>"><?= $pos['position_title'] ?></option>
+                            <?php } ?>
+                        </select>
                         <button type="submit" class="btn btn-primary mx-2" name="search-election">GENERATE</button>
                     </form>
 
-
-                    <button class="btn btn-primary mx-2">PRINT</button>
+                    <form action="" method="post">
+                        <button type="submit" name="print-result" class="btn btn-primary mx-2">PRINT</button>
+                    </form>
 
                 </div>
 
@@ -106,92 +115,68 @@ $getElection = $vote->getElectionId()
                                     <th>ELECTION</th>
                                     <th>POSITION</th>
                                     <th>VOTE COUNT</th>
-
-
                                 </tr>
-                            <tbody>
-                                <?php if(!empty($voteResults)) { ?>
-
-                                <?php foreach ($voteResults as $result) {
-                                    $voteResult = $vote->getVoteResults($result['id']);
-                                    $position = $vote->getPosition($result['position_id']);
-                                    $election = $vote->getElection($result['election_id']);
-                                ?>
-                                    <tr>
-
-                                        <td><?= $result['student_id'] ?></td>
-                                        <td><?= $result['first_name']." ".$result['middle_name']." ".$result['last_name'] ?></td>
-                                        <td><?= $election['election_name'] ?></td>
-                                        <td><?= $position['position_title'] ?></td>
-                                        <td><?= $voteResult ?></td>
-
-                                    </tr>
-                                <?php } ?>
-                                <?php } ?>
-
-
-
-                            </tbody>
-
                             </thead>
+                            <tbody>
+                                <?php if (!empty($voteResults)) {
+                                    // Sort the $voteResults array based on the $voteResult value
+                                    usort($voteResults, function ($a, $b) use ($vote) {
+                                        $voteResultA = $vote->getVoteResults($a['id']);
+                                        $voteResultB = $vote->getVoteResults($b['id']);
+                                        $posCountA = $vote->getPosition($a['position_id'])['count'];
+                                        $posCountB = $vote->getPosition($b['position_id'])['count'];
 
+                                        // Compare by vote result first
+                                        if ($voteResultB != $voteResultA) {
+                                            return $voteResultB - $voteResultA;
+                                        }
+
+                                        // If vote results are tied, compare by position count
+                                        return $posCountB - $posCountA;
+                                    });
+
+                                    // Get the winners for each position
+                                    $winners = [];
+                                    foreach ($voteResults as $result) {
+                                        $positionId = $result['position_id'];
+                                        if (!isset($winners[$positionId])) {
+                                            $winners[$positionId] = [];
+                                        }
+
+                                        $voteResult = $vote->getVoteResults($result['id']);
+                                        $posCount = $vote->getPosition($positionId)['count'];
+                                        if (count($winners[$positionId]) < $posCount) {
+                                            $winners[$positionId][] = $result;
+                                        }
+                                    }
+
+                                    foreach ($voteResults as $result) {
+                                        $position = $vote->getPosition($result['position_id']);
+                                        $election = $vote->getElection($result['election_id']);
+                                        $isWinner = in_array($result, $winners[$result['position_id']]);
+                                        $voteResult = $vote->getVoteResults($result['id']);
+
+                                ?>
+                                        <tr>
+                                            <td><?= $result['student_id'] ?></td>
+                                            <td><?= $result['first_name'] . " " . $result['middle_name'] . " " . $result['last_name'] ?></td>
+                                            <td><?= $election['election_name'] ?></td>
+                                            <td><?= $position['position_title'] ?></td>
+                                            <?php if(!empty($voteResult)) {?>
+                                            <td><span class="badge rounded-pill bg-success"><?= $voteResult ?> <?= $isWinner ? 'Wins' : '' ?></span></td>
+                                            <?php }else{ ?>
+                                                <td><span class="badge rounded-pill bg-info text-dark">No Votes</span></td>
+                                                <?php } ?>
+                                        </tr>
+                                    <?php } ?>
+                                <?php } ?>
+                            </tbody>
                         </table>
-
                     </div>
                 </div>
+
             </main>
 
-            <div class="modal fade modal-signin" id="add" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-                        <div class="modal-header p-3 pb-3">
-                            <h5 class="modal-title" id="staticBackdropLabel">Adding Admin</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <br>
-                        <form action="" method="POST" enctype="multipart/form-data">
-                            <div class="modal-body p-5 pt-0">
-
-                                <div class="mb-3 row">
-                                    <label for="inputPassword" class="col-sm-3 col-form-label">First Name: </label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" placeholder="First Name" id="">
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 row">
-                                    <label for="MiddleName" class="col-sm-3 col-form-label">Middle Name: </label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" placeholder="Middle Name" id="">
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 row">
-                                    <label for="LastName" class="col-sm-3 col-form-label">Last Name: </label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" placeholder="Last Name" id="">
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 row">
-                                    <label for="Access Code" class="col-sm-3 col-form-label">Access Code: </label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" placeholder="Access Code" id="">
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Add as Admin</button>
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
-
-
-            </div>
 
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
@@ -206,14 +191,11 @@ $getElection = $vote->getElectionId()
                 $('#datatablesSimple').DataTable();
             });
         </script>
-        <script src="https://cdn.jsdelivr.net/npm/smooth-scroll/dist/smooth-scroll.min.js"></script>
-        <script>
-            var scroll = new SmoothScroll('a[href*="Add_Comelec.html"]');
-        </script>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous">
+        </script>
         <script src="assets/demo/chart-area-demo.js"></script>
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>

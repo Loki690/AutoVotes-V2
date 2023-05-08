@@ -123,13 +123,13 @@ $vote->adminSession();
                         <table class="table table-hover" id="datatablesSimple">
                             <thead>
                                 <tr>
-                                    <th>SCHOOL ID</th>
+                                    <th>STUDENT ID</th>
                                     <th>FULL NAME</th>
                                     <th>GENDER</th>
                                     <th>COURSE</th>
                                     <th>YEAR LEVEL</th>
                                     <th>PASSWORD</th>
-                                    <th>ACTION</th>
+                                    <!-- <th>ACTION</th> -->
                                 </tr>
                             <tbody>
 
@@ -143,12 +143,12 @@ $vote->adminSession();
                                         <td><?= $voter['course']; ?></td>
                                         <td><?= $voter['year_level']; ?></td>
                                         <td><?= md5($voter['password']); ?></td>
-                                        <td>
+                                        <!-- <td>
                                             <div class="d-flex justify-content-center">
                                                 <button class="btn btn-sm btn-outline-danger" tabindex="-1" data-bs-toggle="modal" data-bs-target="#delete-voter<?= $voter['student_id'] ?>"><i class="fas fa-trash"></i> Delete</button>
                                             </div>
 
-                                        </td>
+                                        </td> -->
 
                                     </tr>
                                     <?php
