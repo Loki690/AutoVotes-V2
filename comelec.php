@@ -115,14 +115,14 @@ $countVoters = $vote->countVoters();
                     </div>
 
                     <div class="col-sm-3 mt-2">
-                        <a href="" tabindex="-1" data-bs-toggle="modal" data-bs-target="#elections">
-                            <div class="card mx-3 text-white" id="dashcard">
-                                <div class="d-flex justify-content-center">
-                                    <h4 class="mx-3 mt-2"><i class="fa-solid fa-landmark mx-1"></i>Elections</h4>
-                                </div>
-                                <h4 class="d-flex justify-content-center mx-3 mt-2"><?= $countElections ?></h4>
+
+                        <div class="card mx-3 text-white" id="dashcard">
+                            <div class="d-flex justify-content-center">
+                                <h4 class="mx-3 mt-2"><i class="fa-solid fa-landmark mx-1"></i>Elections</h4>
                             </div>
-                        </a>
+                            <h4 class="d-flex justify-content-center mx-3 mt-2"><?= $countElections ?></h4>
+                        </div>
+
                     </div>
 
                 </div>
@@ -181,86 +181,38 @@ $countVoters = $vote->countVoters();
 
                                         </tr>
 
-
-                                        <div class="modal fade modal-signin" id="view-candidate<?= $candidate['id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal fade modal-signin" id="view-candidate<?= $candidate['id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticbackdroplabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                                 <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
                                                     <div class="modal-header p-3 pb-3">
-                                                        <h5 class="modal-title" id="staticBackdropLabel">Candidates Information
+                                                        <h5 class="modal-title text-white" id="staticbackdroplabel">Candidates information
                                                         </h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
                                                     </div>
                                                     <br>
 
                                                     <div class="modal-body p-5 pt-0">
-                                                        <div class="container-fluid">
+                                                        <div class="container px-2 py-2" style="border-style: solid; border-width:1px; border-color:white; border-radius:20px">
                                                             <div class="row">
-                                                                <div class="col-md-5">
-                                                                    <p class="text-muted"> Picture :</p>
-                                                                </div>
-                                                                <div class="col-md-4 mt-2">
-                                                                    <div class="d-flex justify-content-center mb-5">
-                                                                        <img class="img-fluid rounded-circle" style="width: 200px; height: 200px;" src="img/donaldmc.jpg" alt="">
+                                                                <div class="col-md-4">
+                                                                    <div class="text-center">
+                                                                        <img src="img/donaldmc.jpg" style="border-radius: 20px;" alt="viewpic">
                                                                     </div>
                                                                 </div>
-                                                                <hr>
-                                                                <div class="col-md-5 mt-2">
-                                                                    <p class="text-muted"> Name :</p>
-                                                                </div>
-                                                                <div class="col-md-4  mt-2">
-                                                                    <p class="text-center"> <?= $candidate['first_name'] . " " . $candidate['middle_name'] . " " . $candidate['last_name'] ?></p>
-                                                                </div>
-                                                                <hr>
-
-                                                                <div class="col-md-5 mt-2">
-                                                                    <p class="text-muted"> Age :</p>
-                                                                </div>
-                                                                <div class="col-md-4  mt-2">
-                                                                    <?php
-                                                                    $age = $vote->calculateAge($candidate['id'], $candidate['date_birth']);
-                                                                    ?>
-                                                                    <p class="text-center"> <?= $age . " years old" ?> </p>
-                                                                </div>
-
-                                                                <hr>
-                                                                <div class="col-md-5 mt-2">
-                                                                    <p class="text-muted"> Course :</p>
-                                                                </div>
-                                                                <div class="col-md-4  mt-2">
-                                                                    <p class="text-center"> <?= $candidate['course'] ?> </p>
-                                                                </div>
-                                                                <hr>
-
-                                                                <div class="col-md-5 mt-2">
-                                                                    <p class="text-muted"> Year :</p>
-                                                                </div>
-                                                                <div class="col-md-4  mt-2">
-                                                                    <p class="text-center"> <?= $candidate['year_lev'] ?> </p>
-                                                                </div>
-
-                                                                <hr>
                                                                 <?php
                                                                 $par = $vote->getParty($candidate['party_id']);
-                                                                ?>
-                                                                <div class="col-md-5 mt-2">
-                                                                    <p class="text-muted"> Party :</p>
-                                                                </div>
-                                                                <div class="col-md-4  mt-2">
-                                                                    <p class="text-center"> <?= $par['party'] ?> </p>
-                                                                </div>
-
-                                                                <hr>
-                                                                <?php
                                                                 $pos = $vote->getPosition($candidate['position_id']);
                                                                 ?>
-
-                                                                <div class="col-md-5 mt-2">
-                                                                    <p class="text-muted"> Position Running :</p>
+                                                                <div class="col-md-8">
+                                                                    <ul style="list-style-type: none; font-size:20px; margin-top:40px" id="ul-candi">
+                                                                        <li>Name: <?= $candidate['first_name'] . " " . $candidate['last_name'] ?> </li>
+                                                                        <li>Age: <?= $candidate['age'] ?></li>
+                                                                        <li>Course: <?= $candidate['course'] ?></li>
+                                                                        <li>Year: <?= $candidate['year_lev'] ?></li>
+                                                                        <li>Party: <?= $par['party'] ?></li>
+                                                                        <li>Running Position: <?= $pos['position_title'] ?></li>
+                                                                    </ul>
                                                                 </div>
-                                                                <div class="col-md-4   mt-2">
-                                                                    <p class="text-center"> <?= $pos['position_title'] ?> </p>
-                                                                </div>
-
                                                             </div>
                                                         </div>
                                                     </div>
@@ -292,35 +244,10 @@ $countVoters = $vote->countVoters();
 
 
             </main>
-            <!-- elections modal -->
-            <div class="modal fade modal-signin" id="elections" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                    <div class="modal-content rounded-5 shadow" style="border-radius: 30px">
-                        <div class="modal-header p-3 pb-3">
-                            <h5 class="modal-title text-black" id="staticBackdropLabel">
-                                Elections Results
-                            </h5>
-                            <button type="button" class="btn-close-white" data-bs-dismiss="modal" aria-label="Close">
-                                x
-                            </button>
-                        </div>
-                        <br />
-                        <?php $elections = $vote->getElectionId() ?>
-                        <div class="modal-body p-5 pt-0">
-                            <div class="row">
-                                <?php foreach ($elections as $election) { ?>
-                                    <div class="col-md-4">
-                                        <a href="election-result.php?id=<?= $election['election_id'] ?>"><button class="btn btn-md btn-primary"><?= $election['election_name'] ?></button></a>
-                                    </div>
-                                <?php } ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            
-          
+
+
+
 
 
             <footer class="py-4 bg-light mt-auto">

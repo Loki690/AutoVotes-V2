@@ -20,7 +20,6 @@ body{
     color: #00095a;
 }
 
-
 #loginbutton{
     background-color:#00095a;
     -webkit-box-shadow: -1px 2px 5.5px 5.5px #a39e9e;
@@ -42,3 +41,19 @@ body{
   -moz-box-shadow: 0 0 13px 5.5px #e3e3e3;
   box-shadow: 0 0 13px 5.5px #e3e3e3;
 }
+#nav-item-hover:hover {
+
+    background:  #f1f1f8;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 20px;
+  
+  
+  }
+  
+  #nav-link:hover {
+  
+      color: #00095a;
+          
+    
+  }

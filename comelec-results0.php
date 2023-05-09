@@ -8,9 +8,6 @@ $getElection = $vote->getElectionId();
 $getPosition = $vote->getPositionId();
 $vote->resultPrint();
 
-
-
-
 ?>
 
 <body class="sb-nav-fixed">
@@ -23,33 +20,44 @@ $vote->resultPrint();
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <hr class="dropdown-divider bg-white" />
-                        <a id="nav-hover" class="nav-link mt-4" href="admin-dashboard.php">
-                            <div class="sb-nav-link-icon"><i class="fas fa-home" id="icon"></i></div>Home
+                    <hr class="dropdown-divider bg-dark" />
+                        <a id="nav-hover" class="nav-link mt-4" href="comelec.php">
+                            <div class="sb-nav-link-icon" id="icon"><i class="fas fa-home"></i></div>Home
                         </a>
                         <hr class="dropdown-divider bg-dark" />
-                        <a id="nav-hover" href="admin-add-com.php" class="nav-link ">
-                            <div class="sb-nav-link-icon"><i class="fa fa-user me-2" id="icon"></i></div>Comelec
+                        <a id="nav-hover" href="comelec-approval.php" class="nav-link">
+                            <div class="sb-nav-link-icon"><i class="fas fa-check-square fa-spin" id="icon"></i></div>
+                            Approval
                         </a>
                         <hr class="dropdown-divider bg-dark" />
-                        <a id="nav-hover" href="admin-interview.php" class="nav-link">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-podcast" id="icon"></i></div>Interview
+                        <a id="nav-hover" href="comelec-disapproved.php" class="nav-link">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-trash" id="icon"></i></div>Disapproved
                         </a>
                         <hr class="dropdown-divider bg-dark" />
-                        <a id="nav-hover" href="admin-candidate.php" class="nav-link ">
-                            <div class="sb-nav-link-icon"><i class="fas fa-users" id="icon"></i></div>Candidates
+                        <a id="nav-hover" href="comelec-voter.php" class="nav-link">
+                            <div class="sb-nav-link-icon"><i class="fas fa-user" id="icon"></i></div>Voter
                         </a>
                         <hr class="dropdown-divider bg-dark" />
-                        <a id="nav-hover" href="admin-results.php" class="nav-link active">
+                        <a id="nav-hover" href="comelec-results.php" class="nav-link active">
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-square-poll-vertical" id="icon"></i>
                             </div>Results
                         </a>
                         <hr class="dropdown-divider bg-dark" />
 
-                        <a id="nav-hover" href="admin-election.php" class="nav-link ">
-                            <div class="sb-nav-link-icon"><i class='fas fa-vote-yea' id="icon"></i></div>Election
+                        
+                        <a id="nav-hover" href="comelec-position.php" class="nav-link">
+                            <div class="sb-nav-link-icon"><i class='fas fa-user' id="icon"></i></div>Position
                         </a>
                         <hr class="dropdown-divider bg-white" />
+
+                        <a id="nav-hover" href="comelec-requirement.php" class="nav-link">
+                            <div class="sb-nav-link-icon"><i class="fas fa-asterisk" id="icon"></i></div>Requirement
+                        </a>
+                        <hr class="dropdown-divider bg-white" />
+
+                        <a id="nav-hover" href="comelec-party.php" class="nav-link">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-hand-fist" id="icon"></i></div>Party
+                        </a>
 
                     </div>
 
@@ -91,7 +99,9 @@ $vote->resultPrint();
                         <button type="submit" class="btn btn-primary mx-2" name="search-election">GENERATE</button>
                     </form>
 
-                        <button type="submit" name="" onclick="window.print()" class="btn btn-primary mx-2">PRINT</button>
+                    <form action="" method="post">
+                        <button type="submit" onclick="window.print()" class="btn btn-primary mx-2">PRINT</button>
+                    </form>
 
                 </div>
 
@@ -152,11 +162,19 @@ $vote->resultPrint();
                                             <td><?= $result['first_name'] . " " . $result['middle_name'] . " " . $result['last_name'] ?></td>
                                             <td><?= $election['election_name'] ?></td>
                                             <td><?= $position['position_title'] ?></td>
-                                            <?php if (!empty($voteResult)) { ?>
-                                                <td><span class="badge rounded-pill bg-success"><?= $voteResult ?> <?= $isWinner ? 'Wins' : '' ?></span></td>
-                                            <?php } else { ?>
+                                            <?php if(!empty($voteResult)) {?>
+                                            <td>
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="badge rounded-pill bg-success"><?= $voteResult ?></span>
+
+                                                    <span class="badge rounded-pill bg-success"> <?= $isWinner ? 'Wins' : '' ?></span>
+                                                </div>
+
+
+                                            </td>
+                                            <?php }else{ ?>
                                                 <td><span class="badge rounded-pill bg-info text-dark">No Votes</span></td>
-                                            <?php } ?>
+                                                <?php } ?>
                                         </tr>
                                     <?php } ?>
                                 <?php } ?>

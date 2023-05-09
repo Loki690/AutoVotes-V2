@@ -52,6 +52,8 @@ $positions = $vote->getPositionId();
                         </ol>
                     </nav>
                 </div>
+            
+            
 
                 <hr>
                 <div class="container">
@@ -61,7 +63,7 @@ $positions = $vote->getPositionId();
                     <?php foreach ($positions as $pos) {
 
                         $position_id = $pos['position_id'];
-                        $candidates = $vote->getCandidate($elec_id, $position_id);
+                       // $candidates = $vote->getCandidate($elec_id, $position_id);
 
                     ?>
                     

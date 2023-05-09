@@ -112,9 +112,14 @@ $vote->adminSession();
                         </select>
                         <button type="submit" class="btn btn-primary mx-2" name="search-course">GENERATE</button>
                     </form>
-
-                    <button class="btn btn-primary mx-2">PRINT</button>
-
+                    <?php
+                    $connect = mysqli_connect("localhost", "root", "", "vote3");
+                    $sql = "SELECT * FROM student";
+                    $result = mysqli_query($connect, $sql);
+                    ?>
+                    <form action="comelec-export.php" method="post">
+                    <input type="submit" name="export" class="btn btn-success" value="Export" />
+                    </form>
                 </div>
 
 
@@ -133,28 +138,28 @@ $vote->adminSession();
                                 </tr>
                             <tbody>
 
-                            <?php if(!empty($voters)) { ?>
+                                <?php if (!empty($voters)) { ?>
 
-                                <?php foreach ($voters as $voter) { ?>
-                                    <tr>
-                                        <td><?= $voter['school_id'] ?></td>
-                                        <td><?= $voter['first_name'] . " " . $voter['middle_name'] . " " . $voter['last_name'] ?></td>
-                                        <td><?= $voter['gender']; ?></td>
-                                        <td><?= $voter['course']; ?></td>
-                                        <td><?= $voter['year_level']; ?></td>
-                                        <td><?= md5($voter['password']); ?></td>
-                                        <!-- <td>
+                                    <?php foreach ($voters as $voter) { ?>
+                                        <tr>
+                                            <td><?= $voter['school_id'] ?></td>
+                                            <td><?= $voter['first_name'] . " " . $voter['middle_name'] . " " . $voter['last_name'] ?></td>
+                                            <td><?= $voter['gender']; ?></td>
+                                            <td><?= $voter['course']; ?></td>
+                                            <td><?= $voter['year_level']; ?></td>
+                                            <td><?= md5($voter['password']); ?></td>
+                                            <!-- <td>
                                             <div class="d-flex justify-content-center">
                                                 <button class="btn btn-sm btn-outline-danger" tabindex="-1" data-bs-toggle="modal" data-bs-target="#delete-voter<?= $voter['student_id'] ?>"><i class="fas fa-trash"></i> Delete</button>
                                             </div>
 
                                         </td> -->
 
-                                    </tr>
-                                    <?php
-                                    include('includes/modals.php');
-                                    ?>
-                                <?php } ?>
+                                        </tr>
+                                        <?php
+                                        include('includes/modals.php');
+                                        ?>
+                                    <?php } ?>
 
                                 <?php } ?>
 
@@ -178,7 +183,7 @@ $vote->adminSession();
                 </div>
             </footer>
         </div>
-        
+
         <script>
             $(document).ready(function() {
                 $('#datatablesSimple').DataTable();

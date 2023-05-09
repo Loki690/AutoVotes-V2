@@ -23,7 +23,7 @@ $positions = $vote->getPositionId();
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <hr class="dropdown-divider bg-dark" />
-                        <a id="nav-hover" class="nav-link mt-4 active" href="comelec.php">
+                        <a id="nav-hover" class="nav-link mt-4" href="comelec.php">
                             <div class="sb-nav-link-icon" id="icon"><i class="fas fa-home"></i></div>Home
                         </a>
                         <hr class="dropdown-divider bg-dark" />
@@ -40,7 +40,7 @@ $positions = $vote->getPositionId();
                             <div class="sb-nav-link-icon"><i class="fas fa-user" id="icon"></i></div>Voter
                         </a>
                         <hr class="dropdown-divider bg-dark" />
-                        <a id="nav-hover" href="comelec-results.php" class="nav-link ">
+                        <a id="nav-hover" href="comelec-results.php" class="nav-link active">
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-square-poll-vertical" id="icon"></i>
                             </div>Results
                         </a>
@@ -73,22 +73,25 @@ $positions = $vote->getPositionId();
         <div id="layoutSidenav_content">
             <main>
                 <div class="d-flex justify-content-between mt-4 mx-4 my-3">
-                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+                        aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page"> <i class="fas fa-home"></i>
-                                Elections Result</li>
+                            <li class="breadcrumb-item"><a href="comelec-results.php" style="text-decoration: none;"> <i
+                                        class="fas fa-users"></i> CHOOSE ELECTION</a></li>
+                            <li class="breadcrumb-item active" aria-current="page"> <i class="fas fa-users"></i> RESULTS
+                            </li>
                         </ol>
                     </nav>
+                        
+                <form action="" method="post">
+                        <button type="submit" onclick="window.print()" class="btn btn-primary mx-2">PRINT</button>
+                </form>
+
                 </div>
                 <hr>
-
-
                 <div class="d-flex justify-content-center">
                     <h1 class="display-6"><?= $election['election_name'] ?></h1>
                 </div>
-
-
-
             </main>
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
             <div class="container">
@@ -117,12 +120,17 @@ $positions = $vote->getPositionId();
                             array_multisort($candidate_votes, SORT_DESC, $candidate_names);
 
                     ?>
-                            <div class="col-6 px-5 p-5 mt-3 ">
+                            <div class="col-md-6 mt-2 ">
+                            
                                 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-                                <div>
-                                    <h2><?= $position['position_title'] ?></h2>
-                                    <canvas id="chart<?= $pos_id ?>"></canvas>
+                                <div class="mt-3">
+                                    <h2 class="mx-3"><?= $position['position_title'] ?></h2>
+
+                                    <div class="card" id="shadow2">
+                                        <canvas class="mx-3 my-3" id="chart<?= $pos_id ?>"></canvas>
+                                    </div>
+                                  
                                 </div>
 
                                 <script>
@@ -169,41 +177,7 @@ $positions = $vote->getPositionId();
                 </div>
             </div>
 
-            <!-- <?php foreach ($positions as $position) {
-                        $pos_id = $position['position_id'];
-                        $candidates = $vote->getCandidate($eid, $position_id, $adminDetails['last_name']);
-                        $candidate_names = array();
-                        $candidate_votes = array();
-                        foreach ($candidates as $candidate) {
-                            $candidate_names[] = $candidate['first_name'];
-                            $candidate_votes[] = $vote->getVoteResults($candidate['id']);
-                        }
-                    ?>
-                <div class="row px-5">
-                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                    <div class="col-md-6">
-                        <?= $position['position_title'] ?>
-                        <canvas id="chart<?= $pos_id ?>"></canvas>
-                    </div>
-                    <script>
-                        const ctx<?= $pos_id ?> = document.getElementById('chart<?= $pos_id ?>').getContext('2d');
-                        const chart<?= $pos_id ?> = new Chart(ctx<?= $pos_id ?>, {
-                            type: 'bar',
-                            data: {
-                                labels: <?= json_encode($candidate_names) ?>,
-                                datasets: [{
-                                    label: 'Votes',
-                                    data: <?= json_encode($candidate_votes) ?>,
-                                }],
-                            },
-                            options: {
-                                indexAxis: 'y',
-                                responsive: true
-                            }
-                        });
-                    </script>
-                </div>
-            <?php } ?> -->
+        
 
 
 

@@ -39,7 +39,7 @@ $vote->session();
             </nav>
         </div>
         <div id="layoutSidenav_content">
-            <main>
+        <main>
                 <div class="d-flex justify-content-between mt-4 mx-4 my-3">
                     <h3 class=""> <i class="fas fa-home mx-3"></i>Home</h3>
 
@@ -47,13 +47,16 @@ $vote->session();
                 </div>
                 <hr>
 
-                <div class="row mx-4">
+                <div class="row mx-3">
 
                     <div class="d-flex justify-content-start mt-3 mx-3 my-3">
                         <h2>Choose Election</h2>
                     </div>
 
-                    <?php foreach ($elections as $elec) {
+                    <?php
+                    date_default_timezone_set('Asia/Manila');
+                    
+                    foreach ($elections as $elec) {
                         $start_date = $elec['start_date'];
                         $end_date = $elec['end_date'];
                         $now = date("Y-m-d H:i:s");
@@ -65,8 +68,8 @@ $vote->session();
                                 <div class="col-sm-4 mt-2">
                                     <div class="card" style="border-radius:25px;" id="shadow2">
                                         <h4 class="elec-name mx-3 my-3 text-truncate"><?= $elec['election_name'] ?></h4>
-                                        <p><?= date('F d, Y g:i A', strtotime($elec['end_date'])) ?></p>
-                                        <img class="card-img img-fluid" style="width:500px; height: 300px;" src="uploads/<?= $elec['election_poster']; ?>" alt="">
+                                        <p class="px-3">Thank you for voting!</p>
+                                        <img class="card-img img-fluid px-3" style="width:100%; height: 300px;" src="uploads/<?= $elec['election_poster']; ?>" alt="">
                                         <button class="btn btn-primary mx-4 my-4" disabled>You already Voted</button>
                                     </div>
                                 </div>
@@ -75,8 +78,8 @@ $vote->session();
                                 <div class="col-sm-4 mt-2">
                                     <div class="card" style="border-radius:25px;" id="shadow2">
                                         <h4 class="elec-name mx-3 my-3 text-truncate"><?= $elec['election_name'] ?></h4>
-                                        <p class="px-3"><?= date('F d, Y g:i A', strtotime($elec['end_date'])) ?></p>
-                                        <img class="card-img img-fluid" style="width:500px; height: 300px;" src="uploads/<?= $elec['election_poster']; ?>" alt="">
+                                        <p class="px-3">Please vote wisely</p>
+                                        <img class="card-img img-fluid px-3" style="width:100%; height: 300px;" src="uploads/<?= $elec['election_poster']; ?>" alt="">
                                         <a type="button" class="btn btn-primary mx-4 my-4" href="student-vote.php?id=<?= $elec['election_id'] ?>">Vote here</a>
                                     </div>
                                 </div>
@@ -84,51 +87,30 @@ $vote->session();
                             } ?>
 
                         <?php
-                        } else {
+                        } else if ($now >= $end_date) {
                         ?>
-                            <script type="text/javascript">
-                                function countdown() {
-
-
-                                    var now = new Date();
-                                    var eventDate = new Date("<?= date('F d, Y g:i A',strtotime($elec['start_date'] )) ?>");
-
-                                    var currentTime = now.getTime();
-                                    var eventTime = eventDate.getTime();
-
-                                    var remainingTime = eventTime - currentTime;
-
-                                    var seconds = Math.floor(remainingTime / 1000);
-                                    var minutes = Math.floor(seconds / 60);
-                                    var hours = Math.floor(minutes / 60);
-                                    var days = Math.floor(hours / 24);
-
-                                    hours %= 24;
-                                    minutes %= 60;
-                                    seconds %= 60;
-
-                                    document.getElementById("days").innerHTML = days;
-                                    document.getElementById("hours").innerHTML = hours;
-                                    document.getElementById("minutes").innerHTML = minutes;
-                                    document.getElementById("seconds").innerHTML = seconds;
-                                    setTimeout(countdown, 1000);
-
-                                }
-                            </script>
-                            <div class="col-sm-4 mt-2">
+                            <div class="col-sm-4  mt-2">
                                 <div class="card" style="border-radius:25px;" id="shadow2">
                                     <h4 class="elec-name mx-3 my-3 text-truncate"><?= $elec['election_name'] ?></h4>
-                                    <img class="card-img img-fluid" style="width:500px; height: 300px;" src="uploads/<?= $elec['election_poster']; ?>" alt="">
-                                    <button type="button" class="btn btn-warning mx-4 my-4" disabled>Voting Ended</button>
-                                    <div class="d-flex justify-content-center">
-                                    <p class="px-2"><span id="days"></span><span class=""> Days</span></p>
-                                    <p class="px-2"><span id="hours"></span><span class=""> Hours</span></p>
-                                    <p class="px-2"><span id="minutes"></span><span class=""> Minutes</span></p>
-                                    <p class="px-2"><span id="seconds"></span><span class=""> Seconds</span></p>
+                                    <p class="px-3">Contact MIS Interns</p>
+                                    <img class="card-img img-fluid px-3" style="width:100%; height: 300px; filter:grayscale(100%);" src="uploads/<?= $elec['election_poster']; ?>" alt="poster">
+                                    <div class="mask text-light d-flex justify-content-center flex-column text-center" style="background-color: rgba(0, 0, 0, 0.5)">
+                                        <h4 class="position-absolute bg-danger p-3 md-1" style="top:220px; left:40px; opacity:85%;"> VOTING ENDED!</h4>
                                     </div>
+                                    <button type="button" class="btn btn-primary mx-4 my-4" disabled>Voting Ended</button>
                                 </div>
                             </div>
-
+                        <?php
+                        } else if ($now <= $end_date) {
+                        ?>
+                            <div class="col-sm-4  mt-2">
+                                <div class="card" style="border-radius:25px;" id="shadow2">
+                                    <h4 class="elec-name mx-3 my-3 text-truncate"><?= $elec['election_name'] ?></h4>
+                                    <p class="px-3">Upcoming Election</p>
+                                    <img class="card-img img-fluid px-3" style="width:100%; height: 300px;" src="uploads/<?= $elec['election_poster']; ?>" alt="poster">
+                                    <button type="button" class="btn btn-primary mx-4 my-4" disabled><?= date('F d, Y g:i A', strtotime($elec['start_date'])) ?></button>
+                                </div>
+                            </div>
                     <?php
                         }
                     }

@@ -5,7 +5,7 @@ $elections = $vote->getElectionId();
 
 $vote->addElecion();
 $vote->editElection();
-
+$vote->updatePoster();
 $vote->deleteElection();
 $vote->saveQRCode();
 // $vote->generateQR();

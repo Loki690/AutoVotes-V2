@@ -93,7 +93,7 @@ $positions = $vote->getPositionId();
                                                     <?= $candi['first_name'] . " " . $candi['middle_name'] . " " . $candi['last_name'] ?>
                                                 </h4>
 
-                                                <img class="card-img img-fluid" style="width:500px; height: 300px;" src="img/donaldmc.jpg" alt="">
+                                                <img class="card-img img-fluid px-2" style="width:500px; height: 300px;" src="img/donaldmc.jpg" alt="">
 
                                                 <h5 class="position mx-3 my-3 text-center">
                                                     Running for <?= $pos['position_title'] ?>
@@ -149,7 +149,7 @@ $positions = $vote->getPositionId();
                                 <input class="btn btn-lg btn-primary" type="reset" value="Reset">
                                 <button class="btn btn-lg btn-primary mx-3" type="submit" name="vote">Submit My Votes</button>
                             </div>
-                        <?php } {
+                        <?php } else {
                         ?>
                             <div class="d-flex justify-content-center mt-5">
                                 <h1 class="display-6">Hello! Kumusta?</h1>

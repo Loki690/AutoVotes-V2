@@ -11271,10 +11271,7 @@ input[type=radio] ,input[type=checkbox] {
 }
 
 @media (max-width:767px){
-  .col-sm-4{
-    flex-basis: 50%;
-    max-width: 50%;
-  }
+  
   .name{
     font-size:1rem;
     
@@ -11296,3 +11293,4 @@ input[type=radio] ,input[type=checkbox] {
 -moz-box-shadow: 0 0 13px 5.5px #e3e3e3;
 box-shadow: 0 0 13px 5.5px #e3e3e3;
 }
+

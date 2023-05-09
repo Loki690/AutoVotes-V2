@@ -17,15 +17,61 @@ if ($vote->getUserData() == true) {
 $election_id = $_GET['id'];
 $election = $vote->getElection($election_id);
 $positions = $vote->getPositionId();
+
+date_default_timezone_set('Asia/Manila');
 $start_date = $election['start_date'];
 $end_date = $election['end_date'];
 $now = date("Y-m-d H:i:s");
 
 ?>
 <main>
+
+    <div class="container justify-content-center text-center mt-5">
+        <?php if ($now >= $start_date && $now <= $end_date) { ?>
+            <h1>Voting is Ongoing</h1>
+        <?php } else if ($now >= $end_date) { ?>
+            <h1 class="text-danger">Voting is Ended </h1>
+        <?php } else if ($now <= $end_date) { ?>
+            <script type="text/javascript">
+                function countdown() {
+
+
+                    var now = new Date();
+                    var eventDate = new Date("<?= date('F d, Y g:i A', strtotime($election['start_date'])) ?>");
+
+                    var currentTime = now.getTime();
+                    var eventTime = eventDate.getTime();
+
+                    var remainingTime = eventTime - currentTime;
+
+                    var seconds = Math.floor(remainingTime / 1000);
+                    var minutes = Math.floor(seconds / 60);
+                    var hours = Math.floor(minutes / 60);
+                    var days = Math.floor(hours / 24);
+
+                    hours %= 24;
+                    minutes %= 60;
+                    seconds %= 60;
+
+                    document.getElementById("days").innerHTML = days;
+                    document.getElementById("hours").innerHTML = hours;
+                    document.getElementById("minutes").innerHTML = minutes;
+                    document.getElementById("seconds").innerHTML = seconds;
+                    setTimeout(countdown, 1000);
+
+                }
+            </script>
+            <div class="d-flex justify-content-center">
+                <p class="px-2"><span id="days"></span><span class=""> Days</span></p>
+                <p class="px-2"><span id="hours"></span><span class=""> Hours</span></p>
+                <p class="px-2"><span id="minutes"></span><span class=""> Minutes</span></p>
+                <p class="px-2"><span id="seconds"></span><span class=""> Seconds</span></p>
+            </div>
+        <?php } ?>
+    </div>
     <!-- Dcc Logo-->
     <div class="container d-flex justify-content-center">
-        <h5 class="title-app mt-5">Candidates</h5>
+        <h2 class="title-app mt-5">Official Candidates</h2>
     </div>
     <!--Candidates-->
     <div class="container">
@@ -58,45 +104,43 @@ $now = date("Y-m-d H:i:s");
                         $candidates[$i]['winner'] = "Wins";
                     }
                 ?>
-                    <h3 class="mx-3 mt-4"> <?= $pos['position_title']?></h3>
+                    <h3 class="mx-3 mt-4"> <?= $pos['position_title'] ?></h3>
                     <?php foreach ($candidates as $candi) {
                         $party = $vote->getParty($candi['party_id']);
                         $voteCount = $vote->getVoteResults($candi['id']);
                     ?>
                         <div class="col-sm-4">
                             <div class="card mx-3 mt-3" style="border-radius:25px;" id="shadow2">
-                                <a href="" tabindex="-1" data-bs-toggle="modal" data-bs-target="#candidate<?= $candi['id'] ?>"><img class="card-img img-fluid" style="width:500px; height: 200px; border-top-left-radius:25px; border-top-right-radius:25px;" src="img/donaldmc.jpg" alt=""></a>
                                 <h5 class="name mx-3 my-3 text-center">
                                     <?= $candi['first_name'] . " " . $candi['middle_name'] . " " . $candi['last_name'] ?>
                                 </h5>
-                                <h5 class="position mx-3 my-3 text-center">
-                                    Running for <?= $pos['position_title'] ?>
-                                </h5>
+                                <a href="" tabindex="-1" data-bs-toggle="modal" data-bs-target="#candidate<?= $candi['id'] ?>"><img class="card-img img-fluid px-2" style="width:400px; height: 350px;" src="img/donaldmc.jpg" alt="">
+                                </a>
+
                                 <h5 class="position mx-3 my-3 text-center">
                                     <?= $party['party'] ?>
                                 </h5>
                                 <?php if ($now >= $start_date && $now <= $end_date) { ?>
 
-                                <?php } else { ?>
+                                <?php } elseif ($now >= $end_date) { ?>
                                     <div class="text-center">
-                                    <?php if(!empty($voteCount)){ ?>
+                                        <?php if (!empty($voteCount)) { ?>
 
-                                        <?php if($voteCount <= 1 || 0) {?>
-                                            <p><?= $voteCount." Vote" ?></p>
-                                            <?php }else{ ?>
-                                        <p><?= $voteCount." Votes" ?></p>
-                                        <?php } ?>
-
-                                        <?php }else{ ?>
-                                            <p><?= "0"." Votes" ?></p>
+                                            <?php if ($voteCount <= 1 || 0) { ?>
+                                                <p><?= $voteCount . " Vote" ?></p>
+                                            <?php } else { ?>
+                                                <p><?= $voteCount . " Votes" ?></p>
                                             <?php } ?>
-                                    </p>
+
+                                        <?php } else { ?>
+                                            <p><?= "0" . " Votes" ?></p>
+                                        <?php } ?>
+                                        </p>
                                         <div class="d-flex justify-content-center">
                                             <p>
                                                 <?php if (!empty($candi['winner'])) { ?>
-                                                    <span class="text-success"><?= $candi['winner'] ?></span>
+                                                    <span class="text-success"><strong><?= $candi['winner'] ?></strong></span>
                                                 <?php } else { ?>
-
                                                 <?php } ?>
                                             </p>
                                         </div>
@@ -105,15 +149,45 @@ $now = date("Y-m-d H:i:s");
 
                             </div>
                         </div>
-                        <!-- View Candidate-->
-                        <div class="modal fade modal-signin" id="candidate<?= $candi['id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal fade modal-signin" id="candidate<?= $candi['id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticbackdroplabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                 <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
                                     <div class="modal-header p-3 pb-3">
-                                        <h5 class="modal-title" id="staticBackdropLabel">Adding Admin</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <h5 class="modal-title text-white" id="staticbackdroplabel">Candidates information
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
                                     </div>
                                     <br>
+
+                                    <div class="modal-body p-5 pt-0">
+                                        <div class="container px-2 py-2" style="border-style: solid; border-width:1px; border-color:white; border-radius:20px">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="text-center">
+                                                        <img src="img/donaldmc.jpg" style="border-radius: 20px;" alt="viewpic">
+                                                    </div>
+                                                </div>
+                                                <?php
+                                                $pos = $vote->getposition($candi['position_id']);
+                                                $par = $vote->getparty($candi['party_id']);
+                                                ?>
+                                                <div class="col-md-8">
+                                                    <ul style="list-style-type: none; font-size:20px; margin-top:40px" id="ul-candi">
+                                                        <li>Name: <?= $candi['first_name'] . " " . $candi['last_name'] ?> </li>
+                                                        <li>Age: <?= $candi['age'] ?></li>
+                                                        <li>Course: <?= $candi['course'] ?></li>
+                                                        <li>Year: <?= $candi['year_lev'] ?></li>
+                                                        <li>Party: <?= $par['party'] ?></li>
+                                                        <li>Running Position: <?= $pos['position_title'] ?></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close</button>
+
+                                    </div>
 
                                 </div>
                             </div>
@@ -158,6 +232,8 @@ $now = date("Y-m-d H:i:s");
         </div>
     </div>
 </div>
+
+
 
 
 

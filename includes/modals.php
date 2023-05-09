@@ -534,6 +534,26 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <br>
+
+      <form action="" method="POST" enctype="multipart/form-data">
+        <div class="modal-body p-5 pt-0">
+          <div class="mb-3 row">
+            <label for="ElectionDate" class="col-sm-3 col-form-label">Update Poster</label>
+            <div class="d-flex col-md-8">
+              <input type="hidden" name="election_id" value="<?= $elec['election_id'] ?>">
+              <input type="file" class="form-control mx-2" name="election_poster" id="election_poster" value="uploads/<?= $elec['election_poster']; ?>" required>
+              <button type="submit" class="btn btn-success" name="update-poster">Update</button>
+            </div>
+          </div>
+          <div class="row">
+            <label for="ElectionDate" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-8">
+              <img class="img-fluid rouded-circle mx-sm-3" src="uploads/<?= $elec['election_poster']; ?>" alt="Election Poster" width="100px">
+            </div>
+          </div>
+        </div>
+      </form>
+
       <form action="" method="POST" enctype="multipart/form-data">
         <div class="modal-body p-5 pt-0">
           <div class="mb-3 row">
@@ -542,12 +562,6 @@
               <input type="text" class="form-control" value="<?= $elec['election_name'] ?>" name="election_name" id="" required>
             </div>
           </div>
-          <!-- <div class="mb-3 row">
-            <label for="ElectionDate" class="col-sm-3 col-form-label">Election Date: </label>
-            <div class="col-sm-8">
-              <input type="datetime-local" class="form-control" name="election_date" id="" value="<?=$date = date("y-m-d", strtotime( $elec['start_date']));?>" required>
-            </div>
-          </div> -->
           <div class="mb-3 row">
           <label for="ElectionDate" class="col-sm-3 col-form-label">Election Date: </label>
             <div class="col-sm-4">
@@ -561,18 +575,7 @@
             <input type="datetime-local" class="form-control" id="birthdaytime" name="election_end" required>
             </div>
           </div>
-          <div class="mb-3 row">
-            <label for="ElectionDate" class="col-sm-3 col-form-label">Update Poster</label>
-            <div class="col-sm-8">
-              <input type="file" class="form-control" name="election_poster" id="election_poster" value="uploads/<?= $elec['election_poster']; ?>">
-            </div>
-          </div>
-          <div class="mb-3 row">
-            <label for="ElectionDate" class="col-sm-3 col-form-label"></label>
-            <div class="col-sm-8">
-              <img src="uploads/<?= $elec['election_poster']; ?>" alt="Election Poster" width="100px">
-            </div>
-          </div>
+          
           <div class="mb-3 row">
             <label for="status" class="col-sm-3 col-form-label">Status</label>
             <div class="col-sm-8">

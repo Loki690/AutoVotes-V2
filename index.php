@@ -1,6 +1,11 @@
 <?php
-require_once('class.php');
+include('includes/header.php');
+?>
 
+<main>
+
+<?php
+require_once('class.php');
 $vote->Login();
 $vote->voterRegister();
 $vote->loginAdmin();
@@ -10,7 +15,7 @@ $elec = $vote->getElectionId();
 $pos = $vote->getPositionId();
 $par = $vote->getPartyId();
 
-include('includes/header.php');
+
 
 if ($vote->getUserData() == true) {
   include('includes/usernav.php');
@@ -18,6 +23,9 @@ if ($vote->getUserData() == true) {
   include('includes/nav.php');
 }
 $elections = $vote->getElectionId();
+
+date_default_timezone_set('Asia/Manila');
+
 ?>
 
 <script type="text/javascript">
@@ -67,37 +75,34 @@ $elections = $vote->getElectionId();
   <!--Candidates-->
   <section class="mb-5" id="elections">
    
-    <div class="container">
-      <div class="row">
-      <h5 class="title-app text-center mt-5" id="elections">UPCOMING ELECTION</h5>
-        <?php foreach ($elections as $election) { ?>
-          
-          <div class="col-sm-4 pt-2 mt-5" data-aos="fade-right">
-            <div class="card text-start hvr-grow" style="border-radius:25px;" id="shadow2">
-              <img class="card-img img-fluid" style="width:500px; height: 300px; border-top-left-radius:25px; border-top-right-radius:25px;" src="uploads/<?= $election['election_poster']; ?>" alt="ELECTION POSTER" />
+  <div class="mb-5 d-flex justify-content-center" id="elections" data-bs-spy="scroll" class="scrollspy-example" data-bs-target="#navbar" data-bs-offset="0" tabindex="0">
+    <div class="row mx-3">
+      <h3 class="title-app text-center mt-5" id="elections">ELECTION</h3>
+      <?php foreach ($elections as $election) { 
+        
+        $start_date = $election['start_date'];
+        $end_date = $election['end_date'];
+        $now = date("Y-m-d H:i:s");
 
-              <div class="card-body">
-                <h4 class="card-title"><?= $election['election_name'] ?></h4>
-                <div>
-                  <small class="fw-bold text-muted">Election Starts : <?= date('F d, Y g:i A', strtotime($election['start_date'])) ?></small>
-                </div>
-                <div class="mt-2">
-                  <small class="fw-bold text-muted">Election Ends : <?= date('F d, Y g:i A', strtotime($election['end_date'])) ?></small>
-                </div>
-                <div class="d-flex justify-content-center">
-                  <a href="view-candidates.php?id=<?= $election['election_id'] ?>">
-                  <button type="button" class="btn btn-outline-primary mt-2">
-                    View Candidates
-                  </button>
-                  </a>
-                </div>
-              
-              </div>
+        ?>
+        <div class="col-sm-4 mt-2" data-aos="fade-right">
+          <div class="card" style="border-radius:25px;" id="shadow2">
+            <h4 class="elec-name mx-3 my-3 text-truncate"><?= $election['election_name'] ?></h4>
+            <img class="card-img img-fluid px-3 hvr-grow" style="width:100%; height: 300px; " src="uploads/<?= $election['election_poster'] ?>" alt="">
+            <div>
+              <small class="fw-bold text-muted ms-3">Election Starts : <?= date('F d, Y g:i A', strtotime($election['start_date'])) ?></small>
+            </div>
+            <div class="mt-2">
+              <small class="fw-bold text-muted ms-3">Election Ends : <?= date('F d, Y g:i A', strtotime($election['end_date'])) ?></small>
+            </div>
+            <div class="d-flex justify-content-center mb-2">
+            <a href="view-candidates.php?id=<?= $election['election_id'] ?>"><button type="button" class="btn btn-outline-primary mt-2">View Candidates</button></a>
             </div>
           </div>
-        <?php } ?>
-      </div>
+        </div>
+      <?php } ?>
     </div>
+  </div>
 
     
 
@@ -483,40 +488,6 @@ include('includes/modals.php');
 ?>
 <!-- Login and register modals  -->
 
-
-
-<div class="container mt-5 pt-5 d-flex justify-content-center">
-  <div class="row ">
-    <div class="col-md-12">
-      <h1 class="title-app display- mt-5">Election Countdown</h1>
-    </div>
-  </div>
-
-</div>
-
-<div class="container mt-5">
-  <div class="row">
-    <div class="col-md-3 text-center bg-info p-5">
-      <h1><span id="days"></span></h1>
-      <h2 class="">Days</h2>
-    </div>
-    <div class="col-md-3 text-center bg-danger p-5">
-      <h1><span id="hours"></span></h1>
-      <h2 class="">Hours</h2>
-    </div>
-    <div class="col-md-3 text-center bg-info p-5">
-      <h1><span id="minutes"></span></h1>
-      <h2 class="">Minutes</h2>
-    </div>
-    <div class="col-md-3 text-center bg-danger p-5">
-      <h1><strong><span id="seconds"></span></strong></h1>
-      <h2 class="">Seconds</h2>
-    </div>
-  </div>
-</div>
-<?php
-
-?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
 <script>
@@ -532,9 +503,6 @@ if (window.VANTA) window.VANTA.WAVES({
   scaleMobile: 1.00,
   color: 0xb284a
 })
-
-
-
 }
 _strk.push(function() {
   setVanta()

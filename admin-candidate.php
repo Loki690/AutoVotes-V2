@@ -73,6 +73,15 @@ $getElection = $vote->getElectionId();
                         </select>
                         <button type="submit" class="btn btn-primary mx-2" name="search-election">GENERATE</button>
                     </form>
+                    <form class="d-flex" method="post" action="comelec-export.php">
+                        <select class="form-select mx-2" name="election_id" aria-label="Default select example" required>
+                            <option selected>Select Election you want to export</option>
+                            <?php foreach ($getElection as $elec) { ?>
+                                <option value="<?= $elec['election_id'] ?>"><?= $elec['election_name'] ?></option>
+                            <?php } ?>
+                        </select>
+                        <button type="submit" class="btn btn-success" name="export-candidates" > Export</button>
+                    </form>
                 </div>
                 <div class="card mx-3 my-3 mt-3 mb-4" id="shadow2" style="border-radius: 15px;">
                     <div class="card-body table-responsive">

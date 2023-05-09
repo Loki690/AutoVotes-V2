@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css" />
   <link href="css/hover.css" rel="stylesheet" media="all" />
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+  
   <title>AutoVote2</title>
 </head>
 </head>

@@ -112,19 +112,33 @@ class Voting
       $total = $stmt->rowCount();
 
       if ($total > 0) {
-
-        echo "Welcome " . $voter['first_name'];
         $this->setUserData($voter);
 
-        header("Location: welcome.php");
+        ?>
+            <script>
+                swal({
+                title: "Login Success!",
+                icon: "success"
+                }).then((success)=>{
+                    if(success){
+                        window.location.href='welcome.php';
+                    }
+                });
+                
+            </script>
+
+        <?php
+
       } else {
-?>
+        ?>
         <script>
-          alert('Invalid Username or Password');
-          window.location.href = "index.php";
+            swal({
+            title: "Wrong ID number or Password. PLS CONTACT JERECHO ASILUM ON FB!",
+            icon: "warning"
+            });
+            
         </script>
-      <?php
-        exit;
+        <?php
       }
     }
   }
@@ -189,14 +203,57 @@ class Voting
 
         if ($admin['type'] === 'comelec') {
           $this->setAdminData($admin);
-          header("Location: comelec.php");
+          ?>
+      
+            <script>
+                swal({
+                title: "Login Success!",
+                text: "logged in as COMELEC",
+                icon: "success"
+                }).then((success)=>{
+                    if(success){
+                        window.location.href='comelec.php';
+                    }
+                });
+                
+            </script>
+
+            <?php
+        
         } else {
-          echo "welcome admin";
           $this->setAdminData($admin);
-          header("Location: admin-dashboard.php");
+          ?>
+      
+            <script>
+                swal({
+               
+                title: "Login Success!",
+                text: "logged in as admin",
+                icon: "success"
+                }).then((success)=>{
+                    if(success){
+                        window.location.href='admin-dashboard.php';
+                    }
+                });
+                
+            </script>
+
+          <?php
+
         }
       } else {
-        // echo $connection->errorInfo();
+        ?>
+      
+        <script>
+             swal({
+                title: "Wrong Passcode. CONTACT JERECHO ASILUM <3 FROM TEAM DROPBOX!!!",
+              
+                icon: "warning"
+               });
+            
+        </script>
+
+      <?php
       }
     }
   }
@@ -1080,36 +1137,9 @@ class Voting
       $startdate = $election_start ;
       $enddate = $election_end;
 
-
-      $election_poster = rand(1000, 1000000) . "-" . $_FILES['election_poster']['name'];
-      $image_loc = $_FILES['election_poster']['tmp_name'];
-      $folder = "uploads/";
-
-      $new_file_name = strtolower($election_poster);
-      $final_file = str_replace(' ', '-', $new_file_name);
-
-      if (move_uploaded_file($image_loc, $folder . $final_file)) {
-
-        $stmt = $connection->prepare("UPDATE `election` SET `election_name`='$election_name',`start_date`='$startdate',`end_date`='$enddate',`x`='$status',`election_poster`='$final_file' WHERE `election_id` = ?");
-        $stmt->execute([$election_id]);
-
-        if ($stmt == true) {
-        ?>
-          <script>
-            alert('Election Updated!');
-            window.location.href = "admin-election.php";
-          </script>
-        <?php
-        } else {
-          return $this->show_404();
-          echo $connection->errorInfo();
-        }
-      } else {
-
         $stmt = $connection->prepare("UPDATE `election` SET `election_name`='$election_name',`start_date`='$startdate',`end_date`='$enddate',`x`='$status' WHERE `election_id` = ?");
         $stmt->execute([$election_id]);
-
-        if ($stmt == true) {
+        if ($stmt) {
         ?>
           <script>
             alert('Election Updated!');
@@ -1120,8 +1150,44 @@ class Voting
           return $this->show_404();
           echo $connection->errorInfo();
         }
-      }
     }
+  }
+
+  public function updatePoster(){
+
+    $connection = $this->openConnection();
+    if(isset($_POST['update-poster'])){
+
+      $election_id = $_POST['election_id'];
+      $election_poster = rand(1000, 1000000) . "-" . $_FILES['election_poster']['name'];
+      $image_loc = $_FILES['election_poster']['tmp_name'];
+      $folder = "uploads/";
+
+      $new_file_name = strtolower($election_poster);
+      $final_file = str_replace(' ', '-', $new_file_name);
+
+      if (move_uploaded_file($image_loc, $folder . $final_file)) {
+
+        $stmt = $connection->prepare("UPDATE `election` SET `election_poster`= '$final_file' WHERE `election_id` = '$election_id'");
+
+        $stmt->execute();
+
+        if ($stmt) {
+        ?>
+          <script>
+            alert('Poster Updated');
+            window.location.href = "admin-election.php";
+          </script>
+        <?php
+        } else {
+
+          return $this->show_404();
+          echo $connection->errorInfo();
+        }
+      }
+
+    }
+
   }
 
   public function deleteElection()
@@ -1832,6 +1898,7 @@ class Voting
         $html .= '<td>' . $position['position_title'] . '</td>';
         $html .= '<td>' . $voteResult . '</td>';
         $html .= '</tr>';
+
       }
 
       $html .= '</tbody>';
@@ -1841,8 +1908,6 @@ class Voting
 
 
       require_once 'vendor2/vendor/autoload.php';
-
-
       $dompdf = new Dompdf();
       $dompdf->loadHtml($html);
       $dompdf->setPaper('A4', 'landscape');
@@ -1900,6 +1965,7 @@ class Voting
           $pdf->Cell(40, 10, $election['election_name'], 1, 0, 'C');
           $pdf->Cell(40, 10, $position['position_title'], 1, 0, 'C');
           $pdf->Cell(30, 10, $voteResult, 1, 1, 'C');
+
         }
       }
 
