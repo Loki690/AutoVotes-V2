@@ -1,19 +1,12 @@
 <?php
 require_once('class.php');
-
-$vote->Login();
 $vote->voterRegister();
-$vote->loginAdmin();
-
-
 include('includes/header.php');
-
 if ($vote->getUserData() == true) {
     include('includes/usernav.php');
 } else {
     include('includes/nav.php');
 }
-
 $election_id = $_GET['id'];
 $election = $vote->getElection($election_id);
 $positions = $vote->getPositionId();
@@ -28,46 +21,80 @@ $now = date("Y-m-d H:i:s");
 
     <div class="container justify-content-center text-center mt-5">
         <?php if ($now >= $start_date && $now <= $end_date) { ?>
-            <h1>Voting is Ongoing</h1>
-        <?php } else if ($now >= $end_date) { ?>
-            <h1 class="text-danger">Voting is Ended </h1>
-        <?php } else if ($now <= $end_date) { ?>
+            <h1>Election is Ongoing</h1>
+            <div class="d-flex justify-content-center">
+                <h4 class="px-2"><span id="days"></span><span class=""> Days</span></h4>
+                <h4 class="px-2"><span id="hours"></span><span class=""> Hours</span></h4>
+                <h4 class="px-2"><span id="minutes"></span><span class=""> Min</span></h4>
+                <h4 class="px-2"><span id="seconds"></span><span class=""> Sec</span></h4>
+            </div>
             <script type="text/javascript">
                 function countdown() {
-
-
                     var now = new Date();
-                    var eventDate = new Date("<?= date('F d, Y g:i A', strtotime($election['start_date'])) ?>");
-
+                    var eventDate = new Date("<?= date('F d, Y g:i A', strtotime($election['end_date'])) ?>");
                     var currentTime = now.getTime();
                     var eventTime = eventDate.getTime();
-
                     var remainingTime = eventTime - currentTime;
-
                     var seconds = Math.floor(remainingTime / 1000);
                     var minutes = Math.floor(seconds / 60);
                     var hours = Math.floor(minutes / 60);
                     var days = Math.floor(hours / 24);
-
                     hours %= 24;
                     minutes %= 60;
                     seconds %= 60;
-
                     document.getElementById("days").innerHTML = days;
                     document.getElementById("hours").innerHTML = hours;
                     document.getElementById("minutes").innerHTML = minutes;
                     document.getElementById("seconds").innerHTML = seconds;
-                    setTimeout(countdown, 1000);
-
+                    if (remainingTime <= 0) {
+                        location.reload();
+                    } else {
+                        setTimeout(countdown, 1000);
+                    }
                 }
+                countdown();
             </script>
+        <?php } else if ($now >= $end_date) { ?>
+            <h1 class="text-danger">Election is Ended </h1>
+        <?php } else if ($now <= $end_date) { ?>
+            <script type="text/javascript">
+                function countdown() {
+                    var now = new Date();
+                    var eventDate = new Date("<?= date('F d, Y g:i A', strtotime($election['start_date'])) ?>");
+                    var currentTime = now.getTime();
+                    var eventTime = eventDate.getTime();
+                    var remainingTime = eventTime - currentTime;
+                    var seconds = Math.floor(remainingTime / 1000);
+                    var minutes = Math.floor(seconds / 60);
+                    var hours = Math.floor(minutes / 60);
+                    var days = Math.floor(hours / 24);
+                    hours %= 24;
+                    minutes %= 60;
+                    seconds %= 60;
+                    document.getElementById("days").innerHTML = days;
+                    document.getElementById("hours").innerHTML = hours;
+                    document.getElementById("minutes").innerHTML = minutes;
+                    document.getElementById("seconds").innerHTML = seconds;
+                    if (remainingTime <= 0) {
+                        location.reload();
+                    } else {
+                        setTimeout(countdown, 1000);
+                    }
+                }
+                countdown();
+            </script>
+
+            <div>
+                <h2>Election starts in</h2>
+            </div>
             <div class="d-flex justify-content-center">
-                <p class="px-2"><span id="days"></span><span class=""> Days</span></p>
-                <p class="px-2"><span id="hours"></span><span class=""> Hours</span></p>
-                <p class="px-2"><span id="minutes"></span><span class=""> Minutes</span></p>
-                <p class="px-2"><span id="seconds"></span><span class=""> Seconds</span></p>
+                <h4 class="px-2"><span id="days"></span><span class=""> Days</span></h4>
+                <h4 class="px-2"><span id="hours"></span><span class=""> Hours</span></h4>
+                <h4 class="px-2"><span id="minutes"></span><span class=""> Min</span></h4>
+                <h4 class="px-2"><span id="seconds"></span><span class=""> Sec</span></h4>
             </div>
         <?php } ?>
+
     </div>
     <!-- Dcc Logo-->
     <div class="container d-flex justify-content-center">
@@ -81,40 +108,40 @@ $now = date("Y-m-d H:i:s");
             $candidates = $vote->getCandidate($election_id, $position_id, $voterDetails = 'user');
 
         ?>
-            <div class="row">
-                <?php if (!empty($candidates)) {
-                    // Sort candidates by vote result in descending order
-                    usort($candidates, function ($a, $b) use ($vote) {
-                        $aResult = $vote->getVoteResults($a['id']);
-                        $bResult = $vote->getVoteResults($b['id']);
-                        return $bResult - $aResult;
-                    });
+            <?php if (!empty($candidates)) {
+                // Sort candidates by vote result in descending order
+                usort($candidates, function ($a, $b) use ($vote) {
+                    $aResult = $vote->getVoteResults($a['id']);
+                    $bResult = $vote->getVoteResults($b['id']);
+                    return $bResult - $aResult;
+                });
 
-                    $posCount = $pos['count'];
+                $posCount = $pos['count'];
 
-                    // Determine the number of winners based on $pos_count
-                    if ($posCount >= count($candidates)) {
-                        $winnersCount = count($candidates);
-                    } else {
-                        $winnersCount = $posCount;
-                    }
+                // Determine the number of winners based on $pos_count
+                if ($posCount >= count($candidates)) {
+                    $winnersCount = count($candidates);
+                } else {
+                    $winnersCount = $posCount;
+                }
 
-                    // Set the label for the top candidates as "Winner"
-                    for ($i = 0; $i < $winnersCount; $i++) {
-                        $candidates[$i]['winner'] = "Wins";
-                    }
-                ?>
-                    <h3 class="mx-3 mt-4"> <?= $pos['position_title'] ?></h3>
+                // Set the label for the top candidates as "Winner"
+                for ($i = 0; $i < $winnersCount; $i++) {
+                    $candidates[$i]['winner'] = "Wins";
+                }
+            ?>
+                <div class="row mx-2">
+                    <h2 class="mx-3 mt-4"> <?= $pos['position_title'] ?></h2>
                     <?php foreach ($candidates as $candi) {
                         $party = $vote->getParty($candi['party_id']);
                         $voteCount = $vote->getVoteResults($candi['id']);
                     ?>
-                        <div class="col-sm-4">
-                            <div class="card mx-3 mt-3" style="border-radius:25px;" id="shadow2">
+                        <div class="col-sm-4 mt-2">
+                            <div class="card mt-3" style="border-radius:25px;" id="shadow2">
                                 <h5 class="name mx-3 my-3 text-center">
                                     <?= $candi['first_name'] . " " . $candi['middle_name'] . " " . $candi['last_name'] ?>
                                 </h5>
-                                <a href="" tabindex="-1" data-bs-toggle="modal" data-bs-target="#candidate<?= $candi['id'] ?>"><img class="card-img img-fluid px-2" style="width:400px; height: 350px;" src="img/donaldmc.jpg" alt="">
+                                <a href="" tabindex="-1" data-bs-toggle="modal" data-bs-target="#candidate<?= $candi['id'] ?>"><img class="card-img px-2" style="width:100%; height: 400px;" src="uploads/<?= $candi['photo'] ?>" alt="">
                                 </a>
 
                                 <h5 class="position mx-3 my-3 text-center">
@@ -138,10 +165,10 @@ $now = date("Y-m-d H:i:s");
                                         </p>
                                         <div class="d-flex justify-content-center">
                                             <p>
-                                                <?php if (!empty($candi['winner'])) { ?>
+                                                <!-- <?php if (!empty($candi['winner'])) { ?>
                                                     <span class="text-success"><strong><?= $candi['winner'] ?></strong></span>
                                                 <?php } else { ?>
-                                                <?php } ?>
+                                                <?php } ?> -->
                                             </p>
                                         </div>
                                     </div>
@@ -164,7 +191,7 @@ $now = date("Y-m-d H:i:s");
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <div class="text-center">
-                                                        <img src="img/donaldmc.jpg" style="border-radius: 20px;" alt="viewpic">
+                                                        <img src="uploads/<?= $candi['photo'] ?>" style="border-radius: 20px; height:250px; width:100%;" alt="viewpic">
                                                     </div>
                                                 </div>
                                                 <?php
@@ -173,12 +200,12 @@ $now = date("Y-m-d H:i:s");
                                                 ?>
                                                 <div class="col-md-8">
                                                     <ul style="list-style-type: none; font-size:20px; margin-top:40px" id="ul-candi">
-                                                        <li>Name: <?= $candi['first_name'] . " " . $candi['last_name'] ?> </li>
-                                                        <li>Age: <?= $candi['age'] ?></li>
-                                                        <li>Course: <?= $candi['course'] ?></li>
-                                                        <li>Year: <?= $candi['year_lev'] ?></li>
-                                                        <li>Party: <?= $par['party'] ?></li>
-                                                        <li>Running Position: <?= $pos['position_title'] ?></li>
+                                                        <li><span class="fw-bold">Name: </span> <?= $candi['first_name'] . " " . $candi['last_name'] ?> </li>
+                                                        <li><span class="fw-bold">Age: </span> <?= $candi['age'] ?></li>
+                                                        <li><span class="fw-bold">Course: </span> <?= $candi['course'] ?></li>
+                                                        <li><span class="fw-bold">Year: </span> <?= $candi['year_lev'] ?></li>
+                                                        <li><span class="fw-bold">Party: </span> <?= $par['party'] ?></li>
+                                                        <li><span class="fw-bold">Running Position: </span><?= $pos['position_title'] ?></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -193,10 +220,10 @@ $now = date("Y-m-d H:i:s");
                             </div>
                         </div>
                     <?php } ?>
-            </div>
+                </div>
 
+            <?php } ?>
         <?php } ?>
-    <?php } ?>
     </div>
     <!--Candidates-->
 
@@ -220,7 +247,7 @@ $now = date("Y-m-d H:i:s");
                     <div class="form-group mt-2">
                         <label for="exampleInputPassword1" class="form-label">Access Code</label>
                         <input type="password" class="form-control" id="exampleInputPassword1" name="accesscode" placeholder="Password" required />
-                        <a href="#" class="mt-2"><small>Forgot Access Code? </small> </a>
+                        <!-- <a href="#" class="mt-2"><small>Forgot Access Code? </small> </a> -->
                     </div>
                     <div class="d-flex pt-1">
                         <button type="submit" id="loginbutton" name="login-admin" class="btn btn-primary mt-2 flex-grow-1">
@@ -233,21 +260,19 @@ $now = date("Y-m-d H:i:s");
     </div>
 </div>
 
-
-
-
+<!-- <script type="text/javascript">
+    settimeout(function() {
+        location = 'view-candidates.php?id=<?= $election_id ?>'
+    }, 2000)
+</script> -->
 
 <?php
-include('includes/footer.php');
+include('includes/u-footer.php');
 ?>
 <?php
 include('includes/modals.php');
 ?>
 <!-- Login and register modals  -->
-
-
-
-
 <?php
 
 ?>

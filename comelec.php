@@ -196,7 +196,7 @@ $countVoters = $vote->countVoters();
                                                             <div class="row">
                                                                 <div class="col-md-4">
                                                                     <div class="text-center">
-                                                                        <img src="img/donaldmc.jpg" style="border-radius: 20px;" alt="viewpic">
+                                                                    <img  src="uploads/<?=$candidate['photo']?>" style="border-radius: 20px; height:250px; width:100%;" alt="viewpic">
                                                                     </div>
                                                                 </div>
                                                                 <?php
@@ -205,12 +205,12 @@ $countVoters = $vote->countVoters();
                                                                 ?>
                                                                 <div class="col-md-8">
                                                                     <ul style="list-style-type: none; font-size:20px; margin-top:40px" id="ul-candi">
-                                                                        <li>Name: <?= $candidate['first_name'] . " " . $candidate['last_name'] ?> </li>
-                                                                        <li>Age: <?= $candidate['age'] ?></li>
-                                                                        <li>Course: <?= $candidate['course'] ?></li>
-                                                                        <li>Year: <?= $candidate['year_lev'] ?></li>
-                                                                        <li>Party: <?= $par['party'] ?></li>
-                                                                        <li>Running Position: <?= $pos['position_title'] ?></li>
+                                                                        <li><span class="fw-bold">Name: </span><?= $candidate['first_name'] . "  ". $candidate['middle_name']." " . $candidate['last_name'] ?> </li>
+                                                                        <li><span class="fw-bold">Age: </span><?= $candidate['age'] ?></li>
+                                                                        <li><span class="fw-bold">Course: </span><?= $candidate['course'] ?></li>
+                                                                        <li><span class="fw-bold">Year: </span><?= $candidate['year_lev'] ?></li>
+                                                                        <li><span class="fw-bold">Party: </span><?= $par['party'] ?></li>
+                                                                        <li><span class="fw-bold">Running Position: </span><?= $pos['position_title'] ?></li>
                                                                     </ul>
                                                                 </div>
                                                             </div>

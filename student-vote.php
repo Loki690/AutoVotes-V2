@@ -74,10 +74,10 @@ $positions = $vote->getPositionId();
                         ?>
 
                             <?php if (!empty($candidates)) { ?>
-                                <div class="row">
-                                    <h3 class="mx-3 mt-5"><?= $pos['position_title'] ?>
-                                    </h3>
-                                    <h4 class="mx-3 mt-4"> Only Vote <?= $pos['count'] . " " . $pos['position_title'] ?>
+                                <div class="row"> 
+                                    <h1 class="mx-3 mt-5 fw-bold text-center"><?= $pos['position_title'] ?>
+                                    </h1>
+                                    <h4 class="mx-3 mt-4 text-center"> Only Vote <?= $pos['count'] . " " . $pos['position_title'] ?>
                                     </h4>
                                     <input type="hidden" value="<?= $pos['count'] ?>" name="pos_count">
                                     <?php foreach ($candidates as $candi) {
@@ -93,7 +93,7 @@ $positions = $vote->getPositionId();
                                                     <?= $candi['first_name'] . " " . $candi['middle_name'] . " " . $candi['last_name'] ?>
                                                 </h4>
 
-                                                <img class="card-img img-fluid px-2" style="width:500px; height: 300px;" src="img/donaldmc.jpg" alt="">
+                                                <img class="card-img img-fluid px-2" style="width:500px; height: 300px;" src="uploads/<?=$candi['photo']?>" alt="">
 
                                                 <h5 class="position mx-3 my-3 text-center">
                                                     Running for <?= $pos['position_title'] ?>
@@ -144,21 +144,11 @@ $positions = $vote->getPositionId();
                             <?php } ?>
                         <?php } ?>
 
-                        <?php if (!empty($candidates)) { ?>
                             <div class="d-flex justify-content-center mt-5">
                                 <input class="btn btn-lg btn-primary" type="reset" value="Reset">
                                 <button class="btn btn-lg btn-primary mx-3" type="submit" name="vote">Submit My Votes</button>
                             </div>
-                        <?php } else {
-                        ?>
-                            <div class="d-flex justify-content-center mt-5">
-                                <h1 class="display-6">Hello! Kumusta?</h1>
-                               </div>
-                               <div class="mt-5 d-flex justify-content-center">
-                               <iframe width="560" height="315" src="https://www.youtube.com/embed/hSofzQURQDk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                            </div>
-                        <?php
-                        } ?>
+                      
                     </div>
             </main>
             <!--Footer-->

@@ -3,9 +3,9 @@ require_once('class.php');
 include('includes/admin-header.php');
 $elections = $vote->getElectionId();
 
-$vote->addElecion();
-$vote->editElection();
-$vote->updatePoster();
+$vote->addElection($_POST);
+$vote->editElection($_POST);
+$vote->updatePoster($_POST);
 $vote->deleteElection();
 $vote->saveQRCode();
 // $vote->generateQR();

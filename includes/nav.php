@@ -1,4 +1,7 @@
-
+<?php
+$vote->Login();
+$vote->loginAdmin();
+?>
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top" id="navbar">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">

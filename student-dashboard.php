@@ -7,8 +7,6 @@ $vote->session();
 
 <body onload="countdown()" class="sb-nav-fixed">
 
-
-
     <?php include('includes/user-nav.php') ?>
 
     <div id="layoutSidenav">
@@ -39,14 +37,13 @@ $vote->session();
             </nav>
         </div>
         <div id="layoutSidenav_content">
-        <main>
+            <main>
                 <div class="d-flex justify-content-between mt-4 mx-4 my-3">
                     <h3 class=""> <i class="fas fa-home mx-3"></i>Home</h3>
 
 
                 </div>
                 <hr>
-
                 <div class="row mx-3">
 
                     <div class="d-flex justify-content-start mt-3 mx-3 my-3">
@@ -55,7 +52,6 @@ $vote->session();
 
                     <?php
                     date_default_timezone_set('Asia/Manila');
-                    
                     foreach ($elections as $elec) {
                         $start_date = $elec['start_date'];
                         $end_date = $elec['end_date'];
@@ -65,7 +61,7 @@ $vote->session();
                         if ($now >= $start_date && $now <= $end_date) {
                     ?>
                             <?php if ($vote->isStudentVoted($voterDetails['school_id'], $elec['election_id'])) { ?>
-                                <div class="col-sm-4 mt-2">
+                                <div class="col-sm-3 mt-2">
                                     <div class="card" style="border-radius:25px;" id="shadow2">
                                         <h4 class="elec-name mx-3 my-3 text-truncate"><?= $elec['election_name'] ?></h4>
                                         <p class="px-3">Thank you for voting!</p>
@@ -75,7 +71,7 @@ $vote->session();
                                 </div>
                             <?php } else {
                             ?>
-                                <div class="col-sm-4 mt-2">
+                                <div class="col-sm-3 mt-2">
                                     <div class="card" style="border-radius:25px;" id="shadow2">
                                         <h4 class="elec-name mx-3 my-3 text-truncate"><?= $elec['election_name'] ?></h4>
                                         <p class="px-3">Please vote wisely</p>
@@ -89,7 +85,7 @@ $vote->session();
                         <?php
                         } else if ($now >= $end_date) {
                         ?>
-                            <div class="col-sm-4  mt-2">
+                            <div class="col-sm-3  mt-2">
                                 <div class="card" style="border-radius:25px;" id="shadow2">
                                     <h4 class="elec-name mx-3 my-3 text-truncate"><?= $elec['election_name'] ?></h4>
                                     <p class="px-3">Contact MIS Interns</p>
@@ -103,7 +99,7 @@ $vote->session();
                         <?php
                         } else if ($now <= $end_date) {
                         ?>
-                            <div class="col-sm-4  mt-2">
+                            <div class="col-sm-3  mt-2">
                                 <div class="card" style="border-radius:25px;" id="shadow2">
                                     <h4 class="elec-name mx-3 my-3 text-truncate"><?= $elec['election_name'] ?></h4>
                                     <p class="px-3">Upcoming Election</p>

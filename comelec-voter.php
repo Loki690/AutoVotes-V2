@@ -113,9 +113,9 @@ $vote->adminSession();
                         <button type="submit" class="btn btn-primary mx-2" name="search-course">GENERATE</button>
                     </form>
                     <?php
-                    $connect = mysqli_connect("localhost", "root", "", "vote3");
-                    $sql = "SELECT * FROM student";
-                    $result = mysqli_query($connect, $sql);
+                    // $connect = mysqli_connect("localhost", "root", "M!sadmin", "vote3");
+                    // $sql = "SELECT * FROM student";
+                    // $result = mysqli_query($connect, $sql);
                     ?>
                     <form action="comelec-export.php" method="post">
                     <input type="submit" name="export" class="btn btn-success" value="Export" />

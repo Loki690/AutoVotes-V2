@@ -114,29 +114,27 @@ class Voting
       if ($total > 0) {
         $this->setUserData($voter);
 
-        ?>
-            <script>
-                swal({
-                title: "Login Success!",
-                icon: "success"
-                }).then((success)=>{
-                    if(success){
-                        window.location.href='welcome.php';
-                    }
-                });
-                
-            </script>
+?>
+        <script>
+          swal({
+            title: "Login Success!",
+            icon: "success"
+          }).then((success) => {
+            if (success) {
+              window.location.href = 'welcome.php';
+            }
+          });
+        </script>
 
-        <?php
+      <?php
 
       } else {
-        ?>
+      ?>
         <script>
-            swal({
+          swal({
             title: "Wrong ID number or Password. PLS CONTACT JERECHO ASILUM ON FB!",
             icon: "warning"
-            });
-            
+          });
         </script>
         <?php
       }
@@ -203,54 +201,51 @@ class Voting
 
         if ($admin['type'] === 'comelec') {
           $this->setAdminData($admin);
-          ?>
-      
-            <script>
-                swal({
-                title: "Login Success!",
-                text: "logged in as COMELEC",
-                icon: "success"
-                }).then((success)=>{
-                    if(success){
-                        window.location.href='comelec.php';
-                    }
-                });
-                
-            </script>
+        ?>
 
-            <?php
-        
+          <script>
+            swal({
+              title: "Login Success!",
+              text: "logged in as COMELEC",
+              icon: "success"
+            }).then((success) => {
+              if (success) {
+                window.location.href = 'comelec.php';
+              }
+            });
+          </script>
+
+        <?php
+
         } else {
           $this->setAdminData($admin);
-          ?>
-      
-            <script>
-                swal({
-               
-                title: "Login Success!",
-                text: "logged in as admin",
-                icon: "success"
-                }).then((success)=>{
-                    if(success){
-                        window.location.href='admin-dashboard.php';
-                    }
-                });
-                
-            </script>
+        ?>
 
-          <?php
+          <script>
+            swal({
+
+              title: "Login Success!",
+              text: "logged in as admin",
+              icon: "success"
+            }).then((success) => {
+              if (success) {
+                window.location.href = 'admin-dashboard.php';
+              }
+            });
+          </script>
+
+        <?php
 
         }
       } else {
         ?>
-      
+
         <script>
-             swal({
-                title: "Wrong Passcode. CONTACT JERECHO ASILUM <3 FROM TEAM DROPBOX!!!",
-              
-                icon: "warning"
-               });
-            
+          swal({
+            title: "Wrong Passcode. CONTACT JERECHO ASILUM <3 FROM TEAM DROPBOX!!!",
+
+            icon: "warning"
+          });
         </script>
 
       <?php
@@ -302,17 +297,19 @@ class Voting
     }
   }
 
-  public function comelecSession(){
-    if($this->getComelecData()){
+  public function comelecSession()
+  {
+    if ($this->getComelecData()) {
       return $this->getComelecData();
-    }else{
+    } else {
       return header("Location: index.php");
     }
   }
 
-  public function comelecLogin(){
+  public function comelecLogin()
+  {
     $connection = $this->openConnection();
-    if(isset($_POST['login-comelec'])){
+    if (isset($_POST['login-comelec'])) {
 
       $accesscode = $_POST['accesscode'];
       $type = 'comelec';
@@ -322,11 +319,11 @@ class Voting
 
       $comelec = $stmt->fetch();
       $total = $stmt->rowCount();
-      
-      if($total > 0){
+
+      if ($total > 0) {
         $this->setComelecData($comelec);
         header("Location: comelec.php");
-      }else{
+      } else {
         return $connection->errorInfo();
       }
     }
@@ -502,12 +499,23 @@ class Voting
 
           $stmt = $connection->prepare("INSERT INTO `applicants`(`student_id`, `election_id`, `date_filed`, `position_id`, `party_id`, `last_name`, `first_name`, `middle_name`, `gender`, `age`, `date_birth`, `place_birth`, `height`, `weight`, `home_add`, `status`, `religion`, `language`, `citizenship`, `contact_num`, `email`, `spouse_name`, `spouse_add`, `num_child`, `tertiary_lev`, `course`, `year_lev`, `major`, `second_lev`, `secondary_grad`, `elementary`, `elementary_grad`, `achievements`, `organization`, `requirements`, `url`, `application_status`, `x`, `photo`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-          $stmt->execute([$student_id, $election_id, $data_filed, $position, $party_id, $last_name, $first_name, $middle_name, $gender, $age, $date_birth, $place_birth, $height, $weight, $home_add, $status, $religion, $language, $citizenship, $contact_num, $email, $spouse_name, $spouse_add, $num_child, $tertiary_lev, $course, $year_lev, $major, $second_lev, $secondary_grad, $achievements, $elementary, $elementary_grad, $organization, $requirements, $url, $applicant_status, $x, $final_file]);
+          $stmt->execute([$student_id, $election_id, $data_filed, $position, $party_id, $last_name, $first_name, $middle_name, $gender, $age, $date_birth, $place_birth, $height, $weight, $home_add, $status, $religion, $language, $citizenship, $contact_num, $email, $spouse_name, $spouse_add, $num_child, $tertiary_lev, $course, $year_lev, $major, $second_lev, $secondary_grad,  $elementary, $elementary_grad, $achievements, $organization, $requirements, $url, $applicant_status, $x, $final_file]);
 
         ?>
           <script>
-            alert('Register Successfull');
-            window.location.href = "index.php";
+            swal({
+              title: "Candidacy Submitted!",
+              icon: "success"
+            });
+          </script>
+        <?php
+        } else {
+        ?>
+          <script>
+            swal({
+              title: "Submittion Failed, Contact the intern",
+              icon: "warning"
+            });
           </script>
         <?php
         }
@@ -738,17 +746,17 @@ class Voting
 
     $connection = $this->openConnection();
     $applicants = [];
-    if(isset($_POST['search-election'])){
+    if (isset($_POST['search-election'])) {
       $election_id = $_POST['election'];
-      $stmt = $connection->prepare("SELECT * FROM `applicants` WHERE `application_status` = 'final' AND `election_id` = '$election_id'");
+      $stmt = $connection->prepare("SELECT * FROM `applicants` WHERE `application_status` = 'final' AND `election_id` = '$election_id' ORDER BY id DESC");
       $stmt->execute();
       $applicants = $stmt->fetchAll();
-    }else{
-      $stmt = $connection->prepare("SELECT * FROM `applicants` where `application_status` = 'final'");
-    $stmt->execute();
-    $applicants = $stmt->fetchAll();
+    } else {
+      $stmt = $connection->prepare("SELECT * FROM `applicants` where `application_status` = 'final' ORDER BY id DESC");
+      $stmt->execute();
+      $applicants = $stmt->fetchAll();
     }
-    
+
     $total = $stmt->rowCount();
 
     if ($total > 0) {
@@ -788,7 +796,7 @@ class Voting
 
     $connection = $this->openConnection();
 
-    $stmt = $connection->prepare("SELECT * FROM `applicants` where `application_status` = 'for_interview' ");
+    $stmt = $connection->prepare("SELECT * FROM `applicants` where `application_status` = 'for_interview' ORDER BY id DESC");
     $stmt->execute();
     $applicants = $stmt->fetchAll();
 
@@ -959,7 +967,6 @@ class Voting
     if ($total > 0) {
       return $candidates;
     } else {
-     
     }
   }
 
@@ -972,7 +979,7 @@ class Voting
     $count = $stmt->fetchColumn();
 
     if ($count == 0) {
-      
+
       $stmt = $connection->prepare("SELECT * FROM `applicants` where `application_status` = 'final' AND `election_id` = '$election_id' AND `position_id` = '$position_id' ");
       $stmt->execute();
       $applicants = $stmt->fetchAll();
@@ -1074,9 +1081,8 @@ class Voting
     }
   }
 
-  public function addElecion()
+  public function addElection()
   {
-
     $connection = $this->openConnection();
 
     if (isset($_POST['add-election'])) {
@@ -1091,35 +1097,76 @@ class Voting
       $startdate = date('Y-m-d H:i:s', strtotime($election_date . " " . $election_start . ":00:00"));
       $enddate = date('Y-m-d H:i:s', strtotime($election_date . " " . $election_end . ":00:00"));
 
+      // Check if file was uploaded without errors
+      if (isset($_FILES["election_poster"]) && $_FILES["election_poster"]["error"] == 0) {
+        $target_dir = "uploads/";
+        $target_file = $target_dir . basename($_FILES["election_poster"]["name"]);
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        $new_file_name = rand(1000, 1000000) . "-" . $_FILES['election_poster']['name'];
+        $final_file = str_replace(' ', '-', strtolower($new_file_name));
 
-      $election_poster = rand(1000, 1000000) . "-" . $_FILES['election_poster']['name'];
-      $image_loc = $_FILES['election_poster']['tmp_name'];
-      $folder = "uploads/";
-
-      $new_file_name = strtolower($election_poster);
-      $final_file = str_replace(' ', '-', $new_file_name);
-
-      if (move_uploaded_file($image_loc, $folder . $final_file)) {
-
-        $stmt = $connection->prepare("INSERT INTO `election`( `election_name`, `start_date`, `end_date`, `x`, `election_poster`) VALUES (?,?,?,?,?)");
-
-        $stmt->execute([$election_name, $startdate, $enddate, $x, $final_file]);
-
-        if ($stmt == true) {
+        // Check if file already exists
+        if (file_exists($target_file)) {
         ?>
           <script>
-            alert('Added Election');
+            alert('File already exist');
             window.location.href = "admin-election.php";
           </script>
         <?php
-        } else {
-
           return $this->show_404();
-          echo $connection->errorInfo();
+        }
+
+        // Check file size
+        if ($_FILES["election_poster"]["size"] > 5000000) {
+        ?>
+          <script>
+            alert('File is too large');
+            window.location.href = "admin-election.php";
+          </script>
+        <?php
+          return $this->show_404();
+        }
+
+        // Allow certain file formats
+        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
+        ?>
+          <script>
+            alert('Sorry, only JPG, JPEG, PNG & GIF files are allowed.');
+            window.location.href = "admin-election.php";
+          </script>
+          <?php
+          return $this->show_404();
+        }
+
+        // Upload file
+        if (move_uploaded_file($_FILES["election_poster"]["tmp_name"], $target_dir . $final_file)) {
+          $stmt = $connection->prepare("INSERT INTO `election`(`election_name`, `start_date`, `end_date`, `x`, `election_poster`) VALUES (?,?,?,?,?)");
+          $stmt->execute([$election_name, $startdate, $enddate, $x, $final_file]);
+
+          if ($stmt == true) {
+          ?>
+            <script>
+              alert('Added Election');
+              window.location.href = "admin-election.php";
+            </script>
+          <?php
+          } else {
+            echo $connection->errorInfo();
+            return $this->show_404();
+          }
+        } else {
+          ?>
+          <script>
+            alert('Sorry, there was an error uploading your file.');
+            window.location.href = "admin-election.php";
+          </script>
+        <?php
+          return $this->show_404();
         }
       }
     }
   }
+
 
   public function editElection()
   {
@@ -1134,29 +1181,30 @@ class Voting
       $election_end = $_POST['election_end'];
       $status = $_POST['status'];
       $election_id = $_POST['election_id'];
-      $startdate = $election_start ;
+      $startdate = $election_start;
       $enddate = $election_end;
 
-        $stmt = $connection->prepare("UPDATE `election` SET `election_name`='$election_name',`start_date`='$startdate',`end_date`='$enddate',`x`='$status' WHERE `election_id` = ?");
-        $stmt->execute([$election_id]);
-        if ($stmt) {
+      $stmt = $connection->prepare("UPDATE `election` SET `election_name`='$election_name',`start_date`='$startdate',`end_date`='$enddate',`x`='$status' WHERE `election_id` = ?");
+      $stmt->execute([$election_id]);
+      if ($stmt) {
         ?>
-          <script>
-            alert('Election Updated!');
-            window.location.href = "admin-election.php";
-          </script>
-      <?php
-        } else {
-          return $this->show_404();
-          echo $connection->errorInfo();
-        }
+        <script>
+          alert('Election Updated!');
+          window.location.href = "admin-election.php";
+        </script>
+        <?php
+      } else {
+        return $this->show_404();
+        echo $connection->errorInfo();
+      }
     }
   }
 
-  public function updatePoster(){
+  public function updatePoster()
+  {
 
     $connection = $this->openConnection();
-    if(isset($_POST['update-poster'])){
+    if (isset($_POST['update-poster'])) {
 
       $election_id = $_POST['election_id'];
       $election_poster = rand(1000, 1000000) . "-" . $_FILES['election_poster']['name'];
@@ -1178,16 +1226,14 @@ class Voting
             alert('Poster Updated');
             window.location.href = "admin-election.php";
           </script>
-        <?php
+      <?php
         } else {
 
           return $this->show_404();
           echo $connection->errorInfo();
         }
       }
-
     }
-
   }
 
   public function deleteElection()
@@ -1200,7 +1246,7 @@ class Voting
       $stmt->execute([$election_id]);
       ?>
       <script>
-        confirm('Deleted Successfull');
+        confirm('Deleted Successful');
         window.location.href = "admin-election.php";
       </script>
     <?php
@@ -1247,7 +1293,7 @@ class Voting
       $stmt->execute([$voter_id]);
     ?>
       <script>
-        confirm('Deleted Successfull');
+        confirm('Deleted Successful');
         window.location.href = "comelec-voter.php";
       </script>
       <?php
@@ -1302,7 +1348,7 @@ class Voting
       $stmt->execute([$position_id]);
       ?>
       <script>
-        confirm('Deleted Successfull');
+        confirm('Deleted Successful');
         window.location.href = "comelec-position.php";
       </script>
     <?php
@@ -1406,7 +1452,7 @@ class Voting
       $stmt->execute([$requirement_id]);
     ?>
       <script>
-        confirm('Successfull');
+        confirm('Successful');
         window.location.href = "comelec-requirement.php";
       </script>
     <?php
@@ -1468,7 +1514,7 @@ class Voting
       $stmt->execute([$party_id]);
     ?>
       <script>
-        confirm('Successfull');
+        confirm('Successful');
         window.location.href = "comelec-party.php";
       </script>
     <?php
@@ -1664,7 +1710,7 @@ class Voting
       $voter_id = $_POST['voter_id'];
       $elec_id = $_POST['elec_id'];
       $x = "active";
-      $pos_count = $_POST['pos_count'];
+      // $pos_count = $_POST['pos_count'];
 
 
       foreach ($candi_ids as $candi_id) {
@@ -1898,7 +1944,6 @@ class Voting
         $html .= '<td>' . $position['position_title'] . '</td>';
         $html .= '<td>' . $voteResult . '</td>';
         $html .= '</tr>';
-
       }
 
       $html .= '</tbody>';
@@ -1965,7 +2010,6 @@ class Voting
           $pdf->Cell(40, 10, $election['election_name'], 1, 0, 'C');
           $pdf->Cell(40, 10, $position['position_title'], 1, 0, 'C');
           $pdf->Cell(30, 10, $voteResult, 1, 1, 'C');
-
         }
       }
 
@@ -2010,23 +2054,110 @@ class Voting
     }
   }
 
+  public function isStudentVoted($student_id, $election_id)
+  {
 
-
-
-  public function isStudentVoted($student_id, $election_id){
-  
     $connection = $this->openConnection();
     $stmt = $connection->prepare("SELECT * FROM `votes` WHERE `student_id` = '$student_id' AND `election_id` = '$election_id' ");
     $stmt->execute();
     $votes = $stmt->fetch();
 
-    if($votes){
+    if ($votes) {
       return $votes;
-
-    }else{
+    } else {
       return false;
     }
+  }
+  public function exportStudent()
+  {
+    $connection = $this->openConnection();
+    $output = '';
+    if (isset($_POST['export'])) {
+      $stmt = $connection->prepare("SELECT * FROM `student`");
+      $stmt->execute();
+      $result = $stmt->fetchAll();
 
+      if ($result > 0) {
+        $output .= '
+        <table class="table" bordered="1">  
+         <tr>  
+             <th>Student ID</th>  
+             <th>Student Name</th>  
+             <th>Course</th>  
+             <th>Year Level</th>
+             <th>Gender</th>
+         </tr>
+       ';
+        while ($row = ($result)) {
+          $output .= '
+<tr>  
+<td>' . $row["school_id"] . '</td> 
+<td>' . $row["last_name"] . ', ' . $row["first_name"] . ', ' . $row["middle_name"] .  '</td>  
+<td>' . $row["course"] . '</td>  
+<td>' . $row["year_level"] . '</td>   
+<td>' . $row["gender"] . '</td>
+                </tr>
+';
+        }
+        $output .= '</table>';
+        header('Content-Type: application/xls');
+        header('Content-Disposition: attachment; filename=download.xls');
+        echo $output;
+      }
+    }
+  }
+  public function exportCandidates(){
+    $connection = $this->openConnection();
+    $output = '';
+
+    if(isset($_POST['export-candidates'])){
+      $election_id = $_POST['election_id'];
+      $stmt = $connection->prepare("SELECT applicants.id, applicants.election_id ,applicants.first_name, applicants.last_name, applicants.middle_name, applicants.application_status, applicants.x,
+      election.election_name, party.party, position.position_title
+      FROM applicants 
+      JOIN election  ON applicants.election_id = election.election_id
+      JOIN party ON applicants.party_id = party.party_id
+      JOIN position ON applicants.position_id = position.position_id
+      WHERE applicants.application_status = 'final' AND applicants.election_id = '$election_id' AND applicants.x = 'active'");
+
+      $stmt->execute();
+      $result = $stmt->fetchAll();
+
+      if($result > 0){
+        $output .= '
+        <table class="table" bordered="1">  
+         <tr>  
+             <th>Student ID</th>  
+             <th>Candidate Name</th>  
+             <th>Position</th>  
+             <th>Party</th>
+             <th>Election</th>
+         </tr>
+       ';
+             while ($row = ($result)) {
+                 $output .= '
+         <tr>  
+         <td>' . $row["school_id"] . '</td> 
+         <td>' . $row["last_name"] .', '.$row["first_name"].', '.$row["middle_name"].  '</td>  
+         <td>' . $row["position_title"] . '</td>  
+         <td>' . $row["party"] . '</td>   
+         <td>' . $row["election_name"] . '</td>
+                         </tr>
+        ';
+             }
+             $output .= '</table>';
+             header('Content-Type: application/xls');
+             header('Content-Disposition: attachment; filename=download.xls');
+             echo $output;
+      }else{
+        ?>
+        <script>
+            alert ('No record or data to be printed');
+            window.location.href ='admin-candidate.php';
+        </script>
+        <?php
+    }
+    }
   }
 }
 

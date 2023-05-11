@@ -4,6 +4,7 @@ include('includes/admin-header.php');
 
 $candidates = $vote->getApplicantsForCandidate();
 $getElection = $vote->getElectionId();
+
 ?>
 
 <body class="sb-nav-fixed">

@@ -15,13 +15,13 @@ $vote->logoutAdmin();
     <!-- Navbar-->
     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i> <?= $adminDetails['last_name'] . " " . $adminDetails['type'] ?></a>
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i> <?= $adminDetails['type'] ?></a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#!">Settings</a></li>
+                <!-- <li><a class="dropdown-item" href="#!">Settings</a></li>
                 <li><a class="dropdown-item" href="#!">Activity Log</a></li>
                 <li>
                     <hr class="dropdown-divider" />
-                </li>
+                </li> -->
                 <li><a class="dropdown-item" href="#!" data-bs-toggle="modal" class="btn btn-outline-light" data-bs-target="#voter-logout">Logout</a></li>
             </ul>
         </li>
@@ -32,7 +32,7 @@ $vote->logoutAdmin();
 <div class="modal fade" id="voter-logout" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-white">
 
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
