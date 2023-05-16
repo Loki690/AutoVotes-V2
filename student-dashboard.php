@@ -65,7 +65,7 @@ $vote->session();
                                     <div class="card" style="border-radius:25px;" id="shadow2">
                                         <h4 class="elec-name mx-3 my-3 text-truncate"><?= $elec['election_name'] ?></h4>
                                         <p class="px-3">Thank you for voting!</p>
-                                        <img class="card-img img-fluid px-3" style="width:100%; height: 300px;" src="uploads/<?= $elec['election_poster']; ?>" alt="">
+                                        <img class="election-img img-fluid px-3"  src="uploads/<?= $elec['election_poster']; ?>" alt="">
                                         <button class="btn btn-primary mx-4 my-4" disabled>You already Voted</button>
                                     </div>
                                 </div>
@@ -75,7 +75,7 @@ $vote->session();
                                     <div class="card" style="border-radius:25px;" id="shadow2">
                                         <h4 class="elec-name mx-3 my-3 text-truncate"><?= $elec['election_name'] ?></h4>
                                         <p class="px-3">Please vote wisely</p>
-                                        <img class="card-img img-fluid px-3" style="width:100%; height: 300px;" src="uploads/<?= $elec['election_poster']; ?>" alt="">
+                                        <img class="election-img img-fluid px-3" src="uploads/<?= $elec['election_poster']; ?>" alt="">
                                         <a type="button" class="btn btn-primary mx-4 my-4" href="student-vote.php?id=<?= $elec['election_id'] ?>">Vote here</a>
                                     </div>
                                 </div>
@@ -89,7 +89,7 @@ $vote->session();
                                 <div class="card" style="border-radius:25px;" id="shadow2">
                                     <h4 class="elec-name mx-3 my-3 text-truncate"><?= $elec['election_name'] ?></h4>
                                     <p class="px-3">Contact MIS Interns</p>
-                                    <img class="card-img img-fluid px-3" style="width:100%; height: 300px; filter:grayscale(100%);" src="uploads/<?= $elec['election_poster']; ?>" alt="poster">
+                                    <img class="election-img img-fluid px-3" style="filter:grayscale(100%);" src="uploads/<?= $elec['election_poster']; ?>" alt="poster">
                                     <div class="mask text-light d-flex justify-content-center flex-column text-center" style="background-color: rgba(0, 0, 0, 0.5)">
                                         <h4 class="position-absolute bg-danger p-3 md-1" style="top:220px; left:40px; opacity:85%;"> VOTING ENDED!</h4>
                                     </div>
@@ -101,9 +101,9 @@ $vote->session();
                         ?>
                             <div class="col-sm-3  mt-2">
                                 <div class="card" style="border-radius:25px;" id="shadow2">
-                                    <h4 class="elec-name mx-3 my-3 text-truncate"><?= $elec['election_name'] ?></h4>
+                                    <h4 class="election-name mx-3 my-3 text-truncate"><?= $elec['election_name'] ?></h4>
                                     <p class="px-3">Upcoming Election</p>
-                                    <img class="card-img img-fluid px-3" style="width:100%; height: 300px;" src="uploads/<?= $elec['election_poster']; ?>" alt="poster">
+                                    <img class="elec-img  img-fluid px-3" src="uploads/<?= $elec['election_poster']; ?>" alt="poster">
                                     <button type="button" class="btn btn-primary mx-4 my-4" disabled><?= date('F d, Y g:i A', strtotime($elec['start_date'])) ?></button>
                                 </div>
                             </div>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Image Upload Form</title>
+
+    <!-- Include the JavaScript code for validating the file size -->
+    <script type="text/javascript">
+      window.onload = function () {
+        // Get the file input element
+        const inputElement = document.getElementById("image");
+
+        // Listen for changes to the file input
+        inputElement.addEventListener("change", (event) => {
+          // Get the file object
+          const file = event.target.files[0];
+
+          // Check if the file size is greater than 2 MB
+          if (file.size > 2 * 1024 * 1024) {
+            // Display an error message
+            alert("The selected file exceeds the maximum allowed size of 2 MB.");
+
+            // Clear the file input
+            event.target.value = "";
+          }
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <h1>Image Upload Form</h1>
+
+    <form action="/upload" method="post" enctype="multipart/form-data">
+      <label for="image">Select an image:</label>
+      <input type="file" id="image" name="image" />
+
+      <button type="submit">Upload Image</button>
+    </form>
+  </body>
+</html>

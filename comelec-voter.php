@@ -78,7 +78,7 @@ $vote->adminSession();
                 </div>
                 <hr>
                 <?php
-                $vote->insertExcelFile();
+                $vote->insertExcelFile($_POST);
                 ?>
                 <div class="card mx-3 my-3 mt-3 mb-4" id="shadow2">
                     <div class="class-title">

@@ -2,11 +2,13 @@
 require_once('class.php');
 $vote->voterRegister();
 include('includes/header.php');
+
 if ($vote->getUserData() == true) {
     include('includes/usernav.php');
 } else {
     include('includes/nav.php');
 }
+
 $election_id = $_GET['id'];
 $election = $vote->getElection($election_id);
 $positions = $vote->getPositionId();
@@ -131,20 +133,20 @@ $now = date("Y-m-d H:i:s");
                 }
             ?>
                 <div class="row mx-2">
-                    <h2 class="mx-3 mt-4"> <?= $pos['position_title'] ?></h2>
+                    <h2 class="mx-3 mt-5 fw-bold text-center"> Running for <?= $pos['position_title'] ?></h2>
                     <?php foreach ($candidates as $candi) {
                         $party = $vote->getParty($candi['party_id']);
                         $voteCount = $vote->getVoteResults($candi['id']);
                     ?>
-                        <div class="col-sm-4 mt-2">
+                        <div class="col-sm-3 mt-1">
                             <div class="card mt-3" style="border-radius:25px;" id="shadow2">
                                 <h5 class="name mx-3 my-3 text-center">
                                     <?= $candi['first_name'] . " " . $candi['middle_name'] . " " . $candi['last_name'] ?>
                                 </h5>
-                                <a href="" tabindex="-1" data-bs-toggle="modal" data-bs-target="#candidate<?= $candi['id'] ?>"><img class="card-img px-2" style="width:100%; height: 400px;" src="uploads/<?= $candi['photo'] ?>" alt="">
+                                <a href="" tabindex="-1" data-bs-toggle="modal" data-bs-target="#candidate<?= $candi['id'] ?>"><img class="candidate-img px-2" src="uploads/<?= $candi['photo'] ?>" alt="">
                                 </a>
 
-                                <h5 class="position mx-3 my-3 text-center">
+                                <h5 class="party mx-3 my-3 text-center">
                                     <?= $party['party'] ?>
                                 </h5>
                                 <?php if ($now >= $start_date && $now <= $end_date) { ?>
@@ -267,7 +269,7 @@ $now = date("Y-m-d H:i:s");
 </script> -->
 
 <?php
-include('includes/u-footer.php');
+include('includes/footer.php');
 ?>
 <?php
 include('includes/modals.php');

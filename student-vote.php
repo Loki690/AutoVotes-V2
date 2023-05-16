@@ -1,19 +1,16 @@
 <?php
 include('includes/admin-header.php');
-
 require_once('class.php');
-
 $elec_id = $_GET['id'];
-
 $election = $vote->getElection($elec_id);
 $positions = $vote->getPositionId();
+$vote->session();
 
+// $vote->isElectionEnded($end_date, $start_date, $elec_id);
 ?>
 
 <body class="sb-nav-fixed">
-
     <?php include('includes/user-nav.php') ?>
-
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
@@ -30,11 +27,9 @@ $positions = $vote->getPositionId();
                         </a>
                         <hr class="dropdown-divider bg-dark" />
                     </div>
-
                 </div>
                 <div class="sb-sidenav-footer" id="nav-footer">
                     <div class="small">Logged in as: Student</div>
-
                 </div>
             </nav>
         </div>
@@ -74,7 +69,7 @@ $positions = $vote->getPositionId();
                         ?>
 
                             <?php if (!empty($candidates)) { ?>
-                                <div class="row"> 
+                                <div class="row">
                                     <h1 class="mx-3 mt-5 fw-bold text-center"><?= $pos['position_title'] ?>
                                     </h1>
                                     <h4 class="mx-3 mt-4 text-center"> Only Vote <?= $pos['count'] . " " . $pos['position_title'] ?>
@@ -83,59 +78,66 @@ $positions = $vote->getPositionId();
                                     <?php foreach ($candidates as $candi) {
                                     ?>
 
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-3">
 
 
 
                                             <div class="card mx-3 mt-3" style="border-radius:25px;" id="shadow2">
 
-                                                <h4 class="name mx-3 my-3 text-center">
-                                                    <?= $candi['first_name'] . " " . $candi['middle_name'] . " " . $candi['last_name'] ?>
-                                                </h4>
+                                                <h5 class="name mx-3 my-3 text-center">
+                                                    <?= $candi['first_name'] . " " . $candi['last_name'] ?>
+                                                </h5>
 
-                                                <img class="card-img img-fluid px-2" style="width:500px; height: 300px;" src="uploads/<?=$candi['photo']?>" alt="">
+                                                <img class="vote-img img-fluid px-2" src="uploads/<?= $candi['photo'] ?>" alt="">
 
                                                 <h5 class="position mx-3 my-3 text-center">
                                                     Running for <?= $pos['position_title'] ?>
                                                 </h5>
 
-                                                <div class="d-flex justify-content-center mb-3">
-                                                    <input type="hidden" value="<?= $voterDetails['school_id'] ?>" name="voter_id">
-                                                    <input type="hidden" value="<?= $candi['position_id'] ?>" name="pos_id[<?= $candi['id'] ?>]">
-                                                    <input type="hidden" value="<?= $elec_id ?>" name="elec_id">
-                                                    <?php if ($pos['count'] == 1) { ?>
+
+                                                <?php if ($pos['type'] == 'single') { ?>
+                                                    <div class="d-flex justify-content-center mb-3">
+                                                        <input type="hidden" value="<?= $voterDetails['school_id'] ?>" name="voter_id">
+                                                        <input type="hidden" value="<?= $candi['position_id'] ?>" name="pos_id[<?= $candi['id'] ?>]">
+                                                        <input type="hidden" value="<?= $elec_id ?>" name="elec_id">
                                                         <div class="d-flex justify-content-center">
-                                                            <input class="mx-3" type="radio" id="myRadioButton" name="candi_id[]" value="<?= $candi['id'] ?>" required>
+                                                            <input class="mx-3" type="radio" id="myRadioButton" name="candi_id[<?= $candi['position_id'] ?>]" value="<?= $candi['id'] ?>" required>
                                                             <label for="myRadioButton">Vote</label>
                                                         </div>
-                                                    <?php } else { ?>
+                                                    </div>
+                                                <?php } elseif ($pos['type'] == 'multiple') { ?>
+                                                    <div class="d-flex justify-content-center mb-3">
+                                                        <input type="hidden" value="<?= $voterDetails['school_id'] ?>" name="voter_id">
+                                                        <input type="hidden" value="<?= $candi['position_id'] ?>" name="pos_id[<?= $candi['id'] ?>]">
+                                                        <input type="hidden" value="<?= $elec_id ?>" name="elec_id">
                                                         <div class="d-flex justify-content-center">
                                                             <input class="mx-3 candi-checkbox" type="checkbox" id="checkbox<?= $candi['position_id'] ?><?= $candi['id'] ?>" name="candi_id[]" value="<?= $candi['id'] ?>" data-position-count="<?= $pos['count'] ?>" required>
                                                             <label for="checkbox<?= $candi['position_id'] ?><?= $candi['id'] ?>">Vote</label>
                                                         </div>
+                                                    </div>
+                                                <?php } ?>
 
-                                                        <script>
-                                                            var checkboxes<?= $candi['position_id'] ?> = document.querySelectorAll('.candi-checkbox[data-position-count="<?= $pos['count'] ?>"]');
-                                                            checkboxes<?= $candi['position_id'] ?>.forEach(function(checkbox) {
-                                                                checkbox.addEventListener('change', function() {
-                                                                    var checkedCount = document.querySelectorAll('.candi-checkbox[data-position-count="<?= $pos['count'] ?>"]:checked').length;
-                                                                    if (checkedCount >= <?= $pos['count'] ?>) {
-                                                                        checkboxes<?= $candi['position_id'] ?>.forEach(function(uncheckedCheckbox) {
-                                                                            if (!uncheckedCheckbox.checked) {
-                                                                                uncheckedCheckbox.disabled = true;
-                                                                            }
-                                                                        });
 
-                                                                    } else {
-                                                                        checkboxes<?= $candi['position_id'] ?>.forEach(function(checkbox) {
-                                                                            checkbox.disabled = false;
-                                                                        });
+                                                <script>
+                                                    var checkboxes<?= $candi['position_id'] ?> = document.querySelectorAll('.candi-checkbox[data-position-count="<?= $pos['count'] ?>"]');
+                                                    checkboxes<?= $candi['position_id'] ?>.forEach(function(checkbox) {
+                                                        checkbox.addEventListener('change', function() {
+                                                            var checkedCount = document.querySelectorAll('.candi-checkbox[data-position-count="<?= $pos['count'] ?>"]:checked').length;
+                                                            if (checkedCount >= <?= $pos['count'] ?>) {
+                                                                checkboxes<?= $candi['position_id'] ?>.forEach(function(uncheckedCheckbox) {
+                                                                    if (!uncheckedCheckbox.checked) {
+                                                                        uncheckedCheckbox.disabled = true;
                                                                     }
                                                                 });
-                                                            });
-                                                        </script>
-                                                    <?php } ?>
-                                                </div>
+
+                                                            } else {
+                                                                checkboxes<?= $candi['position_id'] ?>.forEach(function(checkbox) {
+                                                                    checkbox.disabled = false;
+                                                                });
+                                                            }
+                                                        });
+                                                    });
+                                                </script>
                                             </div>
                                         </div>
                                     <?php } ?>
@@ -144,11 +146,34 @@ $positions = $vote->getPositionId();
                             <?php } ?>
                         <?php } ?>
 
-                            <div class="d-flex justify-content-center mt-5">
-                                <input class="btn btn-lg btn-primary" type="reset" value="Reset">
-                                <button class="btn btn-lg btn-primary mx-3" type="submit" name="vote">Submit My Votes</button>
-                            </div>
-                      
+                        <?php
+                        date_default_timezone_set('Asia/Manila');
+                            $start_date = $election['start_date'];
+                            $end_date = $election['end_date'];
+                            $now = date("Y-m-d H:i:s");
+
+                            // Check if the current time is between start_date and end_date
+                            if ($now >= $start_date && $now <= $end_date) {
+                        ?>
+                                <div class="d-flex justify-content-center mt-5">
+                                    <input class="btn btn-lg btn-primary" type="reset" value="Reset">
+                                    <button class="btn btn-lg btn-primary mx-3" type="submit" name="vote">Submit My Votes</button>
+                                </div>
+                            <?php } else if ($now >= $end_date) {
+                            ?>
+                                <div class="d-flex justify-content-center mt-5">
+                                    <button type="button" class="btn btn-primary mx-3" disabled>Voting Ended</button>
+                                </div>
+                            <?php
+                            }else if($now <= $end_date){
+                                ?>
+                                <div class="d-flex justify-content-center mt-5">
+                                <input class="btn btn-lg btn-primary" type="reset" value="Upcoming" disabled>
+                                <button type="button" class="btn btn-primary mx-3" disabled><?= date('F d, Y g:i A', strtotime($election['start_date'])) ?></button>
+                                </div>
+                            <?php
+                            } ?>
+                        
                     </div>
             </main>
             <!--Footer-->
