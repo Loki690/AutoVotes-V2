@@ -25,7 +25,7 @@ $vote->resultPrint();
                     <div class="nav">
                         <hr class="dropdown-divider bg-white" />
                         <a id="nav-hover" class="nav-link mt-4" href="admin-dashboard.php">
-                            <div class="sb-nav-link-icon"><i class="fas fa-home" id="icon"></i></div>Home
+                            <div class="sb-nav-link-icon"><i class="fa fa-user me-2" id="icon"></i></div>Admin
                         </a>
                         <hr class="dropdown-divider bg-dark" />
                         <a id="nav-hover" href="admin-add-com.php" class="nav-link ">
@@ -153,7 +153,12 @@ $vote->resultPrint();
                                             <td><?= $election['election_name'] ?></td>
                                             <td><?= $position['position_title'] ?></td>
                                             <?php if (!empty($voteResult)) { ?>
-                                                <td><span class="badge rounded-pill bg-success"><?= $voteResult ?> <?= $isWinner ? 'Wins' : '' ?></span></td>
+                                                <td >
+                                                    <div class="d-flex justify-content-between">
+                                                        <span class="badge rounded-pill bg-success"><?= $voteResult ?> votes</span> <span class="badge rounded-pill bg-success"> <?= $isWinner ? 'Win ' : '' ?></span>
+                                                    </div>
+                                                   
+                                                </td>
                                             <?php } else { ?>
                                                 <td><span class="badge rounded-pill bg-info text-dark">No Votes</span></td>
                                             <?php } ?>
@@ -188,8 +193,6 @@ $vote->resultPrint();
         </script>
         <script src="assets/demo/chart-area-demo.js"></script>
         <script src="assets/demo/chart-bar-demo.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <script src="js/datatables-simple-demo.js"></script>
 </body>
 
 </html>

@@ -84,7 +84,7 @@
           <div class="mb-3 row">
             <label for="Access Code" class="col-sm-4 col-form-label">Access Code</label>
             <div class="col-sm-8">
-              <input type="text" name="access_code" class="form-control" value="<?= $item['accesscode'] ?>">
+              <input type="password" name="access_code" class="form-control" value="<?= $item['accesscode'] ?>">
               <input type="hidden" name="admin_id" value="<?= $item['admin_id'] ?>">
             </div>
           </div>
@@ -238,7 +238,7 @@
 <div class="modal fade modal-signin" id="Register" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px">
-      <div class="modal-header p-3 pb-3 bg-white">
+      <div class="modal-header p-3 pb-3">
         <h5 class="modal-title text-white" id="staticBackdropLabel">
           Voter's Registration
         </h5>
@@ -332,7 +332,7 @@
 
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-      <div class="modal-header p-3 pb-3 bg-white">
+      <div class="modal-header p-3 pb-3">
         <h5 class="modal-title" id="staticBackdropLabel">Edit admin</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -363,7 +363,7 @@
           <div class="mb-3 row">
             <label for="Access Code" class="col-sm-4 col-form-label">Access Code</label>
             <div class="col-sm-8">
-              <input type="text" name="access_code" class="form-control" value="<?= $comelec['accesscode'] ?>">
+              <input type="password" name="access_code" class="form-control" value="<?= $comelec['accesscode'] ?>">
               <input type="hidden" name="admin_id" value="<?= $comelec['admin_id'] ?>">
             </div>
           </div>
@@ -435,7 +435,7 @@
 <div class="modal fade modal-signin" id="election" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-      <div class="modal-header p-3 pb-3 bg-white">
+      <div class="modal-header p-3 pb-3">
         <h5 class="modal-title" id="staticBackdropLabel">Add Election</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -511,11 +511,12 @@
           <div class="mb-3 row">
             <label for="ElectionDate" class="col-sm-3 col-form-label">Election Poster</label>
             <div class="col-sm-8">
-              <input type="file" class="form-control" name="election_poster" id="" required>
+              <input type="file" class="form-control" name="election_poster" id="image" onchange="checkFileSize()" required>
             </div>
+            <span id="file-size-alert" style="color:red"></span>
           </div>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer"> 
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-primary" name="add-election">Add Election</button>
         </div>
@@ -529,7 +530,7 @@
 <div class="modal fade modal-signin" id="edit-election<?= $elec['election_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-      <div class="modal-header p-3 pb-3 bg-white">
+      <div class="modal-header p-3 pb-3">
         <h5 class="modal-title" id="staticBackdropLabel">Edit Election</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -539,20 +540,20 @@
         <div class="p-5 pt-0">
           <div class="row">
             <label for="ElectionDate" class="col-sm-3 col-form-label"></label>
-              <div class="d-flex justify-content-center">
-                <img class="img-fluid mb-4" src="uploads/<?= $elec['election_poster']; ?>" alt="Election Poster" style="width:500px; height: 300px;;">
-              </div>
+            <div class="d-flex justify-content-center">
+              <img class="img-fluid mb-4" src="uploads/<?= $elec['election_poster']; ?>" alt="Election Poster" style="width:500px; height: 300px;;">
+            </div>
 
           </div>
           <div class="row">
             <label for="ElectionDate" class="col-sm-3 col-form-label">Update Poster: </label>
             <div class="d-flex col-md-8">
               <input type="hidden" name="election_id" value="<?= $elec['election_id'] ?>">
-              <input type="file" class="form-control mx-2" name="election_poster" id="election_poster" value="uploads/<?= $elec['election_poster']; ?>" required>
+              <input type="file" class="form-control mx-2" name="election_poster" id="image1" value="uploads/<?= $elec['election_poster']; ?>" onchange="checkFileSize()" required>
               <button type="submit" class="btn btn-success" name="update-poster">Update</button>
             </div>
           </div>
-        
+          <span id="file-size-alert" >Please upload image doesn't exceeds 2mb</span>
         </div>
       </form>
 
@@ -565,19 +566,19 @@
             </div>
           </div>
           <div class="mb-3 row">
-          <label for="ElectionDate" class="col-sm-3 col-form-label">Election Date: </label>
+            <label for="ElectionDate" class="col-sm-3 col-form-label">Election Date: </label>
             <div class="col-sm-4">
-            <input type="datetime-local" class="form-control" id="birthdaytime" name="election_start" required>
+              <input type="datetime-local" class="form-control" id="birthdaytime" name="election_start" required>
             </div>
           </div>
 
           <div class="mb-3 row">
             <label for="Access Code" class="col-sm-3 col-form-label">Election End: </label>
             <div class="col-sm-4">
-            <input type="datetime-local" class="form-control" id="birthdaytime" name="election_end" required>
+              <input type="datetime-local" class="form-control" id="birthdaytime" name="election_end" required>
             </div>
           </div>
-          
+
           <div class="mb-3 row">
             <label for="status" class="col-sm-3 col-form-label">Status</label>
             <div class="col-sm-8">
@@ -599,13 +600,14 @@
       </form>
     </div>
   </div>
+
 </div>
 
 <!-- delete election  -->
 <div class="modal fade modal-signin" id="delete-election<?= $elec['election_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-      <div class="modal-header p-3 pb-3 bg-white">
+      <div class="modal-header p-3 pb-3">
         <h5 class="modal-title" id="staticBackdropLabel">Delete Election</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -633,21 +635,21 @@
 <div class="modal fade modal-signin" id="create-qr<?= $elec['election_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-      <div class="modal-header p-3 pb-3 bg-white">
+      <div class="modal-header p-3 pb-3">
         <h5 class="modal-title" id="staticBackdropLabel">GENERATE QR CODE</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <br>
       <form action="" method="POST" enctype="multipart/form-data">
         <div class="modal-body p-5 pt-0">
-          <div class="d-flex justify-content-center mb-4" id="qrcode<?= $elec['election_id']?>">
+          <div class="d-flex justify-content-center mb-4" id="qrcode<?= $elec['election_id'] ?>">
             <img class="" src="" alt="">
           </div>
-          
+
           <div class="mb-3 row">
             <label for="input<?= $elec['election_id'] ?>" class="col-sm-2 col-form-label">Url:</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="input<?= $elec['election_id'] ?>" name="input" value="<?= 'http://192.168.0.114/AutoVotes-V2/student-vote.php?id=' . $elec['election_id'] ?>">
+              <input type="text" class="form-control" id="input<?= $elec['election_id'] ?>" name="input" value="<?= 'http://202.137.123.125/autovotes/student-vote.php?id=' . $elec['election_id'] ?>">
             </div>
             <div class="d-flex justify-content-end">
               <button type="button" class="btn btn-primary mt-3 mx-3" onclick="generateQR('<?= $elec['election_id'] ?>')" id="generate-btn<?= $elec['election_id'] ?>">Generate QR Code</button>
@@ -728,7 +730,7 @@
 <div class="modal fade modal-signin" id="addPosition" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-      <div class="modal-header p-3 pb-3 bg-white">
+      <div class="modal-header p-3 pb-3">
         <h5 class="modal-title" id="staticBackdropLabel">Adding Position</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -773,7 +775,7 @@
 <div class="modal fade modal-signin" id="delete-posotion<?= $pos['position_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-      <div class="modal-header p-3 pb-3 bg-white">
+      <div class="modal-header p-3 pb-3">
         <h5 class="modal-title" id="staticBackdropLabel">Delete</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -801,7 +803,7 @@
 <div class="modal fade modal-signin" id="edit-posotion<?= $pos['position_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-      <div class="modal-header p-3 pb-3 bg-white">
+      <div class="modal-header p-3 pb-3">
         <h5 class="modal-title" id="staticBackdropLabel">Edit Position</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -847,7 +849,7 @@
 <div class="modal fade modal-signin" id="add-requirement" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-      <div class="modal-header p-3 pb-3 bg-white">
+      <div class="modal-header p-3 pb-3">
         <h5 class="modal-title" id="staticBackdropLabel">Adding Requirements</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -875,7 +877,7 @@
 <div class="modal fade modal-signin" id="delete-requirement<?= $req['requirement_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-      <div class="modal-header p-3 pb-3 bg-white">
+      <div class="modal-header p-3 pb-3">
         <h5 class="modal-title" id="staticBackdropLabel">Deletion</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -902,7 +904,7 @@
 <div class="modal fade modal-signin" id="edit-requirement<?= $req['requirement_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-      <div class="modal-header p-3 pb-3 bg-white">
+      <div class="modal-header p-3 pb-3">
         <h5 class="modal-title" id="staticBackdropLabel">Edit Requirement</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -929,7 +931,7 @@
 <div class="modal fade modal-signin" id="add-party" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-      <div class="modal-header p-3 pb-3 bg-white">
+      <div class="modal-header p-3 pb-3">
         <h5 class="modal-title" id="staticBackdropLabel">Add Party</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -957,7 +959,7 @@ edit party -->
 <div class="modal fade modal-signin" id="edit-party<?= $party['party_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-      <div class="modal-header p-3 pb-3 bg-white">
+      <div class="modal-header p-3 pb-3">
         <h5 class="modal-title" id="staticBackdropLabel">Edit Requirement</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -984,7 +986,7 @@ edit party -->
 <div class="modal fade modal-signin" id="delete-party<?= $party['party_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-      <div class="modal-header p-3 pb-3 bg-white">
+      <div class="modal-header p-3 pb-3">
         <h5 class="modal-title" id="staticBackdropLabel">Deletion</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -1013,7 +1015,7 @@ accept candidate -->
 <div class="modal fade modal-signin" id="accept-applicant<?= $applicant['id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-      <div class="modal-header p-3 pb-3 bg-white">
+      <div class="modal-header p-3 pb-3">
         <h5 class="modal-title" id="staticBackdropLabel">Candidate for <?= $pos['position_title']; ?> </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -1040,7 +1042,7 @@ accept candidate -->
 <div class="modal fade modal-signin" id="denied-applicant<?= $applicant['id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-      <div class="modal-header p-3 pb-3 bg-white">
+      <div class="modal-header p-3 pb-3">
         <h5 class="modal-title" id="staticBackdropLabel">Denied Candidate for <?= $pos['position_title']; ?> </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -1070,10 +1072,10 @@ accept candidate -->
 </div>
 
 <!-- delete denied applicant -->
-<div class="modal fade modal-signin" id="delete-denied<?= $applicant['id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade modal-signin" id="delete-denied<?= $applicant['applicant_log_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-      <div class="modal-header p-3 pb-3 bg-white">
+      <div class="modal-header p-3 pb-3">
         <h5 class="modal-title" id="staticBackdropLabel">Delete Applicant</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -1083,13 +1085,40 @@ accept candidate -->
           <div class="row">
             <label for="ElectionName" class="col-sm-3 col-form-label">Applicant Name: </label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" value="<?= $applicant['first_name'] . " " . $applicant['middle_name'] . " " . $applicant['last_name']; ?>" name="applicant_name" id="" readonly>
+              <input type="text" class="form-control" value="<?= $denied_candidate['first_name'] . " " . $denied_candidate['middle_name'] . " " . $denied_candidate['last_name']; ?>" name="applicant_name" id="" readonly>
             </div>
           </div>
-          <input type="hidden" value="<?= $applicant['id'] ?>" name="id">
+          <input type="hidden" value="<?= $applicant['applicant_log_id'] ?>" name="id" >
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-danger" name="delete-denied">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Delete candidate-->
+<div class="modal fade modal-signin" id="delete-candidate<?= $candidate['id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
+      <div class="modal-header p-3 pb-3">
+        <h5 class="modal-title" id="staticBackdropLabel">Delete Candidate</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <br>
+      <form action="" method="POST" enctype="multipart/form-data">
+        <div class="modal-body p-5 pt-0">
+          <div class="row">
+            <label for="ElectionName" class="col-sm-3 col-form-label">Candidate Name: </label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" value="<?= $candidate['first_name'] . " " . $candidate['middle_name'] . " " . $candidate['last_name']; ?>" name="candidate_name" id="" readonly>
+            </div>
+          </div>
+          <input type="hidden" value="<?= $candidate['id'] ?>" name="id">
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-danger" name="delete-candidate">Delete</button>
         </div>
       </form>
     </div>

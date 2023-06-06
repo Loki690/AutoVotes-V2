@@ -18,7 +18,7 @@ $vote->deleteComelec();
                     <div class="nav">
                         <hr class="dropdown-divider bg-white" />
                         <a id="nav-hover" class="nav-link mt-4" href="admin-dashboard.php">
-                            <div class="sb-nav-link-icon"><i class="fas fa-home" id="icon"></i></div>Home
+                            <div class="sb-nav-link-icon"><i class="fa fa-user me-2" id="icon"></i></div>Admin
                         </a>
                         <hr class="dropdown-divider bg-dark" />
                         <a id="nav-hover" href="admin-add-com.php" class="nav-link active">
@@ -42,8 +42,9 @@ $vote->deleteComelec();
                         <a id="nav-hover" href="admin-election.php" class="nav-link ">
                             <div class="sb-nav-link-icon"><i class='fas fa-vote-yea' id="icon"></i></div>Election
                         </a>
-                        <hr class="dropdown-divider bg-white" />
 
+                        <hr class="dropdown-divider bg-white" />
+                       
                     </div>
 
                 </div>
@@ -58,8 +59,7 @@ $vote->deleteComelec();
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
                         aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="admin-dashboard.php" style="text-decoration: none;"> <i
-                                        class="fas fa-home"></i> HOME</a></li>
+                            <li class="breadcrumb-item"><a href="admin-dashboard.php" style="text-decoration: none;"><i class="fa-solid fa-user"></i> ADMIN</a></li>
                             <li class="breadcrumb-item active" aria-current="page"><i
                                     class="fa fa-user me-2"></i>COMELEC</li>
                         </ol>
@@ -92,7 +92,7 @@ $vote->deleteComelec();
                                 <tr>
                                     <td><?= $comelec['first_name'] . " " . $comelec['middle_name'] . " " . $comelec['last_name'] ?>
                                     </td>
-                                    <td><?= $comelec['accesscode'] ?></td>
+                                    <td><?= md5($comelec['accesscode']) ?></td>
                                     <td>
                                         <div class="d-flex justify-content-center">
                                             <button class="btn btn-sm btn-success mx-3" tabindex="-1" data-bs-toggle="modal" data-bs-target="#edit-comelec<?= $comelec['admin_id'];?>"><i class="fas fa-edit"></i>
@@ -136,9 +136,6 @@ $vote->deleteComelec();
         </script>
         <script src="assets/demo/chart-area-demo.js"></script>
         <script src="assets/demo/chart-bar-demo.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-            crossorigin="anonymous"></script>
-        <script src="js/datatables-simple-demo.js"></script>
 </body>
 
 </html>

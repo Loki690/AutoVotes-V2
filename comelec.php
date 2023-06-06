@@ -57,7 +57,7 @@ $countVoters = $vote->countVoters();
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-hand-fist" id="icon"></i></div>Party
                         </a>
                         <hr class="dropdown-divider bg-white" />
-
+                        
                     </div>
 
                 </div>
@@ -69,6 +69,7 @@ $countVoters = $vote->countVoters();
         </div>
         <div id="layoutSidenav_content">
             <main>
+
                 <div class="d-flex justify-content-between mt-4 mx-4 my-3">
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                         <ol class="breadcrumb">
@@ -80,167 +81,169 @@ $countVoters = $vote->countVoters();
 
 
                 <hr>
-                <div class="row">
-                    <div class="col-sm-3 mt-2">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-3 mt-2">
 
-                        <div class="card mx-3 text-white" id="dashcard">
-                            <div class="d-flex justify-content-center">
-                                <h5 class="mx-3 mt-2"><i class="fa-solid fa-users-line mx-1"></i> Final Candidates</h5>
+                            <div class="card mx-3 text-white" id="dashcard">
+                                <div class="d-flex justify-content-center">
+                                    <h5 class="title-card mx-3 mt-2"><i class="fa-solid fa-users-line mx-1"></i> Final Candidates</h5>
+                                </div>
+                                <h4 class="title-card d-flex justify-content-center mx-3 mt-2"><?= $countCandidate ?></h4>
                             </div>
-                            <h4 class="d-flex justify-content-center mx-3 mt-2"><?= $countCandidate ?></h4>
-                        </div>
-
-                    </div>
-                    <div class="col-sm-3 mt-2">
-                        <div class="card mx-3 text-white" id="dashcard">
-                            <div class="d-flex justify-content-center">
-                                <h4 class="mx-3 mt-2"><i class="fa-solid fa-check-to-slot mx-1"></i>Voters</h4>
-
-                            </div>
-                            <h4 class="d-flex justify-content-center mx-3 mt-2"><?= $countVoters ?></h4>
 
                         </div>
 
-                    </div>
-                    <div class="col-sm-3 mt-2">
-                        <div class="card mx-3 text-white" id="dashcard">
-                            <div class="d-flex justify-content-center">
-                                <h4 class="mx-3 mt-2"><i class="fa-solid fa-users-line mx-1"></i>Applicants</h4>
+                        <div class="col-sm-3 mt-2">
+                            <div class="card mx-3 text-white" id="dashcard">
+                                <div class="d-flex justify-content-center">
+                                    <h4 class="title-card mx-3 mt-2"><i class="fa-solid fa-check-to-slot mx-1"></i>Voters</h4>
+
+                                </div>
+                                <h4 class="title-card d-flex justify-content-center mx-3 mt-2"><?= $countVoters ?></h4>
 
                             </div>
-                            <h4 class="d-flex justify-content-center mx-3 mt-2"><?= $countApplicant ?></h4>
+
+                        </div>
+                        <div class="col-sm-3 mt-2">
+                            <div class="card mx-3 text-white" id="dashcard">
+                                <div class="d-flex justify-content-center">
+                                    <h4 class="title-card mx-3 mt-2"><i class="fa-solid fa-users-line mx-1"></i>Applicants</h4>
+
+                                </div>
+                                <h4 class="title-card d-flex justify-content-center mx-3 mt-2"><?= $countApplicant ?></h4>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-3 mt-2">
+
+                            <div class="card mx-3 text-white" id="dashcard">
+                                <div class="d-flex justify-content-center">
+                                    <h4 class="title-card mx-3 mt-2"><i class="fa-solid fa-landmark mx-1"></i>Elections</h4>
+                                </div>
+                                <h4 class="title-card d-flex justify-content-center mx-3 mt-2"><?= $countElections ?></h4>
+                            </div>
 
                         </div>
 
                     </div>
 
-                    <div class="col-sm-3 mt-2">
+                    <div class="card mx-3 my-3 mt-3 mb-4" id="shadow2">
+                        <div class="card-body table-responsive">
+                            <table class="table table-hover" id="datatablesSimple">
+                                <thead>
+                                    <tr>
+                                        <th>STUDENT ID</th>
+                                        <th>FULL NAME</th>
+                                        <th>POSITION</th>
+                                        <th>PARTY</th>
+                                        <th>ELECTION</th>
+                                        <th>ACTION</th>
 
-                        <div class="card mx-3 text-white" id="dashcard">
-                            <div class="d-flex justify-content-center">
-                                <h4 class="mx-3 mt-2"><i class="fa-solid fa-landmark mx-1"></i>Elections</h4>
-                            </div>
-                            <h4 class="d-flex justify-content-center mx-3 mt-2"><?= $countElections ?></h4>
-                        </div>
+                                    </tr>
+                                <tbody  >
+                                    <?php if (!empty($candidates)) { ?>
+                                        <?php foreach ($candidates as $candidate) {
 
-                    </div>
+                                            $party_id = $candidate['party_id'];
+                                            $party = $vote->getParty($party_id);
 
-                </div>
+                                            $position_id = $candidate['position_id'];
+                                            $pos = $vote->getPosition($position_id);
 
-                <div class="card mx-3 my-3 mt-3 mb-4" id="shadow2">
-                    <div class="card-body table-responsive">
-                        <table class="table table-hover" id="datatablesSimple">
-                            <thead>
-                                <tr>
-                                    <th>STUDENT ID</th>
-                                    <th>FULL NAME</th>
-                                    <th>POSITION</th>
-                                    <th>PARTY</th>
-                                    <th>ELECTION</th>
-                                    <th>ACTION</th>
+                                            $election_id = $candidate['election_id'];
+                                            $elec = $vote->getElection($election_id);
 
-                                </tr>
-                            <tbody>
-                                <?php if (!empty($candidates)) { ?>
-                                    <?php foreach ($candidates as $candidate) {
+                                        ?>
 
-                                        $party_id = $candidate['party_id'];
-                                        $party = $vote->getParty($party_id);
+                                            <tr>
 
-                                        $position_id = $candidate['position_id'];
-                                        $pos = $vote->getPosition($position_id);
+                                                <td><?= $candidate['student_id'] ?></td>
+                                                <td><?= $candidate['first_name'] . " " . $candidate['middle_name'] . " " . $candidate['last_name'] ?>
+                                                </td>
+                                                <td><?= $pos['position_title']; ?></td>
+                                                <td><?= $party['party'] ?></td>
+                                                <?php if (empty($elec['election_name'])) { ?>
+                                                    <td>No data</td>
+                                                <?php } else { ?>
+                                                    <td><?= $elec['election_name'] ?>
 
-                                        $election_id = $candidate['election_id'];
-                                        $elec = $vote->getElection($election_id);
-
-                                    ?>
-
-                                        <tr>
-
-                                            <td><?= $candidate['student_id'] ?></td>
-                                            <td><?= $candidate['first_name'] . " " . $candidate['middle_name'] . " " . $candidate['last_name'] ?>
-                                            </td>
-                                            <td><?= $pos['position_title']; ?></td>
-                                            <td><?= $party['party'] ?></td>
-                                            <?php if (empty($elec['election_name'])) { ?>
-                                                <td>No data</td>
-                                            <?php } else { ?>
-                                                <td><?= $elec['election_name'] ?>
+                                                    </td>
+                                                <?php } ?>
+                                                <td>
+                                                    <div class="d-flex justify-content-center">
+                                                        <!-- <button class="btn btn-sm btn-primary mx-3"><i class="fas fa-edit"></i>
+                                                            Edit</button> -->
+                                                        <button class="btn btn-sm btn-primary" tabindex="-1" data-bs-toggle="modal" data-bs-target="#view-candidate<?= $candidate['id'] ?>"><i class="fas fa-eye"></i> View
+                                                            Information</button>
+                                                    </div>
 
                                                 </td>
-                                            <?php } ?>
-                                            <td>
-                                                <div class="d-flex justify-content-center">
-                                                    <!-- <button class="btn btn-sm btn-primary mx-3"><i class="fas fa-edit"></i>
-                                                        Edit</button> -->
-                                                    <button class="btn btn-sm btn-primary" tabindex="-1" data-bs-toggle="modal" data-bs-target="#view-candidate<?= $candidate['id'] ?>"><i class="fas fa-eye"></i> View
-                                                        Information</button>
-                                                </div>
 
-                                            </td>
+                                            </tr>
 
-                                        </tr>
+                                            <div class="modal fade modal-signin" id="view-candidate<?= $candidate['id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticbackdroplabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                                    <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
+                                                        <div class="modal-header p-3 pb-3">
+                                                            <h5 class="modal-title" id="staticbackdroplabel">Candidates information
+                                                            </h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                                                        </div>
+                                                        <br>
 
-                                        <div class="modal fade modal-signin" id="view-candidate<?= $candidate['id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticbackdroplabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                                                <div class="modal-content rounded-5 shadow" style="border-radius: 30px;">
-                                                    <div class="modal-header p-3 pb-3">
-                                                        <h5 class="modal-title text-white" id="staticbackdroplabel">Candidates information
-                                                        </h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
-                                                    </div>
-                                                    <br>
-
-                                                    <div class="modal-body p-5 pt-0">
-                                                        <div class="container px-2 py-2" style="border-style: solid; border-width:1px; border-color:white; border-radius:20px">
-                                                            <div class="row">
-                                                                <div class="col-md-4">
-                                                                    <div class="text-center">
-                                                                    <img  src="uploads/<?=$candidate['photo']?>" style="border-radius: 20px; height:250px; width:100%;" alt="viewpic">
+                                                        <div class="modal-body p-5 pt-0">
+                                                            <div class="container px-2 py-2" style="border-style: solid; border-width:1px; border-color:white; border-radius:20px">
+                                                                <div class="row">
+                                                                    <div class="col-md-4">
+                                                                        <div class="text-center">
+                                                                        <img  src="uploads/<?=$candidate['photo']?>" style="border-radius: 20px; height:250px; width:100%;" alt="viewpic">
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <?php
-                                                                $par = $vote->getParty($candidate['party_id']);
-                                                                $pos = $vote->getPosition($candidate['position_id']);
-                                                                ?>
-                                                                <div class="col-md-8">
-                                                                    <ul style="list-style-type: none; font-size:20px; margin-top:40px" id="ul-candi">
-                                                                        <li><span class="fw-bold">Name: </span><?= $candidate['first_name'] . "  ". $candidate['middle_name']." " . $candidate['last_name'] ?> </li>
-                                                                        <li><span class="fw-bold">Age: </span><?= $candidate['age'] ?></li>
-                                                                        <li><span class="fw-bold">Course: </span><?= $candidate['course'] ?></li>
-                                                                        <li><span class="fw-bold">Year: </span><?= $candidate['year_lev'] ?></li>
-                                                                        <li><span class="fw-bold">Party: </span><?= $par['party'] ?></li>
-                                                                        <li><span class="fw-bold">Running Position: </span><?= $pos['position_title'] ?></li>
-                                                                    </ul>
+                                                                    <?php
+                                                                    $par = $vote->getParty($candidate['party_id']);
+                                                                    $pos = $vote->getPosition($candidate['position_id']);
+                                                                    ?>
+                                                                    <div class="col-md-8">
+                                                                        <ul style="list-style-type: none; font-size:20px; margin-top:40px" id="ul-candi">
+                                                                            <li><span class="fw-bold">Name: </span><?= $candidate['first_name'] . "  ". $candidate['middle_name']." " . $candidate['last_name'] ?> </li>
+                                                                            <li><span class="fw-bold">Age: </span><?= $candidate['age'] ?></li>
+                                                                            <li><span class="fw-bold">Course: </span><?= $candidate['course'] ?></li>
+                                                                            <li><span class="fw-bold">Year: </span><?= $candidate['year_lev'] ?></li>
+                                                                            <li><span class="fw-bold">Party: </span><?= $par['party'] ?></li>
+                                                                            <li><span class="fw-bold">Running Position: </span><?= $pos['position_title'] ?></li>
+                                                                        </ul>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                                                        </div>
 
                                                     </div>
-
                                                 </div>
                                             </div>
-                                        </div>
+
+                                        <?php } ?>
+
 
                                     <?php } ?>
 
 
-                                <?php } ?>
 
+                                </tbody>
 
+                                </thead>
 
-                            </tbody>
+                            </table>
 
-                            </thead>
-
-                        </table>
-
+                        </div>
                     </div>
-                </div>
-
+                </div>                                   
 
 
             </main>
@@ -276,8 +279,7 @@ $countVoters = $vote->countVoters();
         </script>
         <script src="assets/demo/chart-area-demo.js"></script>
         <script src="assets/demo/chart-bar-demo.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <script src="js/datatables-simple-demo.js"></script>
+
 </body>
 
 

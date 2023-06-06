@@ -2,36 +2,6 @@
 include('includes/header.php');
 ?>
 
-<!-- <script type="text/javascript">
-  function countdown() {
-
-
-    var now = new Date();
-    var eventDate = new Date("<?php echo date('M d, Y H:i:s', strtotime('March 30, 2023 00:00:00')); ?>");
-
-    var currentTime = now.getTime();
-    var eventTime = eventDate.getTime();
-
-    var remainingTime = eventTime - currentTime;
-
-    var seconds = Math.floor(remainingTime / 1000);
-    var minutes = Math.floor(seconds / 60);
-    var hours = Math.floor(minutes / 60);
-    var days = Math.floor(hours / 24);
-
-    hours %= 24;
-    minutes %= 60;
-    seconds %= 60;
-
-    document.getElementById("days").innerHTML = days;
-    document.getElementById("hours").innerHTML = hours;
-    document.getElementById("minutes").innerHTML = minutes;
-    document.getElementById("seconds").innerHTML = seconds;
-    setTimeout(countdown, 1000);
-
-  }
-</script> -->
-
 <main>
 
 <?php
@@ -40,10 +10,12 @@ $vote->Login();
 $vote->voterRegister();
 $vote->loginAdmin();
 
-$vote->registerCandidate($_POST);
+$vote->registerCandidate();
 $elec = $vote->getElectionId();
 $pos = $vote->getPositionId();
 $par = $vote->getPartyId();
+
+
 
 if ($vote->getUserData() == true) {
   include('includes/usernav.php');
@@ -55,55 +27,110 @@ $elections = $vote->getElectionId();
 
 ?>
 <section id="home">
-    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <div class="carousel-overlay"></div>
-          <img src="img/Cover2.png" class="d-block w-100" alt="Carousel Image">
+  <div class="hero vh-100 d-flex align-items-center">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6 text-center mx-auto">
+
+                    <img src="img/DCC2.png" height="200" weight="200" alt="">
+                    <h1 class="display-4 text-white fw-bold"><span style="color:green;">DCC</span> <span class="text-white" style="color:blue;">AUTOVOTES 2.0</span> </h1>
+    
+
+                </div>
+                
+                <?php if ($vote->getUserData() == true) { ?>
+                  <div class="col-md-5">
+                  <div class="card px-5 py-5" style="border-radius:20px;">
+
+                    <h3 class="fw-bold title-app text-center">Welcome <?= $voterDetails['first_name'] ?></h3>
+      
+                      <div class="d-flex justify-content-center">
+                        <a href="student-dashboard.php"><button type="button" class="vote-btn btn btn-primary btn-lg px-4 me-sm-3 text-white mx-3" id="loginbutton">VOTE</button>
+                        </a>
+                        <a href="https://qrcodescan.in/"><button type="button" class="qr-btn btn btn-primary btn-lg px-4 me-sm-3 text-white" id="loginbutton">QR Scanner</button>
+                        </a>
+                      </div>
+              
+                  </div>
+                </div>
+                 <?php } else { ?>
+                  <div class="col-md-5 px-4">
+                  <div class="card" style="border-radius:20px;">
+      
+                    <form class="py-5 px-5" action="" method="POST" enctype="multipart/form-data">
+                    <h3 class="fw-bold title-app text-center mb-2">Access Autovote System</h3>
+                      <div class="form-group">
+                          <label for="exampleInputEmail1">Student ID</label>
+                          <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="school_id" placeholder="Student ID" required />
+                        </div>
+                        <div class="form-group mt-2">
+                          <label for="exampleInputPassword1">Password</label>
+                          <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password" required />
+                        </div>
+                        <div class="d-flex pt-1">
+                          <button type="submit" id="loginbutton" name="login-voter" class="btn btn-primary mt-2 flex-grow-1">
+                            Login
+                          </button>
+                         
+                        </div>
+                        <div class="text-center mt-3"> 
+                          <a class="text-decoration-none" href="https://dcc-essentiel.ckgroup.ph/coderecovery"> Get Credentials</a>
+                        </div>
+                      
+
+                    </form>
+
+                  </div>
+                </div>
+                 <?php } ?>
+            
+              
+
+
+            </div>
         </div>
-      </div>
     </div>
-  </section>
+</section>
 
   <!--Candidates-->
-
-  <div class="mb-5" id="elections" data-bs-spy="scroll" class="scrollspy-example" data-bs-target="#navbar" data-bs-offset="0" tabindex="0">
-    <div class="row mx-3">
-      <h3 class="title-app text-center mt-5" id="elections">UPCOMING ELECTION</h3>
-      <?php foreach ($elections as $election) {
-        
-        ?>
-        <div class="col-sm-3 mt-2" data-aos="fade-right">
-          <div class="card" style="border-radius:25px;" id="shadow2">
-            <h4 class="elec-name mx-3 my-3 text-truncate"><?= $election['election_name'] ?></h4>
-            <img class="card-img img-fluid px-3" style="width:100%; height: 300px; " src="uploads/<?= $election['election_poster'] ?>" alt="">
-            <div>
-              <small class="fw-bold text-muted ms-3">Election Starts : <?= date('F d, Y g:i A', strtotime($election['start_date'])) ?></small>
+<section class="mt-5" id="elections">
+  <div class="container">
+    <div class="mb-5">
+        <div class="row">
+          <h3 class="title-app text-center mt-5" id="elections">UPCOMING ELECTION</h3>
+          <?php foreach ($elections as $election) {
+            
+            ?>
+            <div class="col-sm-3 mt-2" data-aos="fade-right">
+              <div class="card" style="border-radius:25px;" id="shadow2">
+                <h4 class="name mx-3 my-3"><?= $election['election_name'] ?></h4>
+                <img class="elec-img img-fluid px-3" src="uploads/<?= $election['election_poster'] ?>" alt="">
+              
+                <div class="d-flex justify-content-center mb-3 mt-2">
+                <a href="view-candidates.php?id=<?= $election['election_id'] ?>"><button type="button" class="btn btn-sm btn-outline-primary mt-2">View Candidates</button></a>
+                </div>
+              </div>
             </div>
-            <div class="mt-2">
-              <small class="fw-bold text-muted ms-3">Election Ends : <?= date('F d, Y g:i A', strtotime($election['end_date'])) ?></small>
-            </div>
-            <div class="d-flex justify-content-center mb-2">
-            <a href="view-candidates.php?id=<?= $election['election_id'] ?>"><button type="button" class="btn btn-outline-primary mt-2">View Candidates</button></a>
-            </div>
-          </div>
+          <?php } ?>
         </div>
-      <?php } ?>
     </div>
   </div>
+
+</section>
+  
 
   <section class="mt-5" id="Candidacy">
     <div class="container mt-4 pt-5">
       <div class="card" style="border-radius:30px;" id="shadow2">
         <div class="card-header">
           <div class="d-flex justify-content-between">
-            <img class="img" src="img/comelec.png" width="100" height="100" alt="">
+            <img class="imglogo" src="img/comelec.png" width="100" height="100" alt="">
             <h3 class="Rtitle text-center mt-5">OFFICIAL CERTIFICATION OF CANDIDACY</h3>
-            <img class="img" src="img/DCC2.png" width="100" height="100" alt="">
+            <img class="imglogo" src="img/DCC2.png" width="100" height="100" alt="">
           </div>
         </div>
 
-        <form class=" mx-5 my-5" action="" method="POST" enctype="multipart/form-data">
+        <form class="mx-5 my-5" action="" method="POST" enctype="multipart/form-data">
           <div class="row">
             <div class="col-md-3 mt-3">
               <div class="form-group">
@@ -139,10 +166,10 @@ $elections = $vote->getElectionId();
             <div class="col-md-3 mt-3">
               <div class="form-group">
                 <label for="ElectionID">Position ID</label>
-                <select class="form-select" name="position_id" aria-label="Default select example">
+                <select class="form-select" name="position_id" aria-label="Default select example" required="true">
                   <option selected>Select Available Position</option>
                   <?php foreach ($pos as $item) { ?>
-                    <option value="<?= $item['position_id'] ?>"><?= $item['position_title']; ?></option>
+                    <option value= "<?= $item['position_id']; ?>"><?= $item['position_title']; ?></option>
                   <?php } ?>
                 </select>
 
@@ -152,7 +179,7 @@ $elections = $vote->getElectionId();
             <div class="col-md-3 mt-3">
               <div class="form-group">
                 <label for="PartyID">Party ID</label>
-                <select class="form-select" name="party_id" aria-label="Default select example">
+                <select class="form-select" name="party_id" aria-label="Default select example" required="true">
                   <option selected>Select Party</option>
                   <?php foreach ($par as $item) { ?>
                     <option value="<?= $item['party_id'] ?>"><?= $item['party'] ?></option>
@@ -298,7 +325,7 @@ $elections = $vote->getElectionId();
             <div class="col-md-3 mt-3">
               <div class="form-group">
                 <label for="NumofChild">No. Of Child</label>
-                <input type="number" class="form-control" id="NumofChild" name="num_child" aria-describedby="emailHelp" placeholder="No. Of Child or Write N/A if none" required>
+                <input type="number" class="form-control" id="NumofChild" name="num_child" aria-describedby="emailHelp" placeholder="Write 0 if none" required>
               </div>
             </div>
 
@@ -406,7 +433,7 @@ $elections = $vote->getElectionId();
             <div class="col-md-6 mt-3">
               <div class="form-group">
                 <label for="photo">Submit Photo</label>
-                <input type="file" class="form-control" id="photo" name="photo" aria-describedby="emailHelp" style="padding: 2rem;" required>
+                <input type="file" class="form-control" id="image" name="photo" aria-describedby="emailHelp" style="padding: 2rem;" required>
               </div>
             </div>
           </div>
@@ -450,7 +477,6 @@ $elections = $vote->getElectionId();
           <div class="form-group mt-2">
             <label for="exampleInputPassword1" class="form-label">Access Code</label>
             <input type="password" class="form-control" id="exampleInputPassword1" name="accesscode" placeholder="Password" required />
-            <!-- <a href="#" class="mt-2"><small>Forgot Access Code? </small> </a> -->
           </div>
           <div class="d-flex pt-1">
             <button type="submit" id="loginbutton" name="login-admin" class="btn btn-primary mt-2 flex-grow-1">
@@ -462,6 +488,27 @@ $elections = $vote->getElectionId();
     </div>
   </div>
 </div>
+<script type="text/javascript">
+      window.onload = function () {
+        // Get the file input element
+        const inputElement = document.getElementById("image");
+
+        // Listen for changes to the file input
+        inputElement.addEventListener("change", (event) => {
+          // Get the file object
+          const file = event.target.files[0];
+
+          // Check if the file size is greater than 2 MB
+          if (file.size > 2 * 1024 * 1024) {
+            // Display an error message
+            alert("The selected file exceeds the maximum allowed size of 2 MB.");
+
+            // Clear the file input
+            event.target.value = "";
+          }
+        });
+      };
+    </script>
 
 <?php
 include('includes/footer.php');

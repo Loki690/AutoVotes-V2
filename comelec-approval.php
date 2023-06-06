@@ -127,9 +127,9 @@ include('includes/admin-header.php');
 
 
 
-
+					<form action="" method="POST">
                                         <td>
-                                            <form action="" method="POST">
+                                            
                                                 <?php foreach($requirements as $req) {?>
 
                                                 <div class="form-check">
@@ -146,7 +146,7 @@ include('includes/admin-header.php');
                                                 </div>
 
                                                 <?php } ?>
-
+                                            
 
                                         </td>
                                         <td>
@@ -155,7 +155,7 @@ include('includes/admin-header.php');
                                                     name="submit-req">Submit</button>
                                             </div>
                                         </td>
-
+					</form>
                                     </tr>
 
                                     <?php } ?>
@@ -179,6 +179,14 @@ include('includes/admin-header.php');
                 </div>
             </footer>
         </div>
+
+      	<script>
+      		$(document).ready(function (){
+      			$('#datatablesSimple').DataTable({
+      			order:[[0, 'desc']],
+      		});
+      		});
+      	</script>
         <script>
         const submitBtn = document.getElementById('submitBtn');
         submitBtn.addEventListener('click', function() {
@@ -202,9 +210,6 @@ include('includes/admin-header.php');
         </script>
         <script src="assets/demo/chart-area-demo.js"></script>
         <script src="assets/demo/chart-bar-demo.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-            crossorigin="anonymous"></script>
-        <script src="js/datatables-simple-demo.js"></script>
 </body>
 
 </html>

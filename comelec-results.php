@@ -89,15 +89,12 @@ $vote->resultPrint();
 
                 <div class="row mx-3">
                     <?php foreach($getElection as $election) {?>
-                    <div class="col-sm-4 mt-2">
+                    <div class="col-sm-3 mt-2">
                         <div class="card" style="border-radius:25px;" id="shadow2">
                             <h4 class="elec-name mx-3 my-3 text-truncate"><?= $election['election_name'] ?></h4>
-                            <img class="card-img img-fluid px-2" style="width:500px; height: 300px;"
-                                src="uploads/<?= $election['election_poster'] ?>" alt="">
-                              
-
-                                <a type="button" class="btn btn-primary mx-4 my-4" href="election-result.php?id=<?= $election['election_id'] ?>"> View Results</a>
-                               
+                            <img class="elec-img px-2"  src="uploads/<?= $election['election_poster'] ?>" alt="">
+                            
+                            <a type="button" class="btn btn-primary mx-4 my-4 view-result" href="election-result.php?id=<?= $election['election_id'] ?>"> View Results</a>
                           
                         </div>
                     </div>
@@ -131,9 +128,6 @@ $vote->resultPrint();
         </script>
         <script src="assets/demo/chart-area-demo.js"></script>
         <script src="assets/demo/chart-bar-demo.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-            crossorigin="anonymous"></script>
-        <script src="js/datatables-simple-demo.js"></script>
 </body>
 
 </html>

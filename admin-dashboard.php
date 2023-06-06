@@ -19,8 +19,8 @@ include('includes/admin-header.php');
                 <div class="sb-sidenav-menu">
                     <div class="nav text-white">
                         <hr class="dropdown-divider bg-dark" />
-                        <a id="nav-hover" class="nav-link mt-4 active" href="admin-dashboard.php">
-                            <div class="sb-nav-link-icon "><i class="fas fa-home" id="icon"></i></div>Home
+                        <a id="nav-hover" class="nav-link active mt-4" href="admin-dashboard.php">
+                            <div class="sb-nav-link-icon"><i class="fa fa-user me-2" id="icon"></i></div>Admin
                         </a>
                         <hr class="dropdown-divider bg-dark" />
                         <a id="nav-hover" href="admin-add-com.php" class="nav-link">
@@ -60,7 +60,7 @@ include('includes/admin-header.php');
                 <div class="d-flex justify-content-between mt-4 mx-4 my-3">
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page"> <i class="fas fa-home"></i> HOME
+                            <li class="breadcrumb-item active" aria-current="page"> <i class="fa-solid fa-user"></i> ADMIN
                             </li>
                         </ol>
                     </nav>
@@ -102,7 +102,7 @@ include('includes/admin-header.php');
                                 <?php foreach ($admin as $item) { ?>
                                     <tr>
                                         <td scope="row"><?= $item['first_name'] . " " . $item['last_name']; ?></td>
-                                        <td scope="row"><?= $item['accesscode']; ?></td>
+                                        <td scope="row"><?= md5($item['accesscode']); ?></td>
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 <button class="btn btn-sm btn-outline-success mx-3" tabindex="-1" data-bs-toggle="modal" data-bs-target="#edit-admin<?= $item['admin_id'] ?>"><i class="fas fa-edit"></i> Edit</button>
@@ -146,8 +146,6 @@ include('includes/admin-header.php');
         </script>
         <script src="assets/demo/chart-area-demo.js"></script>
         <script src="assets/demo/chart-bar-demo.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <script src="js/datatables-simple-demo.js"></script>
 </body>
 
 </html>

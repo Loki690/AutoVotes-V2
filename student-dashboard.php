@@ -64,9 +64,9 @@ $vote->session();
                                 <div class="col-sm-3 mt-2">
                                     <div class="card" style="border-radius:25px;" id="shadow2">
                                         <h4 class="elec-name mx-3 my-3 text-truncate"><?= $elec['election_name'] ?></h4>
-                                        <p class="px-3">Thank you for voting!</p>
-                                        <img class="card-img img-fluid px-3" style="width:100%; height: 300px;" src="uploads/<?= $elec['election_poster']; ?>" alt="">
-                                        <button class="btn btn-primary mx-4 my-4" disabled>You already Voted</button>
+                                        <p class="message px-3">Thank you for voting!</p>
+                                        <img class="elec-img px-3"  src="uploads/<?= $elec['election_poster']; ?>" alt="">
+                                        <button class="btn btn1 btn-primary mx-4 my-4" disabled>Voted</button>
                                     </div>
                                 </div>
                             <?php } else {
@@ -74,9 +74,9 @@ $vote->session();
                                 <div class="col-sm-3 mt-2">
                                     <div class="card" style="border-radius:25px;" id="shadow2">
                                         <h4 class="elec-name mx-3 my-3 text-truncate"><?= $elec['election_name'] ?></h4>
-                                        <p class="px-3">Please vote wisely</p>
-                                        <img class="card-img img-fluid px-3" style="width:100%; height: 300px;" src="uploads/<?= $elec['election_poster']; ?>" alt="">
-                                        <a type="button" class="btn btn-primary mx-4 my-4" href="student-vote.php?id=<?= $elec['election_id'] ?>">Vote here</a>
+                                        <p class="message px-3">Please vote wisely</p>
+                                        <img class="elec-img px-3" src="uploads/<?= $elec['election_poster']; ?>" alt="">
+                                        <a type="button" class="btn btn1 btn-primary mx-4 my-4" href="student-vote.php?id=<?= $elec['election_id'] ?>">Vote here</a>
                                     </div>
                                 </div>
                             <?php
@@ -88,12 +88,10 @@ $vote->session();
                             <div class="col-sm-3  mt-2">
                                 <div class="card" style="border-radius:25px;" id="shadow2">
                                     <h4 class="elec-name mx-3 my-3 text-truncate"><?= $elec['election_name'] ?></h4>
-                                    <p class="px-3">Contact MIS Interns</p>
-                                    <img class="card-img img-fluid px-3" style="width:100%; height: 300px; filter:grayscale(100%);" src="uploads/<?= $elec['election_poster']; ?>" alt="poster">
-                                    <div class="mask text-light d-flex justify-content-center flex-column text-center" style="background-color: rgba(0, 0, 0, 0.5)">
-                                        <h4 class="position-absolute bg-danger p-3 md-1" style="top:220px; left:40px; opacity:85%;"> VOTING ENDED!</h4>
-                                    </div>
-                                    <button type="button" class="btn btn-primary mx-4 my-4" disabled>Voting Ended</button>
+                                    <p class="message px-3">Contact MIS Interns</p>
+                                    <img class="elec-img px-3" style="filter:grayscale(100%);" src="uploads/<?= $elec['election_poster']; ?>" alt="poster">
+                                        <badge class="position-absolute text-center text-white badge-holder" style="background-color:#fc2828f3; padding:1rem; width:100%; top:190px">Voting Ended</badge>
+                                    <button type="button" class="btn btn1 btn-primary mx-4 my-4" disabled>Voting Ended</button>
                                 </div>
                             </div>
                         <?php
@@ -102,9 +100,10 @@ $vote->session();
                             <div class="col-sm-3  mt-2">
                                 <div class="card" style="border-radius:25px;" id="shadow2">
                                     <h4 class="elec-name mx-3 my-3 text-truncate"><?= $elec['election_name'] ?></h4>
-                                    <p class="px-3">Upcoming Election</p>
-                                    <img class="card-img img-fluid px-3" style="width:100%; height: 300px;" src="uploads/<?= $elec['election_poster']; ?>" alt="poster">
-                                    <button type="button" class="btn btn-primary mx-4 my-4" disabled><?= date('F d, Y g:i A', strtotime($elec['start_date'])) ?></button>
+                                    <p class="message px-3">Please wait</p>
+                                    <img class="elec-img px-3" src="uploads/<?= $elec['election_poster']; ?>" alt="poster">
+                                    <badge class="position-absolute text-center text-white badge-holder" style="background-color:#043c8591; padding:1rem; width:100%; top:190px"><?= date('F d, Y g:i A', strtotime($elec['start_date'])) ?></badge>
+                                    <button type="button" class="btn btn1 btn-primary mx-4 my-4 text-white" disabled>Upcoming...</button>
                                 </div>
                             </div>
                     <?php

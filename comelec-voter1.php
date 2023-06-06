@@ -97,6 +97,23 @@ $vote->adminSession();
                 </div>
 
                 <div class="d-flex justify-content-between mt-4 mx-4 my-3">
+                <div class="d-flex">
+                    <form class="d-flex" method="get" action="">
+                        <select class="form-select" name="course" aria-label="Default select example">
+                            <option selected>Select Course</option>
+                            <option value="BSIT">BSIT</option>
+                            <option value="BSBA">BSBA</option>
+                            <option value="BSED">BSED</option>
+                            <option value="BSHRM">BSHRM</option>
+                            <option value="BSCRIM">BSCRIM</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary mx-2" name="search-course">GENERATE</button>
+                    </form>
+
+                    
+                </div>
+               
+
 
                     <div class="d-flex">
                         <form action="comelec-export.php" method="post">
@@ -108,27 +125,66 @@ $vote->adminSession();
                     </div>
                 </div>
 
-                <div class="card mx-3 my-3 mt-3 mb-4" id="shadow2">
-                    <div class="card-body table-responsive">
-                        <table id="voter-table" class="display">
-                            <thead>
-                                <tr>
-                                    <th>STUDENT ID</th>
-                                    <th>FIRST NAME</th>
-                                    <th>MIDDLE NAME</th>
-                                    <th>LAST NAME</th>
-                                    <th>GENDER</th>
-                                    <th>COURSE</th>
-                                    <th>YEAR LEVEL</th>
-                                    <th>PASSWORD</th>
-                                    <th>STATUS</th>
-                                </tr>
-                            </thead>
-                        </table>
+            <div class="card mx-3 my-3 mt-3 mb-4" id="shadow2">
+                <div class="card-body table-responsive">
+               
+                    <?php
+                    if (isset($_GET['search-course'])) {
+                        $selectedCourse = $_GET['course'];
 
+                        if (!empty($voters)) {
+                            echo "<p>Data generated for course: $selectedCourse</p>";
+                            ?>
+                            <table class="table table-hover" id="datatablesSimple">
+                                <thead>
+                                    <tr>
+                                        <th>STUDENT ID</th>
+                                        <th>FULL NAME</th>
+                                        <th>GENDER</th>
+                                        <th>COURSE</th>
+                                        <th>YEAR LEVEL</th>
+                                        <th>PASSWORD</th>
+                                        <!-- <th>ACTION</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                        
+                                    <?php foreach ($voters as $voter) { ?>
+                                        <tr>
+                                            <td><?= $voter['school_id'] ?></td>
+                                            <td><?= $voter['first_name'] . " " . $voter['middle_name'] . " " . $voter['last_name'] ?></td>
+                                            <td><?= $voter['gender']; ?></td>
+                                            <td><?= $voter['course']; ?></td>
+                                            <td><?= $voter['year_level']; ?></td>
+                                            <td><?= md5($voter['password']); ?></td>
+                                            <!-- <td>
+                                                <div class="d-flex justify-content-center">
+                                                    <button class="btn btn-sm btn-outline-danger" tabindex="-1" data-bs-toggle="modal" data-bs-target="#delete-voter<?= $voter['student_id'] ?>"><i class="fas fa-trash"></i> Delete</button>
+                                                </div>
+                                            </td> -->
+                                        </tr>
+                                        <?php
+                                        include('includes/modals.php');
+                                        ?>
+                                        <?php } ?>
+                                    </tbody>
+                                </table>
+                            <?php } else { ?>
+                                <p>No voters found for the selected course.</p>
+                            <?php } ?>
+                            
+                        <?php }  else { ?>
+                            <div class="alert alert-warning" role="alert">
+                                Please select a course and click GENERATE to display student data.
+                            </div>
+                        <?php } ?>
                     </div>
                 </div>
             </main>
+
+
+
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-center small">
@@ -140,16 +196,9 @@ $vote->adminSession();
 
         <script>
             $(document).ready(function() {
-                $('#voter').DataTable();
+                $('#datatablesSimple').DataTable();
             });
         </script>
-
-        <script>
-            $('#voter').DataTable({
-                responsive: true
-            });
-        </script>
-
         <script src="https://cdn.jsdelivr.net/npm/smooth-scroll/dist/smooth-scroll.min.js"></script>
         <script>
             var scroll = new SmoothScroll('a[href*="Add_Comelec.html"]');
@@ -159,7 +208,9 @@ $vote->adminSession();
         <script src="js/scripts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
         <script src="assets/demo/chart-area-demo.js"></script>
-        <script src="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css"></script>
+        <script src="assets/demo/chart-bar-demo.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+        <script src="js/datatables-simple-demo.js"></script>
 </body>
 
 </html>

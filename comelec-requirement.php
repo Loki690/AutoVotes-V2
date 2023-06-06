@@ -82,7 +82,7 @@ $vote->editRequirement();
                     </nav>
 
                     <div>
-                        <button type="button" class="btn btn-sm btn-primary mb-3 me-2" tabindex="-1" data-bs-toggle="modal" data-bs-target="#add-requirement">
+                        <button type="button" class="btn btn-sm btn-primary mb-3 me-2 add-requirement" tabindex="-1" data-bs-toggle="modal" data-bs-target="#add-requirement">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                             ADD REQUIREMENTS
                         </button>
@@ -156,8 +156,6 @@ $vote->editRequirement();
         </script>
         <script src="assets/demo/chart-area-demo.js"></script>
         <script src="assets/demo/chart-bar-demo.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <script src="js/datatables-simple-demo.js"></script>
 </body>
 
 </html>

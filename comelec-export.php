@@ -83,4 +83,27 @@ if (isset($_POST["export-candidates"])) {
         <?php
     }
 }
+
+if (isset($_POST["export-template"])) {
+    $output .= '
+<table class="table" bordered="1">  
+<tr>  
+    <th>student_id</th>  
+    <th>school_id</th>  
+    <th>last_name</th>  
+    <th>first_name</th>
+    <th>middle_name</th>
+    <th>gender</th>
+    <th>course</th>
+    <th>year_level</th>
+    <th>password</th>
+    <th>x</th>
+</tr>
+';
+    $output .= '</table>';
+    header('Content-Type: application/xls');
+    header('Content-Disposition: attachment; filename=download.xls');
+    echo $output;
+
+}
 ?>

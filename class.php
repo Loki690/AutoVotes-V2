@@ -1,6 +1,5 @@
 <?php
 
-use Dompdf\Dompdf;
 
 class Voting
 {
@@ -121,7 +120,7 @@ class Voting
             icon: "success"
           }).then((success) => {
             if (success) {
-              window.location.href = 'welcome.php';
+              window.location.href = 'index.php';
             }
           });
         </script>
@@ -132,7 +131,7 @@ class Voting
       ?>
         <script>
           swal({
-            title: "Wrong ID number or Password. PLS CONTACT JERECHO ASILUM ON FB!",
+            title: "Wrong ID number or Password",
             icon: "warning"
           });
         </script>
@@ -242,7 +241,7 @@ class Voting
 
         <script>
           swal({
-            title: "Wrong Passcode. CONTACT JERECHO ASILUM <3 FROM TEAM DROPBOX!!!",
+            title: "Wrong Passcode!",
 
             icon: "warning"
           });
@@ -487,37 +486,89 @@ class Voting
         $url = $_POST['url'];
 
         // $applicant_status = $_POST['application_status'];
+        if (isset($_FILES["photo"]) && $_FILES["photo"]["error"] == 0) {
+          $target_dir = "uploads/";
+          $target_file = $target_dir . basename($_FILES["photo"]["name"]);
+          $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+          $new_file_name = rand(1000, 1000000) . "-" . $_FILES['photo']['name'];
+          $final_file = str_replace(' ', '-', strtolower($new_file_name));
+          $temp_file = $_FILES["photo"]["tmp_name"];
 
-        $image = rand(1000, 1000000) . "-" . $_FILES['photo']['name'];
-        $image_loc = $_FILES['photo']['tmp_name'];
-        $folder = "uploads/";
-
-        $new_file_name = strtolower($image);
-        $final_file = str_replace(' ', '-', $new_file_name);
-
-        if (move_uploaded_file($image_loc, $folder . $final_file)) {
-
-          $stmt = $connection->prepare("INSERT INTO `applicants`(`student_id`, `election_id`, `date_filed`, `position_id`, `party_id`, `last_name`, `first_name`, `middle_name`, `gender`, `age`, `date_birth`, `place_birth`, `height`, `weight`, `home_add`, `status`, `religion`, `language`, `citizenship`, `contact_num`, `email`, `spouse_name`, `spouse_add`, `num_child`, `tertiary_lev`, `course`, `year_lev`, `major`, `second_lev`, `secondary_grad`, `elementary`, `elementary_grad`, `achievements`, `organization`, `requirements`, `url`, `application_status`, `x`, `photo`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-
-          $stmt->execute([$student_id, $election_id, $data_filed, $position, $party_id, $last_name, $first_name, $middle_name, $gender, $age, $date_birth, $place_birth, $height, $weight, $home_add, $status, $religion, $language, $citizenship, $contact_num, $email, $spouse_name, $spouse_add, $num_child, $tertiary_lev, $course, $year_lev, $major, $second_lev, $secondary_grad,  $elementary, $elementary_grad, $achievements, $organization, $requirements, $url, $applicant_status, $x, $final_file]);
-
+          // Check if file already exists
+          if (file_exists($target_file)) {
         ?>
-          <script>
-            swal({
-              title: "Candidacy Submitted!",
-              icon: "success"
-            });
-          </script>
+            <script>
+              alert('File already exist');
+              window.location.href = "index.php";
+            </script>
+          <?php
+            return $this->show_404();
+          }
+
+          // Check file size
+          if ($_FILES["photo"]["size"] > 5000000) {
+            // Resize and compress the image
+            $max_width = 800;
+            $max_height = 600;
+            list($image_width, $image_height, $image_type) = getimagesize($temp_file);
+
+            // Resize the image if it's larger than the maximum width or height
+            if ($image_width > $max_width || $image_height > $max_height) {
+              $ratio = min($max_width / $image_width, $max_height / $image_height);
+              $new_width = round($image_width * $ratio);
+              $new_height = round($image_height * $ratio);
+              $new_image = imagecreatetruecolor($new_width, $new_height);
+
+              if ($image_type == IMAGETYPE_JPEG) {
+                $old_image = imagecreatefromjpeg($temp_file);
+              } elseif ($image_type == IMAGETYPE_PNG) {
+                $old_image = imagecreatefrompng($temp_file);
+              } elseif ($image_type == IMAGETYPE_GIF) {
+                $old_image = imagecreatefromgif($temp_file);
+              }
+
+              imagecopyresampled($new_image, $old_image, 0, 0, 0, 0, $new_width, $new_height, $image_width, $image_height);
+              imagedestroy($old_image);
+              imagejpeg($new_image, $temp_file, 75);
+              imagedestroy($new_image);
+            }
+          }
+          if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
+          ?>
+            <script>
+              alert('Sorry, only JPG, JPEG, PNG & GIF files are allowed.');
+              window.location.href = "index.php";
+            </script>
+            <?php
+            return $this->show_404();
+          }
+
+          // Upload file
+          if (move_uploaded_file($temp_file, $target_dir . $final_file)) {
+            $stmt = $connection->prepare("INSERT INTO `applicants`(`student_id`, `election_id`, `date_filed`, `position_id`, `party_id`, `last_name`, `first_name`, `middle_name`, `gender`, `age`, `date_birth`, `place_birth`, `height`, `weight`, `home_add`, `status`, `religion`, `language`, `citizenship`, `contact_num`, `email`, `spouse_name`, `spouse_add`, `num_child`, `tertiary_lev`, `course`, `year_lev`, `major`, `second_lev`, `secondary_grad`, `elementary`, `elementary_grad`, `achievements`, `organization`, `requirements`, `url`, `application_status`, `x`, `photo`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+
+            $stmt->execute([$student_id, $election_id, $data_filed, $position, $party_id, $last_name, $first_name, $middle_name, $gender, $age, $date_birth, $place_birth, $height, $weight, $home_add, $status, $religion, $language, $citizenship, $contact_num, $email, $spouse_name, $spouse_add, $num_child, $tertiary_lev, $course, $year_lev, $major, $second_lev, $secondary_grad,  $elementary, $elementary_grad, $achievements, $organization, $requirements, $url, $applicant_status, $x, $final_file]);
+
+            if ($stmt == true) {
+            ?>
+              <script>
+                swal({
+                  title: "Candidacy Submitted!",
+                  icon: "success"
+                });
+              </script>
+            <?php
+            } else {
+            ?>
+              <script>
+                swal({
+                  title: "Submittion Failed, Contact Jerecho",
+                  icon: "warning"
+                });
+              </script>
         <?php
-        } else {
-        ?>
-          <script>
-            swal({
-              title: "Submittion Failed, Contact the intern",
-              icon: "warning"
-            });
-          </script>
-        <?php
+            }
+          }
         }
       }
     }
@@ -569,20 +620,8 @@ class Voting
           alert('Added Admin');
           window.location.href = "admin-dashboard.php";
         </script>
-        <?php
-        ?>
-
-        <!-- <script>
-           swal({
-            title: "Added Successfully!",
-            icon: "success"
-            }).then(function() {
-            // Redirect the user
-            window.location.href='admin-dashboard.php';
-            console.log('The Ok Button was clicked.');
-                        });
-        </script> -->
       <?php
+
       } else {
         return $this->show_404();
         echo $connection->errorInfo();
@@ -642,16 +681,6 @@ class Voting
         alert('Successfully Updated! <?= $first_name . " " . $last_name ?>');
         window.location.href = "admin-add-com.php";
       </script>
-      <!-- <script>
-        swal({
-          title: "Successfully Updated!",
-          icon: "success"
-        }).then(function() {
-          // Redirect the user
-          window.location.href = 'admin-add-com.php';
-          console.log('The Ok Button was clicked.');
-        });
-      </script> -->
     <?php
     }
   }
@@ -748,11 +777,11 @@ class Voting
     $applicants = [];
     if (isset($_POST['search-election'])) {
       $election_id = $_POST['election'];
-      $stmt = $connection->prepare("SELECT * FROM `applicants` WHERE `application_status` = 'final' AND `election_id` = '$election_id' ORDER BY id DESC");
+      $stmt = $connection->prepare("SELECT * FROM `applicants` WHERE `application_status` = 'final' AND `election_id` = '$election_id' AND `x` = 'active' ORDER BY id DESC");
       $stmt->execute();
       $applicants = $stmt->fetchAll();
     } else {
-      $stmt = $connection->prepare("SELECT * FROM `applicants` where `application_status` = 'final' ORDER BY id DESC");
+      $stmt = $connection->prepare("SELECT * FROM `applicants` where `application_status` = 'final' AND `x` = 'active' ORDER BY id DESC");
       $stmt->execute();
       $applicants = $stmt->fetchAll();
     }
@@ -796,7 +825,7 @@ class Voting
 
     $connection = $this->openConnection();
 
-    $stmt = $connection->prepare("SELECT * FROM `applicants` where `application_status` = 'for_interview' ORDER BY id DESC");
+    $stmt = $connection->prepare("SELECT * FROM `applicants` where `application_status` = 'for_interview'");
     $stmt->execute();
     $applicants = $stmt->fetchAll();
 
@@ -817,7 +846,7 @@ class Voting
 
     $connection = $this->openConnection();
 
-    $stmt = $connection->prepare("SELECT * FROM `applicants` where `application_status` = 'denied' and `x` != 'deleted' ");
+    $stmt = $connection->prepare("SELECT * FROM `applicant_logs` where `application_status` = 'denied'");
     $stmt->execute();
     $applicants = $stmt->fetchAll();
 
@@ -953,7 +982,7 @@ class Voting
 
       $election_id = $_POST['election'];
       $position_id = $_POST['position'];
-      $stmt = $connection->prepare("SELECT * FROM `applicants` WHERE `application_status` = 'final' AND `election_id` = '$election_id' AND  `position_id` = '$position_id'");
+      $stmt = $connection->prepare("SELECT * FROM `applicants` WHERE `application_status` = 'final' AND `election_id` = '$election_id' AND  `position_id` = '$position_id' AND `x` = 'active'");
       $stmt->execute();
       $candidates = $stmt->fetchAll();
     } else {
@@ -980,7 +1009,7 @@ class Voting
 
     if ($count == 0) {
 
-      $stmt = $connection->prepare("SELECT * FROM `applicants` where `application_status` = 'final' AND `election_id` = '$election_id' AND `position_id` = '$position_id' ");
+      $stmt = $connection->prepare("SELECT * FROM `applicants` where `application_status` = 'final' AND `election_id` = '$election_id' AND `position_id` = '$position_id' AND `x` = 'active' ");
       $stmt->execute();
       $applicants = $stmt->fetchAll();
 
@@ -994,8 +1023,13 @@ class Voting
     } else {
     ?>
       <script>
-        confirm('You already Voted');
-        window.location.href = "student-dashboard.php";
+        swal({
+        title:"You already voted!",
+        icon:"success"
+        }).then((success) => {
+        window.location.href = 'student-myvotes.php';
+        }
+        });
       </script>
       <?php
     }
@@ -1028,6 +1062,25 @@ class Voting
     $connection = $this->openConnection();
 
     $stmt = $connection->prepare("SELECT * FROM `applicants` WHERE `student_id` = ?");
+    $stmt->execute([$applicant_id]);
+    $applicant = $stmt->fetch();
+
+    $total = $stmt->rowCount();
+
+    if ($total > 0) {
+
+      if (isset($applicant)) {
+        return $applicant;
+      }
+    }
+  }
+
+  public function getApplicantDenied($applicant_id)
+  {
+
+    $connection = $this->openConnection();
+    $stmt = $connection->prepare("SELECT * FROM `applicants` WHERE `id` = ?");
+
     $stmt->execute([$applicant_id]);
     $applicant = $stmt->fetch();
 
@@ -1104,6 +1157,7 @@ class Voting
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
         $new_file_name = rand(1000, 1000000) . "-" . $_FILES['election_poster']['name'];
         $final_file = str_replace(' ', '-', strtolower($new_file_name));
+        $temp_file = $_FILES["election_poster"]["tmp_name"];
 
         // Check if file already exists
         if (file_exists($target_file)) {
@@ -1118,16 +1172,32 @@ class Voting
 
         // Check file size
         if ($_FILES["election_poster"]["size"] > 5000000) {
-        ?>
-          <script>
-            alert('File is too large');
-            window.location.href = "admin-election.php";
-          </script>
-        <?php
-          return $this->show_404();
-        }
+          // Resize and compress the image
+          $max_width = 800;
+          $max_height = 600;
+          list($image_width, $image_height, $image_type) = getimagesize($temp_file);
 
-        // Allow certain file formats
+          // Resize the image if it's larger than the maximum width or height
+          if ($image_width > $max_width || $image_height > $max_height) {
+            $ratio = min($max_width / $image_width, $max_height / $image_height);
+            $new_width = round($image_width * $ratio);
+            $new_height = round($image_height * $ratio);
+            $new_image = imagecreatetruecolor($new_width, $new_height);
+
+            if ($image_type == IMAGETYPE_JPEG) {
+              $old_image = imagecreatefromjpeg($temp_file);
+            } elseif ($image_type == IMAGETYPE_PNG) {
+              $old_image = imagecreatefrompng($temp_file);
+            } elseif ($image_type == IMAGETYPE_GIF) {
+              $old_image = imagecreatefromgif($temp_file);
+            }
+
+            imagecopyresampled($new_image, $old_image, 0, 0, 0, 0, $new_width, $new_height, $image_width, $image_height);
+            imagedestroy($old_image);
+            imagejpeg($new_image, $temp_file, 75);
+            imagedestroy($new_image);
+          }
+        }
         if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
         ?>
           <script>
@@ -1139,7 +1209,7 @@ class Voting
         }
 
         // Upload file
-        if (move_uploaded_file($_FILES["election_poster"]["tmp_name"], $target_dir . $final_file)) {
+        if (move_uploaded_file($temp_file, $target_dir . $final_file)) {
           $stmt = $connection->prepare("INSERT INTO `election`(`election_name`, `start_date`, `end_date`, `x`, `election_poster`) VALUES (?,?,?,?,?)");
           $stmt->execute([$election_name, $startdate, $enddate, $x, $final_file]);
 
@@ -1151,21 +1221,18 @@ class Voting
             </script>
           <?php
           } else {
-            echo $connection->errorInfo();
-            return $this->show_404();
-          }
-        } else {
           ?>
-          <script>
-            alert('Sorry, there was an error uploading your file.');
-            window.location.href = "admin-election.php";
-          </script>
+            <script>
+              alert('Failed');
+              window.location.href = "admin-election.php";
+            </script>
         <?php
-          return $this->show_404();
+          }
         }
       }
     }
   }
+
 
 
   public function editElection()
@@ -1202,35 +1269,89 @@ class Voting
 
   public function updatePoster()
   {
-
     $connection = $this->openConnection();
+
     if (isset($_POST['update-poster'])) {
 
       $election_id = $_POST['election_id'];
-      $election_poster = rand(1000, 1000000) . "-" . $_FILES['election_poster']['name'];
-      $image_loc = $_FILES['election_poster']['tmp_name'];
-      $folder = "uploads/";
 
-      $new_file_name = strtolower($election_poster);
-      $final_file = str_replace(' ', '-', $new_file_name);
+      if (isset($_FILES["election_poster"]) && $_FILES["election_poster"]["error"] == 0) {
+        $target_dir = "uploads/";
+        $target_file = $target_dir . basename($_FILES["election_poster"]["name"]);
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        $new_file_name = rand(1000, 1000000) . "-" . $_FILES['election_poster']['name'];
+        $final_file = str_replace(' ', '-', strtolower($new_file_name));
+        $temp_file = $_FILES["election_poster"]["tmp_name"];
 
-      if (move_uploaded_file($image_loc, $folder . $final_file)) {
-
-        $stmt = $connection->prepare("UPDATE `election` SET `election_poster`= '$final_file' WHERE `election_id` = '$election_id'");
-
-        $stmt->execute();
-
-        if ($stmt) {
+        // Check if file already exists
+        if (file_exists($target_file)) {
         ?>
           <script>
-            alert('Poster Updated');
+            alert('File already exist');
             window.location.href = "admin-election.php";
           </script>
-      <?php
-        } else {
-
+        <?php
           return $this->show_404();
-          echo $connection->errorInfo();
+        }
+
+        // Check file size
+        if ($_FILES["election_poster"]["size"] > 5000000) {
+          // Resize and compress the image
+          $max_width = 800;
+          $max_height = 600;
+          list($image_width, $image_height, $image_type) = getimagesize($temp_file);
+
+          // Resize the image if it's larger than the maximum width or height
+          if ($image_width > $max_width || $image_height > $max_height) {
+            $ratio = min($max_width / $image_width, $max_height / $image_height);
+            $new_width = round($image_width * $ratio);
+            $new_height = round($image_height * $ratio);
+            $new_image = imagecreatetruecolor($new_width, $new_height);
+
+            if ($image_type == IMAGETYPE_JPEG) {
+              $old_image = imagecreatefromjpeg($temp_file);
+            } elseif ($image_type == IMAGETYPE_PNG) {
+              $old_image = imagecreatefrompng($temp_file);
+            } elseif ($image_type == IMAGETYPE_GIF) {
+              $old_image = imagecreatefromgif($temp_file);
+            }
+
+            imagecopyresampled($new_image, $old_image, 0, 0, 0, 0, $new_width, $new_height, $image_width, $image_height);
+            imagedestroy($old_image);
+            imagejpeg($new_image, $temp_file, 75);
+            imagedestroy($new_image);
+          }
+        }
+        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
+        ?>
+          <script>
+            alert('Sorry, only JPG, JPEG, PNG & GIF files are allowed.');
+            window.location.href = "admin-election.php";
+          </script>
+          <?php
+          return $this->show_404();
+        }
+
+        // Upload file
+        if (move_uploaded_file($temp_file, $target_dir . $final_file)) {
+          $stmt = $connection->prepare("UPDATE `election` SET `election_poster`= '$final_file' WHERE `election_id` = '$election_id'");
+          $stmt->execute();
+
+          if ($stmt == true) {
+          ?>
+            <script>
+              alert('Election Updated');
+              window.location.href = "admin-election.php";
+            </script>
+          <?php
+          } else {
+          ?>
+            <script>
+              alert('Failed');
+              window.location.href = "admin-election.php";
+            </script>
+      <?php
+          }
         }
       }
     }
@@ -1574,20 +1695,15 @@ class Voting
 
     $connection = $this->openConnection();
     if (isset($_POST['delete-denied'])) {
-
       $applicant = $_POST['id'];
-      $x = "deleted";
-
-      $stmt = $connection->prepare("UPDATE `applicants` SET `x` = '$x' WHERE `id` = ? ");
+      $stmt = $connection->prepare("DELETE FROM `applicant_logs` WHERE `applicant_log_id` = ?");
       $stmt->execute([$applicant]);
-
     ?>
       <script>
-        confirm('Applicant Denied');
+        confirm('Applicant Deleted');
         window.location.href = "comelec-disapproved.php";
       </script>
       <?php
-
     }
   }
 
@@ -1641,37 +1757,37 @@ class Voting
 
   public function insertExcelFile()
   {
-    $connection = $this->openConnection();
-    // Check if form is submitted
-
-    if (isset($_POST["upload"])) {
-
-      $filename = $_FILES["formFileLg"]["tmp_name"];
-
-      if ($_FILES["formFileLg"]["size"] > 0) {
-
-        $file = fopen($filename, "r");
-
-        while (($emapData = fgetcsv($file, 10000, ",")) !== FALSE) {
-
-          $pass = "1234";
-          $stmt = $connection->prepare("INSERT IGNORE into `student`(`student_id`, `school_id`, `last_name`, `first_name`, `middle_name`, `gender`, `course`, `year_level`, `password`, `x`) values(?,?,?,?,?,?,?,?,?,?)");
-          ([$emapData[0], $emapData[1], $emapData[2], $emapData[3], $emapData[4], $emapData[5], $emapData[6], $emapData[7], $emapData[8], $emapData[9]]);
-
-          if ($stmt) {
-        ?>
-            <script>
-              confirm('Students Submitted');
-              window.location.href = "comelec-voter.php";
-            </script>
-        <?php
-          } else {
-            return $connection->errorInfo();
+      $connection = $this->openConnection();
+  
+      // Check if form is submitted
+      if (isset($_FILES["formFileLg"])) {
+  
+          $filename = $_FILES["formFileLg"]["tmp_name"];
+  
+          if ($_FILES["formFileLg"]["size"] > 0) {
+  
+              $file = fopen($filename, "r");
+  
+              while (($emapData = fgetcsv($file, 10000, ",")) !== FALSE) {
+                  $stmt = $connection->prepare("INSERT IGNORE INTO `student`(`student_id`, `school_id`, `last_name`, `first_name`, `middle_name`, `gender`, `course`, `year_level`, `password`, `x`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                  $stmt->execute($emapData);
+              }
+              
+              if ($stmt) {
+                ?>
+                <script>
+                  alert('Submitted Successfully');
+                  window.location.href = "comelec-voter.php";
+                </script>
+                <?php
+            } else {
+                echo $connection->errorInfo();
+            }
+              fclose($file);
           }
-        }
       }
-    }
   }
+
 
   public function vote()
   {
@@ -1711,27 +1827,28 @@ class Voting
       $elec_id = $_POST['elec_id'];
       $x = "active";
       // $pos_count = $_POST['pos_count'];
-
-
       foreach ($candi_ids as $candi_id) {
         $pos_id = $_POST['pos_id'][$candi_id];
         $stmt = $connection->prepare("INSERT INTO `votes`(`student_id`, `applicant_id`, `position_id`, `election_id`, `x`) VALUES (?,?,?,?,?)");
-
         $stmt->execute([$voter_id, $candi_id, $pos_id, $elec_id, $x]);
       }
 
       if ($stmt) {
       ?>
         <script>
-          confirm('Votes Counted');
-          window.location.href = "student-dashboard.php";
+          swal({ 
+          title: "Votes Counted!",
+          icon: "success"
+          }).then((success) => {
+          if(success){
+          window.location.href = 'student-myvotes.php';
+          }
+          });
         </script>
         <?php
       }
     }
   }
-
-
 
   public function getVoterVote($voter_id, $candi_id, $pos_id)
   {
@@ -1806,12 +1923,12 @@ class Voting
     return $result;
   }
 
-  public function getVoterVotes($student_id, $position_id)
+  public function getVoterVotes($student_id, $position_id, $election_id)
   {
     $connection = $this->openConnection();
-    $stmt = $connection->prepare("SELECT a.last_name, a.first_name, a.middle_name
+    $stmt = $connection->prepare("SELECT a.last_name, a.first_name, a.middle_name, a.photo
     FROM votes v
-    JOIN applicants a ON v.applicant_id = a.id WHERE v.student_id = '$student_id' AND v.position_id = '$position_id'
+    JOIN applicants a ON v.applicant_id = a.id WHERE v.student_id = '$student_id' AND v.position_id = '$position_id' AND v.election_id = '$election_id'
     ");
     $stmt->execute();
     $votes = $stmt->fetchAll();
@@ -1827,6 +1944,7 @@ class Voting
     } else {
     }
   }
+
 
   public function getVoteResults($applicant_id)
   {
@@ -1909,63 +2027,6 @@ class Voting
     return $total;
   }
 
-  public function printResults()
-  {
-    $connection = $this->openConnection();
-
-    if (isset($_POST['print-result'])) {
-      // Get vote results data from the database
-      $stmt = $connection->prepare("SELECT * FROM `applicants` WHERE `application_status` = 'final'");
-      $stmt->execute();
-      $voteResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-      // Generate HTML table from the vote results data
-      $html = '<table>';
-      $html .= '<thead>';
-      $html .= '<tr>';
-      $html .= '<th>Student ID</th>';
-      $html .= '<th>Name</th>';
-      $html .= '<th>Election</th>';
-      $html .= '<th>Position</th>';
-      $html .= '<th>Vote Count</th>';
-      $html .= '</tr>';
-      $html .= '</thead>';
-      $html .= '<tbody>';
-
-      foreach ($voteResults as $result) {
-        $voteResult = $this->getVoteResults($result['id']);
-        $position = $this->getPosition($result['position_id']);
-        $election = $this->getElection($result['election_id']);
-
-        $html .= '<tr>';
-        $html .= '<td>' . $result['student_id'] . '</td>';
-        $html .= '<td>' . $result['first_name'] . ' ' . $result['middle_name'] . ' ' . $result['last_name'] . '</td>';
-        $html .= '<td>' . $election['election_name'] . '</td>';
-        $html .= '<td>' . $position['position_title'] . '</td>';
-        $html .= '<td>' . $voteResult . '</td>';
-        $html .= '</tr>';
-      }
-
-      $html .= '</tbody>';
-      $html .= '</table>';
-
-      // Generate PDF file using dompdf library
-
-
-      require_once 'vendor2/vendor/autoload.php';
-      $dompdf = new Dompdf();
-      $dompdf->loadHtml($html);
-      $dompdf->setPaper('A4', 'landscape');
-      $dompdf->render();
-
-      // Output the PDF file for download
-      header('Content-Type: application/pdf');
-      header('Content-Disposition: attachment; filename="vote_results.pdf"');
-      echo $dompdf->output();
-    }
-  }
-
-
   public function resultPrint()
   {
     $connection = $this->openConnection();
@@ -2045,7 +2106,7 @@ class Voting
             alert('Election Updated!');
             window.location.href = "admin-election.php";
           </script>
-<?php
+        <?php
         } else {
           return $this->show_404();
           echo $connection->errorInfo();
@@ -2106,11 +2167,12 @@ class Voting
       }
     }
   }
-  public function exportCandidates(){
+  public function exportCandidates()
+  {
     $connection = $this->openConnection();
     $output = '';
 
-    if(isset($_POST['export-candidates'])){
+    if (isset($_POST['export-candidates'])) {
       $election_id = $_POST['election_id'];
       $stmt = $connection->prepare("SELECT applicants.id, applicants.election_id ,applicants.first_name, applicants.last_name, applicants.middle_name, applicants.application_status, applicants.x,
       election.election_name, party.party, position.position_title
@@ -2123,7 +2185,7 @@ class Voting
       $stmt->execute();
       $result = $stmt->fetchAll();
 
-      if($result > 0){
+      if ($result > 0) {
         $output .= '
         <table class="table" bordered="1">  
          <tr>  
@@ -2134,29 +2196,72 @@ class Voting
              <th>Election</th>
          </tr>
        ';
-             while ($row = ($result)) {
-                 $output .= '
+        while ($row = ($result)) {
+          $output .= '
          <tr>  
          <td>' . $row["school_id"] . '</td> 
-         <td>' . $row["last_name"] .', '.$row["first_name"].', '.$row["middle_name"].  '</td>  
+         <td>' . $row["last_name"] . ', ' . $row["first_name"] . ', ' . $row["middle_name"] .  '</td>  
          <td>' . $row["position_title"] . '</td>  
          <td>' . $row["party"] . '</td>   
          <td>' . $row["election_name"] . '</td>
                          </tr>
         ';
-             }
-             $output .= '</table>';
-             header('Content-Type: application/xls');
-             header('Content-Disposition: attachment; filename=download.xls');
-             echo $output;
-      }else{
+        }
+        $output .= '</table>';
+        header('Content-Type: application/xls');
+        header('Content-Disposition: attachment; filename=download.xls');
+        echo $output;
+      } else {
         ?>
         <script>
-            alert ('No record or data to be printed');
-            window.location.href ='admin-candidate.php';
+          alert('No record or data to be printed');
+          window.location.href = 'admin-candidate.php';
         </script>
-        <?php
+      <?php
+      }
     }
+  }
+
+  public function deleteCandidate()
+  {
+    $connection = $this->openConnection();
+
+    if (isset($_POST['delete-candidate'])) {
+      $candidate_id = $_POST['id'];
+      $stmt = $connection->prepare("UPDATE `applicants` SET `x` = 'deleted' WHERE `id` = '$candidate_id' ");
+      $stmt->execute();
+
+      if ($stmt) {
+      ?>
+        <script>
+          alert('Candidate deleted');
+        </script>
+<?php
+      }
+    }
+  }
+
+  public function isElectionEnded($end_date, $start_date, $elec_id){
+    date_default_timezone_set('Asia/Manila');
+    
+    $now = date("Y-m-d H:i:s");
+    if ($now >= $start_date && $now <= $end_date){
+      header("Location: student-vote.php?id=<?= $elec_id;?>");
+
+    }elseif($now >= $end_date ){
+      ?>
+      <script>
+           alert('Election Ended');
+           window.location.href = 'student-dashboard.php';
+         </script>
+       <?php
+    }elseif ($now <= $end_date){
+      ?>
+      <script>
+           alert('Election is not yet started');
+           window.location.href = 'student-dashboard.php';
+         </script>
+       <?php
     }
   }
 }

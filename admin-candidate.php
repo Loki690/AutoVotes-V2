@@ -4,6 +4,7 @@ include('includes/admin-header.php');
 
 $candidates = $vote->getApplicantsForCandidate();
 $getElection = $vote->getElectionId();
+$vote->deleteCandidate($_POST);
 
 ?>
 
@@ -18,7 +19,7 @@ $getElection = $vote->getElectionId();
                     <div class="nav">
                         <hr class="dropdown-divider bg-white" />
                         <a id="nav-hover" class="nav-link mt-4" href="admin-dashboard.php">
-                            <div class="sb-nav-link-icon"><i class="fas fa-home" id="icon"></i></div>Home
+                            <div class="sb-nav-link-icon"><i class="fa fa-user me-2" id="icon"></i></div>Admin
                         </a>
                         <hr class="dropdown-divider bg-dark" />
                         <a id="nav-hover" href="admin-add-com.php" class="nav-link">
@@ -81,7 +82,7 @@ $getElection = $vote->getElectionId();
                                 <option value="<?= $elec['election_id'] ?>"><?= $elec['election_name'] ?></option>
                             <?php } ?>
                         </select>
-                        <button type="submit" class="btn btn-success" name="export-candidates" > Export</button>
+                        <button type="submit" class="btn btn-success" name="export-candidates"> Export</button>
                     </form>
                 </div>
                 <div class="card mx-3 my-3 mt-3 mb-4" id="shadow2" style="border-radius: 15px;">
@@ -126,13 +127,16 @@ $getElection = $vote->getElectionId();
                                             <td>
                                                 <div class="d-flex justify-content-center">
 
-                                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i>
-                                                        Delete</button>
+                                                    <button class="btn btn-sm btn-danger" tabindex="-1" data-bs-toggle="modal" data-bs-target="#delete-candidate<?= $candidate['id'] ?>"><i class=" fas fa-trash"></i>
+                                                        Delete
+                                                    </button>
                                                 </div>
 
                                             </td>
 
                                         </tr>
+
+                                        <?php include('includes/modals.php') ?>
 
                                     <?php } ?>
 
@@ -172,8 +176,6 @@ $getElection = $vote->getElectionId();
         </script>
         <script src="assets/demo/chart-area-demo.js"></script>
         <script src="assets/demo/chart-bar-demo.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <script src="js/datatables-simple-demo.js"></script>
 </body>
 
 </html>

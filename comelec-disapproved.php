@@ -91,34 +91,27 @@ $vote->deleteDeniedCandi();
                             <tbody>
                                 <?php if(!empty($applicants)) {?>
                                 <?php foreach ($applicants as $applicant) { 
-                                            
-                                            $party_id = $applicant['party_id'];
-                                            $party = $vote->getParty($party_id);
-        
-                                            $position_id = $applicant['position_id'];
-                                            $pos = $vote->getPosition($position_id);
-        
-                                            $election_id = $applicant['election_id'];
-                                            $elec = $vote->getElection($election_id);
-                                            
+                                    $denied_candidate = $vote->getApplicantDenied($applicant['applicant_id']);
+                                    $position = $vote->getPosition($denied_candidate['position_id']);
+                                    $party = $vote->getParty($denied_candidate['party_id']);
+                                    $election = $vote->getElection($denied_candidate['election_id']);
                                             ?>
                                 <tr>
-                                    <td><?= $applicant['student_id'] ?></td>
-                                    <td><?= $applicant['first_name'] . " " . $applicant['middle_name'] . " " . $applicant['last_name'] ?>
-                                    </td>
-                                    <td><?= $pos['position_title']; ?></td>
+                                    <td><?= $denied_candidate['student_id'] ?></td>
+                                    <td><?= $denied_candidate['first_name']." ".$denied_candidate['middle_name']." ".$denied_candidate['last_name'] ?></td>
+                                    <td><?= $position['position_title'] ?></td>
                                     <td><?= $party['party'] ?></td>
-                                    <?php if (empty($elec['election_name'])) { ?>
-                                    <td>No data</td>
-                                    <?php } else { ?>
-                                    <td><?= $elec['election_name'] ?></td>
-                                    <?php } ?>
-                                    <td>NOtes</td>
+                                    <?php if(!empty($election['election_name'])) {?>
+                                    <td><?= $election['election_name'] ?></td>
+                                    <?php }else{ ?>
+                                        <td>No Data</td>
+                                        <?php } ?>
+                                    <td><?= $applicant['note'] ?></td>
                                     <td>
                                         <div class="d-flex justify-content-center">
                                             <button class="btn btn-sm btn-outline-danger" tabindex="-1"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#delete-denied<?= $applicant['id'] ?>"><i
+                                                data-bs-target="#delete-denied<?= $applicant['applicant_log_id'] ?>"><i
                                                     class="fas fa-trash"></i> Delete</button>
                                         </div>
                                     </td>
@@ -162,9 +155,7 @@ $vote->deleteDeniedCandi();
         </script>
         <script src="assets/demo/chart-area-demo.js"></script>
         <script src="assets/demo/chart-bar-demo.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-            crossorigin="anonymous"></script>
-        <script src="js/datatables-simple-demo.js"></script>
+
 </body>
 
 </html>
