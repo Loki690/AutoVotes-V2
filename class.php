@@ -1029,7 +1029,7 @@ class Voting
         }).then((success) => {
         window.location.href = 'student-myvotes.php';
         }
-        });
+        );
       </script>
       <?php
     }
