@@ -1,5 +1,5 @@
 /uploads
 /vendor
 /vendor2
-/dompdf
-/tcpdf
+dompdf
+tcpdf
